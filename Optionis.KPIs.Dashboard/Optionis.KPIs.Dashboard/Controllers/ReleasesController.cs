@@ -1,42 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Http;
+﻿using System.Web.Http;
+using Optionis.KPIs.Adapters;
+using Optionis.KPIs.Dashboard.Core;
 
 namespace Optionis.KPIs.Dashboard
 {
     public class ReleasesController : ApiController
     {
-        readonly IStoreReleases _repository;
-
-        public ReleasesController ()
-        {
-            _repository = new ReleasesRepository ();
-        }
-
         public dynamic Get()
         {
             return new
             {
-                Releases = _repository.GetAll ()
+                Releases = new ReleasesLister(new ReleasesRepository()).List()
             };
         }
     }
 
-    interface IStoreReleases
-    {
-        IEnumerable<Release> GetAll();
-    }
-
-    class Release
-    {
-    }
-
-    class ReleasesRepository : IStoreReleases
-    {
-        public IEnumerable<Release> GetAll ()
-        {
-            return new Release[]{ };
-        }
-    }
 }
 
