@@ -65,5 +65,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="TestController.cs" />
+    <Compile Include="Controllers\ReleasesController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 </Project>
