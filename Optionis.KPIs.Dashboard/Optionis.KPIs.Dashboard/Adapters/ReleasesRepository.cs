@@ -9,6 +9,8 @@ namespace Optionis.KPIs.Adapters
 {
     class ReleasesRepository : ReleasesLister.IStoreReleases
     {
+        static readonly object _locker = new object ();
+
         static string DbFile
         {
             get { return Environment.CurrentDirectory + "\\SimpleDb.db"; }
@@ -17,8 +19,12 @@ namespace Optionis.KPIs.Adapters
         public IEnumerable<Release> GetAll ()
         {
             if (!File.Exists (DbFile)) {
-                using (var cnn = new SQLiteConnection (DbFile)) {
-                    cnn.Table<Release> ();
+                lock (_locker) {
+                    if (!File.Exists (DbFile)) {
+                        using (var cnn = new SQLiteConnection (DbFile)) {
+                            cnn.CreateTable<Release> ();
+                        }
+                    }
                 }
             }
 
