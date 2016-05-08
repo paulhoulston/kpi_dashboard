@@ -194,3 +194,7 @@ ModelManifest.xml
 
 #SQLite DB
 *.db
+
+# EventStore data folder
+EventStore*/ESData/
+EventStore*/logs

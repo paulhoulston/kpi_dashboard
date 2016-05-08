@@ -1,0 +1,7 @@
+To run event store:
+
+Mac OSX
+-------
+Navigate to the folder EventStore folder ~/kpi_dashboard/EventStore-OSS-Mono-MacOSX-v3.6.0 and execute the following command
+
+./run-node.sh --db ./ESData
