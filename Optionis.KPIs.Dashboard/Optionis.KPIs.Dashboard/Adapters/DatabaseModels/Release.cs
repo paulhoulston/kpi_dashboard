@@ -1,9 +1,9 @@
 ﻿using System;
 using SQLite;
 
-namespace Optionis.KPIs.Dashboard.Models
+namespace Optionis.KPIs.Dashboard.Adapters.DatabaseModels
 {
-    public class Release
+    public class Release : IAmADatabaseModel
     {
         [PrimaryKey, AutoIncrement]
         public int Id{ get; set; }

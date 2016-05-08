@@ -75,15 +75,18 @@
     </Compile>
     <Compile Include="Controllers\ReleasesController.cs" />
     <Compile Include="Adapters\ReleasesRepository.cs" />
-    <Compile Include="Models\Release.cs" />
     <Compile Include="Core\ReleasesLister.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
+    <Compile Include="Adapters\DatabaseModels\Release.cs" />
+    <Compile Include="Adapters\SqliteWrapper.cs" />
+    <Compile Include="Adapters\DatabaseModels\IAmADatabaseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Adapters\" />
     <Folder Include="Core\" />
     <Folder Include="Models\" />
+    <Folder Include="Adapters\DatabaseModels\" />
   </ItemGroup>
 </Project>

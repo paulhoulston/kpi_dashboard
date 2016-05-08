@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Optionis.KPIs.Dashboard.Models;
+using Optionis.KPIs.Dashboard.Adapters.DatabaseModels;
 
 namespace Optionis.KPIs.Dashboard.Core
 {
