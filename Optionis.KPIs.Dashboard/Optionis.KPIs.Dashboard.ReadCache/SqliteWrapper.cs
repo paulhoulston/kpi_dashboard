@@ -1,14 +1,13 @@
 using SQLite;
 using System;
 using System.IO;
-using Optionis.KPIs.Dashboard.Adapters.DatabaseModels;
+using Optionis.KPIs.Dashboard.ReadCache.DatabaseModels;
 using System.Reflection;
 using System.Linq;
-using System.Collections.Generic;
 
-namespace Optionis.KPIs.Adapters
+namespace Optionis.KPIs.Dashboard.ReadCache
 {
-    class SqliteWrapper
+    public class SqliteWrapper
     {
         static readonly object _locker = new object ();
 

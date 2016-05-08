@@ -1,6 +1,6 @@
 using SQLite;
 
-namespace Optionis.KPIs.Dashboard.Adapters.DatabaseModels
+namespace Optionis.KPIs.Dashboard.ReadCache.DatabaseModels
 {
 	public interface IAmADatabaseModel
 	{

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Optionis.KPIs.Dashboard.Core;
-using SQLite;
-using Optionis.KPIs.Dashboard.Adapters.DatabaseModels;
+using Optionis.KPIs.Dashboard.ReadCache.DatabaseModels;
+using Optionis.KPIs.Dashboard.ReadCache;
 
 namespace Optionis.KPIs.Adapters
 {

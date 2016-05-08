@@ -76,17 +76,17 @@
     <Compile Include="Controllers\ReleasesController.cs" />
     <Compile Include="Adapters\ReleasesRepository.cs" />
     <Compile Include="Core\ReleasesLister.cs" />
-    <Compile Include="SQLite.cs" />
-    <Compile Include="SQLiteAsync.cs" />
-    <Compile Include="Adapters\DatabaseModels\Release.cs" />
-    <Compile Include="Adapters\SqliteWrapper.cs" />
-    <Compile Include="Adapters\DatabaseModels\IAmADatabaseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Adapters\" />
     <Folder Include="Core\" />
     <Folder Include="Models\" />
-    <Folder Include="Adapters\DatabaseModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Optionis.KPIs.Dashboard.ReadCache\Optionis.KPIs.Dashboard.ReadCache.csproj">
+      <Project>{5E5C7D96-E433-4F71-AB1D-198D4113457F}</Project>
+      <Name>Optionis.KPIs.Dashboard.ReadCache</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
