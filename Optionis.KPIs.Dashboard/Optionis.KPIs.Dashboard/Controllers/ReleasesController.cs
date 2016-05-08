@@ -1,6 +1,8 @@
 ﻿using System.Web.Http;
 using Optionis.KPIs.Adapters;
 using Optionis.KPIs.Dashboard.Core;
+using System.Net.Http;
+using System.Net;
 
 namespace Optionis.KPIs.Dashboard
 {
@@ -13,7 +15,15 @@ namespace Optionis.KPIs.Dashboard
                 Releases = new ReleasesLister(new ReleasesRepository()).List()
             };
         }
-    }
 
+        public HttpResponseMessage Post(CreateReleaseModel releaseToCreate)
+        {
+            return Request.CreateResponse (HttpStatusCode.Created);
+        }
+
+        public class CreateReleaseModel
+        {
+        }
+    }
 }
 
