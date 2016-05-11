@@ -17,15 +17,17 @@ namespace Optionis.KPIs.Dashboard
             };
         }
 
-        public HttpResponseMessage Post(CreateReleaseModel releaseToCreate)
+        public HttpResponseMessage Get(int id)
         {
-            return Request.CreateResponse (HttpStatusCode.Created, new CreateReleaseModel{
+            return Request.CreateResponse (HttpStatusCode.OK, new Release{
+                Id = id,
                 Title = "Scheduled release for ClearSky",
                 CreatedBy = "Paul Houlston",
+                Created = DateTime.Now.AddHours(-1.4),
                 Comments = "A test release for latest functionality",
                 Issues = new []
                 {
-                    new CreateReleaseModel.Issue
+                    new Release.Issue
                     {
                         Id = "49995",
                         Link = "http://blah.com/49995",
@@ -34,17 +36,39 @@ namespace Optionis.KPIs.Dashboard
                 },
                 Deployments = new []
                 {
-                    new CreateReleaseModel.Deployment
+                    new Release.Deployment
                     {
                         Due = DateTime.Today.AddDays(1),
-                        Status = CreateReleaseModel.DeploymentStatus.Pending
+                        Status = DeploymentStatus.Pending
                     }
                 }
             });
-            //return Request.CreateResponse (HttpStatusCode.Created);
         }
 
-        public class CreateReleaseModel
+        public HttpResponseMessage Post(ReleaseToCreate releaseToCreate)
+        {
+            var id = 1;
+            return Request.CreateResponse (HttpStatusCode.Created, new {
+                self = string.Format ("releases/{0}", id)
+            });
+        }
+
+        public class ReleaseToCreate
+        {
+            public class Issue
+            {
+                public string Id{ get; set; }
+                public string Link{ get; set; }
+                public string Title{ get; set; }
+            }
+
+            public string Title{ get; set; }
+            public string CreatedBy{ get; set; }
+            public string Comments{ get; set; }
+            public Issue[] Issues{get;set;}
+        }
+
+        public class Release
         {
             public class Issue
             {
@@ -58,17 +82,11 @@ namespace Optionis.KPIs.Dashboard
                 public DateTime Due{ get; set; }
                 public DeploymentStatus Status { get; set; }
             }
-
-            public enum DeploymentStatus
-            {
-                Pending = 0,
-                Success = 1,
-                Failed = 2,
-                Aborted = 3
-            }
-
+                
+            public int Id { get; set; }
             public string Title{ get; set; }
             public string CreatedBy{ get; set; }
+            public DateTime Created{ get; set; }
             public string Comments{ get; set; }
             public Issue[] Issues{get;set;}
             public Deployment[] Deployments{ get; set; }
