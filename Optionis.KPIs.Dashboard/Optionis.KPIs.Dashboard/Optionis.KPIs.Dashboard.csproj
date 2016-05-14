@@ -77,6 +77,8 @@
     <Compile Include="Adapters\ReleasesRepository.cs" />
     <Compile Include="Core\ReleasesLister.cs" />
     <Compile Include="Adapters\DeploymentStatus.cs" />
+    <Compile Include="Models\ReleaseToCreate.cs" />
+    <Compile Include="Models\Issue.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

@@ -53,23 +53,6 @@ namespace Optionis.KPIs.Dashboard
             });
         }
 
-        public class ReleaseToCreate
-        {
-            public class Issue
-            {
-                public string Id{ get; set; }
-                public string Link{ get; set; }
-                public string Title{ get; set; }
-            }
-
-            public string Title{ get; set; }
-            public string CreatedBy{ get; set; }
-            public string Comments{ get; set; }
-            public string Application{ get; set; }
-            public string Version{ get; set; }
-            public Issue[] Issues{get;set;}
-        }
-
         public class Release
         {
             public class Issue
