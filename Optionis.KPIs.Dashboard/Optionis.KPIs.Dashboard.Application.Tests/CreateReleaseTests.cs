@@ -168,11 +168,18 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 _onValidationError (ValidationError.ObjectNotSet);
             else if (IsInvalidVersion (release.Version))
                 _onValidationError (ValidationError.InvalidVersion);
+            else if (TitleNotSet (release))
+                _onValidationError (ValidationError.TitleNotSet);
             else
                 _repository.Create (new RepositoryRelease {
                     Version = release.Version,
                     Created = DateTime.Now
                 });
+        }
+
+        static bool TitleNotSet(ReleaseToCreate release)
+        {
+            return string.IsNullOrEmpty (release.Title);
         }
 
         static bool IsInvalidVersion(string version)
