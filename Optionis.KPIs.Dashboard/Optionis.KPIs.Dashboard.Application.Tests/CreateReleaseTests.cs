@@ -129,12 +129,14 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             None = 0,
             ObjectNotSet = 1,
-            InvalidVersion = 2
+            InvalidVersion = 2,
+            TitleNotSet = 3
         }
 
         public class ReleaseToCreate
         {
-            public string Version{get;set;}
+            public string Version{ get; set; }
+            public string Title{ get; set; }
         }
 
         public interface ICreateReleases
@@ -150,8 +152,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         class RepositoryRelease : IAmARelease
         {
-            public DateTime Created {get;set;}
-            public string Version{get;set;}
+            public DateTime Created { get; set; }
+            public string Version{ get; set; }
         }
 
         public ReleseCreationService (ICreateReleases repository, Action<ValidationError> onValidationError)
