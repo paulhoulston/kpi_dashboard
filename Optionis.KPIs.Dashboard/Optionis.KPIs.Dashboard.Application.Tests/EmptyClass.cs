@@ -12,6 +12,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             bool _releaseCreated;
             DateTime _createdDate;
             readonly DateTime _startTime;
+            ReleseCreationService.ValidationError? _validationError;
 
             public void Create (ReleseCreationService.IAmARelease model)
             {
@@ -22,7 +23,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public WHEN_I_do_supply_a_valid_model ()
             {
                 _startTime = DateTime.Now;
-                new ReleseCreationService(this).Create(new ReleseCreationService.ReleaseToCreate{
+                new ReleseCreationService(this, error => _validationError = error).Create(new ReleseCreationService.ReleaseToCreate{
                     Version = "2.16.69.0"
                 });
             }
@@ -38,11 +39,17 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 Assert.IsTrue (_createdDate >= _startTime);
             }
+
+            [Test]
+            public void AND_no_validation_message_is_returned(){
+                Assert.IsNull (_validationError);
+            }
         }
 
         public class WHEN_the_creation_model_is_null : ReleseCreationService.ICreateReleases
         {
             bool _releaseCreated;
+            ReleseCreationService.ValidationError _validationError;
 
             public void Create (ReleseCreationService.IAmARelease model)
             {
@@ -52,7 +59,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             [Test]
             public void THEN_the_release_is_not_created()
             {
-                new ReleseCreationService(this).Create(null);
+                new ReleseCreationService(this, error => _validationError = error).Create(null);
                 Assert.False (_releaseCreated);
             }
         }
@@ -60,10 +67,17 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         public class WHEN_the_creation_model_has_an_invalid_version :  ReleseCreationService.ICreateReleases
         {
             bool _releaseCreated;
+            ReleseCreationService.ValidationError _validationMessage;
+            readonly ReleseCreationService _svc;
 
             public void Create (ReleseCreationService.IAmARelease model)
             {
                 _releaseCreated = true;
+            }
+
+            public WHEN_the_creation_model_has_an_invalid_version ()
+            {
+                _svc = new ReleseCreationService(this, error => _validationMessage = error);
             }
 
             [TestCase("")]
@@ -74,16 +88,24 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             [TestCase("RGERsdfG")]
             public void THEN_the_release_is_not_created(string version)
             {
-                new ReleseCreationService(this).Create (new ReleseCreationService.ReleaseToCreate {
+                _svc.Create (new ReleseCreationService.ReleaseToCreate {
                     Version = version
                 });
                 Assert.False (_releaseCreated);
             }
 
-            [Test, Ignore]
-            public void AND_an_appropriate_error_message_is_returned()
+            [TestCase("")]
+            [TestCase("1.")]
+            [TestCase("1.2")]
+            [TestCase("1.2.3")]
+            [TestCase("1.2.3.a")]
+            [TestCase("RGERsdfG")]
+            public void AND_a_validation_message_is_returned(string version)
             {
-                
+                _svc.Create (new ReleseCreationService.ReleaseToCreate {
+                    Version = version
+                });
+                Assert.AreEqual (ReleseCreationService.ValidationError.InvalidVersion, _validationMessage);
             }
         }
     }
@@ -91,6 +113,11 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
     public class ReleseCreationService
     {
         readonly ICreateReleases _repository;
+        readonly Action<ValidationError> _onValidationError;
+        public enum ValidationError
+        {
+            InvalidVersion = 0
+        }
 
         public class ReleaseToCreate
         {
@@ -114,8 +141,9 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public string Version{get;set;}
         }
 
-        public ReleseCreationService (ICreateReleases repository)
+        public ReleseCreationService (ICreateReleases repository, Action<ValidationError> onValidationError)
         {
+            _onValidationError = onValidationError;
             _repository = repository;
         }
 
