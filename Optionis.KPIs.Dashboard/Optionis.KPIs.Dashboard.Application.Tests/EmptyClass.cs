@@ -21,7 +21,9 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public WHEN_I_do_supply_a_valid_model ()
             {
                 _startTime = DateTime.Now;
-                new ReleseCreationService(this).Create(new ReleseCreationService.ReleaseToCreate());
+                new ReleseCreationService(this).Create(new ReleseCreationService.ReleaseToCreate{
+                    Version = "1.2.*"
+                });
             }
 
             [Test]
@@ -97,12 +99,15 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         public interface IAmARelease
         {
             DateTime Created{ get; set; }
+            string Version{get;set;}
         }
 
         class RepositoryRelease : IAmARelease
         {
             public DateTime Created {get;set;}
+            public string Version{get;set;}
         }
+
         public ReleseCreationService (ICreateReleases repository)
         {
             _repository = repository;
@@ -110,12 +115,13 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public void Create (ReleaseToCreate release)
         {
-            if (release == null &&
+            if (release == null ||
                 string.IsNullOrEmpty (release.Version))
                 return;
             
             
             _repository.Create (new RepositoryRelease {
+                Version = release.Version,
                 Created = DateTime.Now
             });
         }
