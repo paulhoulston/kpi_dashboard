@@ -7,79 +7,60 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
     [TestFixture]
     public class GIVEN_I_want_to_create_a_release
     {
-        public class WHEN_I_do_supply_a_valid_model : ReleseCreationService.ICreateReleases
+        class TestRunner : ReleseCreationService.ICreateReleases
         {
-            bool _releaseCreated;
-            DateTime _createdDate;
-            readonly DateTime _startTime;
-            ReleseCreationService.ValidationError? _validationError;
+            public bool ReleaseCreated { get; private set;}
+            public DateTime CreatedDate{ get;private set;}
+            public ReleseCreationService.ValidationError? ValidationError { get; private set; }
 
             public void Create (ReleseCreationService.IAmARelease model)
             {
-                _releaseCreated = true;
-                _createdDate = model.Created;
+                ReleaseCreated = true;
+                CreatedDate = model.Created;
             }
 
-            public WHEN_I_do_supply_a_valid_model ()
+            public TestRunner (ReleseCreationService.ReleaseToCreate release)
             {
-                _startTime = DateTime.Now;
-                new ReleseCreationService(this, error => _validationError = error).Create(new ReleseCreationService.ReleaseToCreate{
-                    Version = "2.16.69.0"
-                });
+                new ReleseCreationService(this, error => ValidationError = error).Create(release);
             }
+        }
+
+        public class WHEN_I_do_supply_a_valid_model
+        {
+            readonly DateTime _startTime = DateTime.Now;
+            readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate{
+                Version = "2.16.69.0"
+            });
 
             [Test]
             public void THEN_the_release_is_created()
             {
-                Assert.True (_releaseCreated);
+                Assert.True (_testRunner.ReleaseCreated);
             }
 
             [Test]
             public void AND_the_creation_date_is_set_to_now()
             {
-                Assert.IsTrue (_createdDate >= _startTime);
+                Assert.IsTrue (_testRunner.CreatedDate >= _startTime);
             }
 
             [Test]
             public void AND_no_validation_message_is_returned(){
-                Assert.IsNull (_validationError);
+                Assert.IsNull (_testRunner.ValidationError);
             }
         }
 
-        public class WHEN_the_creation_model_is_null : ReleseCreationService.ICreateReleases
+        public class WHEN_the_creation_model_is_null
         {
-            bool _releaseCreated;
-            ReleseCreationService.ValidationError _validationError;
-
-            public void Create (ReleseCreationService.IAmARelease model)
-            {
-                _releaseCreated = true;
-            }
-
             [Test]
             public void THEN_the_release_is_not_created()
             {
-                new ReleseCreationService(this, error => _validationError = error).Create(null);
-                Assert.False (_releaseCreated);
+                Assert.False (new TestRunner(null).ReleaseCreated);
             }
         }
 
-        public class WHEN_the_creation_model_has_an_invalid_version :  ReleseCreationService.ICreateReleases
+        public class WHEN_the_creation_model_has_an_invalid_version
         {
-            bool _releaseCreated;
-            ReleseCreationService.ValidationError _validationMessage;
-            readonly ReleseCreationService _svc;
-
-            public void Create (ReleseCreationService.IAmARelease model)
-            {
-                _releaseCreated = true;
-            }
-
-            public WHEN_the_creation_model_has_an_invalid_version ()
-            {
-                _svc = new ReleseCreationService(this, error => _validationMessage = error);
-            }
-
             [TestCase("")]
             [TestCase("1.")]
             [TestCase("1.2")]
@@ -88,10 +69,9 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             [TestCase("RGERsdfG")]
             public void THEN_the_release_is_not_created(string version)
             {
-                _svc.Create (new ReleseCreationService.ReleaseToCreate {
+                Assert.False (new TestRunner (new ReleseCreationService.ReleaseToCreate {
                     Version = version
-                });
-                Assert.False (_releaseCreated);
+                }).ReleaseCreated);
             }
 
             [TestCase("")]
@@ -102,10 +82,10 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             [TestCase("RGERsdfG")]
             public void AND_a_validation_message_is_returned(string version)
             {
-                _svc.Create (new ReleseCreationService.ReleaseToCreate {
-                    Version = version
-                });
-                Assert.AreEqual (ReleseCreationService.ValidationError.InvalidVersion, _validationMessage);
+                Assert.AreEqual (ReleseCreationService.ValidationError.InvalidVersion, 
+                    new TestRunner (new ReleseCreationService.ReleaseToCreate {
+                        Version = version
+                    }).ValidationError);
             }
         }
     }
@@ -150,9 +130,10 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         public void Create (ReleaseToCreate release)
         {
             if (release == null ||
-                IsInvalidVersion(release.Version))
+                IsInvalidVersion (release.Version)) {
+                _onValidationError (ValidationError.InvalidVersion);   
                 return;
-            
+            }
             
             _repository.Create (new RepositoryRelease {
                 Version = release.Version,
