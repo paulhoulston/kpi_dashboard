@@ -145,7 +145,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.AreEqual (ReleseCreationService.ValidationError.ApplicationNotSet, _testRunner.ValidationError);
             }
         }
-        }
+    }
 
     public class ReleseCreationService
     {
