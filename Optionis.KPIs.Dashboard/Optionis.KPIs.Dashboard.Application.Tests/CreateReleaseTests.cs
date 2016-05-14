@@ -97,6 +97,26 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     }).ValidationError);
             }
         }
+
+        public class WHEN_the_creation_model_does_not_have_a_title_set
+        {
+            readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate {
+                Version = "1.0.0.*",
+                Title = string.Empty
+            });
+
+            [Test]
+            public void THEN_the_release_is_not_created()
+            {
+                Assert.False (_testRunner.ReleaseCreated);
+            }
+
+            [Test]
+            public void AND_a_validation_message_is_returned()
+            {
+                Assert.AreEqual (ReleseCreationService.ValidationError.TitleNotSet, _testRunner.ValidationError);
+            }
+        }
     }
 
     public class ReleseCreationService
