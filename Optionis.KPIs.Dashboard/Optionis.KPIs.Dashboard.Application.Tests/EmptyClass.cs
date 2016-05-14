@@ -86,6 +86,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public class ReleaseToCreate
         {
+            public string Version{get;set;}
         }
 
         public interface ICreateReleases
