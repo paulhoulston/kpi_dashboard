@@ -11,9 +11,9 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             [Test]
             public void THEN_the_release_is_created()
             {
-                bool releaseCreated = false;
-                new ReleseCreationService().Create(new ReleseCreationService.ReleaseToCreate(), () => releaseCreated = true);
-                Assert.True (releaseCreated);
+                bool? releaseCreated = null;
+                new ReleseCreationService(() => releaseCreated = false, () => releaseCreated = true).Create(new ReleseCreationService.ReleaseToCreate());
+                Assert.True (releaseCreated.Value);
             }
         }
 
@@ -22,23 +22,35 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             [Test]
             public void THEN_the_release_is_not_created()
             {
-                bool releaseCreated = false;
-                new ReleseCreationService().Create(null, () => releaseCreated = true);
-                Assert.False (releaseCreated);
+                bool? releaseCreated = null;
+                new ReleseCreationService(() => releaseCreated = false, () => releaseCreated = true).Create(null);
+                Assert.False (releaseCreated.Value);
             }
         }
     }
 
     public class ReleseCreationService
     {
+        readonly Action _onReleaseNotCreated;
+        readonly Action _onReleaseCreated;
+
         public class ReleaseToCreate
         {
         }
 
-        public void Create (ReleaseToCreate release, Action onReleaseCreated)
+        public ReleseCreationService (Action onReleaseNotCreated, Action onReleaseCreated)
         {
-            if (release != null)
-                onReleaseCreated ();
+            _onReleaseCreated = onReleaseCreated;
+            _onReleaseNotCreated = onReleaseNotCreated;
+            
+        }
+
+        public void Create (ReleaseToCreate release)
+        {
+            if (release == null)
+                _onReleaseNotCreated ();
+            else
+                _onReleaseCreated ();
         }
     }
 
