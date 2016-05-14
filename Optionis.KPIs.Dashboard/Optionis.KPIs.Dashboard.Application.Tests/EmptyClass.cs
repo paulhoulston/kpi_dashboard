@@ -8,25 +8,26 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
     {
         public class WHEN_I_do_supply_a_valid_model : ReleseCreationService.ICreateReleases
         {
-            bool? _releaseCreated = null;
+            bool _releaseCreated;
             DateTime _createdDate;
             readonly DateTime _startTime;
 
             public void Create (ReleseCreationService.ReleaseToCreate model)
             {
+                _releaseCreated = true;
                 _createdDate = model.Created;
             }
 
             public WHEN_I_do_supply_a_valid_model ()
             {
                 _startTime = DateTime.Now;
-                new ReleseCreationService(this, () => _releaseCreated = false, () => _releaseCreated = true).Create(new ReleseCreationService.ReleaseToCreate());
+                new ReleseCreationService(this).Create(new ReleseCreationService.ReleaseToCreate());
             }
 
             [Test]
             public void THEN_the_release_is_created()
             {
-                Assert.True (_releaseCreated.Value);
+                Assert.True (_releaseCreated);
             }
 
             [Test]
@@ -38,17 +39,18 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public class WHEN_the_creation_model_is_null : ReleseCreationService.ICreateReleases
         {
+            bool _releaseCreated;
+
             public void Create (ReleseCreationService.ReleaseToCreate model)
             {
-                throw new NotImplementedException ();
+                _releaseCreated = true;
             }
 
             [Test]
             public void THEN_the_release_is_not_created()
             {
-                bool? releaseCreated = null;
-                new ReleseCreationService(this, () => releaseCreated = false, () => releaseCreated = true).Create(null);
-                Assert.False (releaseCreated.Value);
+                new ReleseCreationService(this).Create(null);
+                Assert.False (_releaseCreated);
             }
         }
     }
@@ -56,8 +58,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
     public class ReleseCreationService
     {
         readonly ICreateReleases _repository;
-        readonly Action _onReleaseNotCreated;
-        readonly Action _onReleaseCreated;
 
         public class ReleaseToCreate
         {
@@ -69,24 +69,19 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             void Create (ReleaseToCreate model);
         }
 
-        public ReleseCreationService (ICreateReleases repository, Action onReleaseNotCreated, Action onReleaseCreated)
+        public ReleseCreationService (ICreateReleases repository)
         {
             _repository = repository;
-            _onReleaseCreated = onReleaseCreated;
-            _onReleaseNotCreated = onReleaseNotCreated;
         }
 
         public void Create (ReleaseToCreate release)
         {
             if (release == null)
-                _onReleaseNotCreated ();
-            else {
-                release.Created = DateTime.Now;
-                _onReleaseCreated ();
-                _repository.Create (release);
-            }
+                return;
+            
+            release.Created = DateTime.Now;
+            _repository.Create (release);
         }
     }
-
 }
 
