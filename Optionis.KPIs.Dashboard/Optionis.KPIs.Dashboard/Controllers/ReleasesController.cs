@@ -65,6 +65,8 @@ namespace Optionis.KPIs.Dashboard
             public string Title{ get; set; }
             public string CreatedBy{ get; set; }
             public string Comments{ get; set; }
+            public string Application{ get; set; }
+            public string Version{ get; set; }
             public Issue[] Issues{get;set;}
         }
 
