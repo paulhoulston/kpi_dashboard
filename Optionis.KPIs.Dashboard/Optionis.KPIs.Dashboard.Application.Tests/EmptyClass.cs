@@ -110,8 +110,10 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public void Create (ReleaseToCreate release)
         {
-            if (release == null)
+            if (release == null &&
+                string.IsNullOrEmpty (release.Version))
                 return;
+            
             
             _repository.Create (new RepositoryRelease {
                 Created = DateTime.Now
