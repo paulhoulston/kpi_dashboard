@@ -30,7 +30,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             readonly DateTime _startTime = DateTime.Now;
             readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate{
-                Version = "2.16.69.0"
+                Version = "2.16.69.0",
+                Title = "Test release"
             });
 
             [Test]
@@ -65,7 +66,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void AND_a_validation_message_is_returned(){
                 Assert.AreEqual (ReleseCreationService.ValidationError.ObjectNotSet, _testRunner.ValidationError);
             }
-
         }
 
         public class WHEN_the_creation_model_has_an_invalid_version
@@ -79,7 +79,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void THEN_the_release_is_not_created(string version)
             {
                 Assert.False (new TestRunner (new ReleseCreationService.ReleaseToCreate {
-                    Version = version
+                    Version = version,
+                    Title = "Test release"
                 }).ReleaseCreated);
             }
 
@@ -93,7 +94,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 Assert.AreEqual (ReleseCreationService.ValidationError.InvalidVersion, 
                     new TestRunner (new ReleseCreationService.ReleaseToCreate {
-                        Version = version
+                        Version = version,
+                        Title = "Test release"
                     }).ValidationError);
             }
         }
