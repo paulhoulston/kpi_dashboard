@@ -15,7 +15,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public DateTime CreatedDate{ get;private set;}
             public ReleseCreationService.ValidationError ValidationError { get; private set; }
 
-            public void Create (ReleseCreationService.IAmARelease model)
+            public void Create (ReleseCreationService.ReleaseToCreate model)
             {
                 ReleaseCreated = true;
                 CreatedDate = model.Created;
@@ -138,27 +138,16 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public class ReleaseToCreate
         {
+            public DateTime Created{ get; set; }
             public string Version{ get; set; }
             public string Title{ get; set; }
         }
 
         public interface ICreateReleases
         {
-            void Create (IAmARelease model);
+            void Create (ReleaseToCreate model);
         }
-
-        public interface IAmARelease
-        {
-            DateTime Created{ get; set; }
-            string Version{get;set;}
-        }
-
-        class RepositoryRelease : IAmARelease
-        {
-            public DateTime Created { get; set; }
-            public string Version{ get; set; }
-        }
-
+            
         public ReleseCreationService (ICreateReleases repository, Action<ValidationError> onValidationError)
         {
             _onValidationError = onValidationError;
@@ -167,11 +156,10 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public void Create (ReleaseToCreate release)
         {
-            if (ModelIsValid (release))
-                _repository.Create (new RepositoryRelease {
-                    Version = release.Version,
-                    Created = DateTime.Now
-                });
+            if (ModelIsValid (release)) {
+                release.Created = DateTime.Now;
+                _repository.Create (release);
+            }
         }
 
         bool ModelIsValid(ReleaseToCreate release){
