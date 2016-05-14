@@ -65,11 +65,12 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 _releaseCreated = true;
             }
 
-            [Test]
-            public void THEN_the_release_is_not_created()
+            [TestCase("")]
+            [TestCase("1.")]
+            public void THEN_the_release_is_not_created(string version)
             {
                 new ReleseCreationService(this).Create (new ReleseCreationService.ReleaseToCreate {
-                    Version = ""
+                    Version = version
                 });
                 Assert.False (_releaseCreated);
             }
