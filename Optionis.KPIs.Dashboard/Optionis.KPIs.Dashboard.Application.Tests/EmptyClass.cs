@@ -16,11 +16,26 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.True (releaseCreated);
             }
         }
+
+        public class WHEN_the_creation_model_is_null
+        {
+            [Test]
+            public void THEN_the_release_is_not_created()
+            {
+                bool releaseCreated = false;
+                new ReleseCreationService().Create(() => releaseCreated = true);
+                Assert.True (releaseCreated);
+            }
+        }
     }
 
     public class ReleseCreationService
     {
-        public void Create (Action onReleaseCreated)
+        public class ReleaseToCreate
+        {
+        }
+
+        public void Create (ReleaseToCreate release, Action onReleaseCreated)
         {
             onReleaseCreated ();
         }
