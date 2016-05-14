@@ -154,7 +154,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             None = 0,
             ObjectNotSet = 1,
             InvalidVersion = 2,
-            TitleNotSet = 3
+            TitleNotSet = 3,
+            ApplicationNotSet = 4
         }
 
         public class ReleaseToCreate
@@ -162,6 +163,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public DateTime Created{ get; set; }
             public string Version{ get; set; }
             public string Title{ get; set; }
+            public string Application{ get; set; }
         }
 
         public interface ICreateReleases
