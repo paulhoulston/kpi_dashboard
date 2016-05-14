@@ -53,6 +53,31 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.False (_releaseCreated);
             }
         }
+
+        public class WHEN_the_creation_model_has_an_invalid_version :  ReleseCreationService.ICreateReleases
+        {
+            bool _releaseCreated;
+
+            public void Create (ReleseCreationService.IAmARelease model)
+            {
+                _releaseCreated = true;
+            }
+
+            [Test]
+            public void THEN_the_release_is_not_created()
+            {
+                new ReleseCreationService(this).Create (new ReleseCreationService.ReleaseToCreate {
+                    Version = ""
+                });
+                Assert.False (_releaseCreated);
+            }
+
+            [Test, Ignore]
+            public void AND_an_appropriate_error_message_is_returned()
+            {
+                
+            }
+        }
     }
 
     public class ReleseCreationService
