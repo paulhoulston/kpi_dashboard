@@ -32,7 +32,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             readonly DateTime _startTime = DateTime.Now;
             readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate{
                 Version = "2.16.69.0",
-                Title = "Test release"
+                Title = "Test release",
+                Application = "Test application"
             });
 
             [Test]
@@ -81,7 +82,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 Assert.False (new TestRunner (new ReleseCreationService.ReleaseToCreate {
                     Version = version,
-                    Title = "Test release"
+                    Title = "Test release",
+                    Application = "Test application"
                 }).ReleaseCreated);
             }
 
@@ -96,16 +98,18 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.AreEqual (ReleseCreationService.ValidationError.InvalidVersion, 
                     new TestRunner (new ReleseCreationService.ReleaseToCreate {
                         Version = version,
-                        Title = "Test release"
+                        Title = "Test release",
+                        Application = "Test application"
                     }).ValidationError);
             }
         }
 
         public class WHEN_the_creation_model_does_not_have_a_title_set
         {
-            readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate {
+            readonly TestRunner _testRunner = new TestRunner (new ReleseCreationService.ReleaseToCreate {
                 Version = "1.0.0.*",
-                Title = string.Empty
+                Title = string.Empty,
+                Application = "Test application"
             });
 
             [Test]
@@ -201,7 +205,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 return new Dictionary<ValidationError, Func<ReleaseToCreate, bool>> {
                     { ValidationError.ObjectNotSet, ReleaseIsNull },
                     { ValidationError.TitleNotSet, TitleNotSet },
-                    { ValidationError.InvalidVersion, IsInvalidVersion }
+                    { ValidationError.ApplicationNotSet, ApplicationNotSet },
+                    { ValidationError.InvalidVersion, InvalidVersion },
                 };
             }
         }
@@ -216,7 +221,12 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             return string.IsNullOrEmpty (release.Title);
         }
 
-        static bool IsInvalidVersion(ReleaseToCreate release)
+        static bool ApplicationNotSet(ReleaseToCreate release)
+        {
+            return string.IsNullOrEmpty (release.Application);
+        }
+
+        static bool InvalidVersion(ReleaseToCreate release)
         {
             const string regex = @"^\d+[.]\d+[.]\d+[.](\d+|\*)$";
             return !new Regex (regex).IsMatch (release.Version);
