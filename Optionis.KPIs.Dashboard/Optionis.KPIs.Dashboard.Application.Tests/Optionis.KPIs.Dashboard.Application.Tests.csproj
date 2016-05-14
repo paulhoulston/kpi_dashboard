@@ -30,7 +30,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\xunit.core.2.1.0\build\portable-net45+win8+wp8+wpa81\xunit.core.props" Condition="Exists('..\packages\xunit.core.2.1.0\build\portable-net45+win8+wp8+wpa81\xunit.core.props')" />
   <ItemGroup>
-    <Compile Include="EmptyClass.cs" />
+    <Compile Include="CreateReleaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
