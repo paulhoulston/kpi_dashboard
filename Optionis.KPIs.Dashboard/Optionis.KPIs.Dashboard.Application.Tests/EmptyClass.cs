@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
 {
@@ -11,7 +12,16 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void THEN_the_release_is_created()
             {
                 bool releaseCreated = false;
+                new ReleseCreationService().Create(() => releaseCreated = true);
                 Assert.True (releaseCreated);
+            }
+
+            public class ReleseCreationService
+            {
+                public void Create (Action onReleaseCreated)
+                {
+                    onReleaseCreated ();
+                }
             }
         }
     }
