@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
 {
@@ -11,7 +12,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             public bool ReleaseCreated { get; private set;}
             public DateTime CreatedDate{ get;private set;}
-            public ReleseCreationService.ValidationError? ValidationError { get; private set; }
+            public ReleseCreationService.ValidationError ValidationError { get; private set; }
 
             public void Create (ReleseCreationService.IAmARelease model)
             {
@@ -46,17 +47,25 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             [Test]
             public void AND_no_validation_message_is_returned(){
-                Assert.IsNull (_testRunner.ValidationError);
+                Assert.AreEqual (ReleseCreationService.ValidationError.None, _testRunner.ValidationError);
             }
         }
 
         public class WHEN_the_creation_model_is_null
         {
+            readonly TestRunner _testRunner = new TestRunner(null);
+
             [Test]
             public void THEN_the_release_is_not_created()
             {
-                Assert.False (new TestRunner(null).ReleaseCreated);
+                Assert.False (_testRunner.ReleaseCreated);
             }
+
+            [Test]
+            public void AND_a_validation_message_is_returned(){
+                Assert.AreEqual (ReleseCreationService.ValidationError.ObjectNotSet, _testRunner.ValidationError);
+            }
+
         }
 
         public class WHEN_the_creation_model_has_an_invalid_version
@@ -94,9 +103,13 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
     {
         readonly ICreateReleases _repository;
         readonly Action<ValidationError> _onValidationError;
+
+        [DefaultValue(None)]
         public enum ValidationError
         {
-            InvalidVersion = 0
+            None = 0,
+            ObjectNotSet = 1,
+            InvalidVersion = 2
         }
 
         public class ReleaseToCreate
