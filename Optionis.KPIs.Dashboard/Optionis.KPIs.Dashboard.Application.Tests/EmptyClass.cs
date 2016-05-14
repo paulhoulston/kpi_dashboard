@@ -15,6 +15,12 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 new ReleseCreationService(() => releaseCreated = false, () => releaseCreated = true).Create(new ReleseCreationService.ReleaseToCreate());
                 Assert.True (releaseCreated.Value);
             }
+
+            [Test]
+            public void AND_the_creation_date_is_set_to_now()
+            {
+                Assert.IsTrue (_createdModel.Created >= DateTime.Now);
+            }
         }
 
         public class WHEN_the_creation_model_is_null
