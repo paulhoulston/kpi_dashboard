@@ -68,6 +68,10 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             [TestCase("")]
             [TestCase("1.")]
+            [TestCase("1.2")]
+            [TestCase("1.2.3")]
+            [TestCase("1.2.3.a")]
+            [TestCase("RGERsdfG")]
             public void THEN_the_release_is_not_created(string version)
             {
                 new ReleseCreationService(this).Create (new ReleseCreationService.ReleaseToCreate {
