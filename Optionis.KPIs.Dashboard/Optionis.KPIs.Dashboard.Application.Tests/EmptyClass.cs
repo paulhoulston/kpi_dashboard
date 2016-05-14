@@ -12,7 +12,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             DateTime _createdDate;
             readonly DateTime _startTime;
 
-            public void Create (ReleseCreationService.ReleaseToCreate model)
+            public void Create (ReleseCreationService.IAmARelease model)
             {
                 _releaseCreated = true;
                 _createdDate = model.Created;
@@ -41,7 +41,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             bool _releaseCreated;
 
-            public void Create (ReleseCreationService.ReleaseToCreate model)
+            public void Create (ReleseCreationService.IAmARelease model)
             {
                 _releaseCreated = true;
             }
@@ -61,14 +61,22 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public class ReleaseToCreate
         {
-            public DateTime Created{ get; set; }
         }
 
         public interface ICreateReleases
         {
-            void Create (ReleaseToCreate model);
+            void Create (IAmARelease model);
         }
 
+        public interface IAmARelease
+        {
+            DateTime Created{ get; set; }
+        }
+
+        class RepositoryRelease : IAmARelease
+        {
+            public DateTime Created {get;set;}
+        }
         public ReleseCreationService (ICreateReleases repository)
         {
             _repository = repository;
@@ -79,8 +87,9 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             if (release == null)
                 return;
             
-            release.Created = DateTime.Now;
-            _repository.Create (release);
+            _repository.Create (new RepositoryRelease {
+                Created = DateTime.Now
+            });
         }
     }
 }
