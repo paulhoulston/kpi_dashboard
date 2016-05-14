@@ -10,6 +10,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             bool? _releaseCreated = null;
             DateTime _createdDate;
+            readonly DateTime _startTime;
 
             public void Create (ReleseCreationService.ReleaseToCreate model)
             {
@@ -18,6 +19,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             public WHEN_I_do_supply_a_valid_model ()
             {
+                _startTime = DateTime.Now;
                 new ReleseCreationService(this, () => _releaseCreated = false, () => _releaseCreated = true).Create(new ReleseCreationService.ReleaseToCreate());
             }
 
@@ -30,7 +32,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             [Test]
             public void AND_the_creation_date_is_set_to_now()
             {
-                Assert.IsTrue (_createdDate >= DateTime.Now);
+                Assert.IsTrue (_createdDate >= _startTime);
             }
         }
 
@@ -59,7 +61,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public class ReleaseToCreate
         {
-            public DateTime Created{ get; private set; }
+            public DateTime Created{ get; set; }
         }
 
         public interface ICreateReleases
@@ -79,6 +81,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             if (release == null)
                 _onReleaseNotCreated ();
             else {
+                release.Created = DateTime.Now;
                 _onReleaseCreated ();
                 _repository.Create (release);
             }
