@@ -2,6 +2,7 @@
 using System;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
 {
@@ -166,17 +167,37 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public void Create (ReleaseToCreate release)
         {
-            if (release == null)
-                _onValidationError (ValidationError.ObjectNotSet);
-            else if (IsInvalidVersion (release.Version))
-                _onValidationError (ValidationError.InvalidVersion);
-            else if (TitleNotSet (release))
-                _onValidationError (ValidationError.TitleNotSet);
-            else
+            if (ModelIsValid (release))
                 _repository.Create (new RepositoryRelease {
                     Version = release.Version,
                     Created = DateTime.Now
                 });
+        }
+
+        bool ModelIsValid(ReleaseToCreate release){
+            foreach (var validationMethod in ValidationMethods) {
+                if (validationMethod.Value (release)) {
+                    _onValidationError (validationMethod.Key);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        static IDictionary<ValidationError, Func<ReleaseToCreate, bool>> ValidationMethods
+        {
+            get{
+                return new Dictionary<ValidationError, Func<ReleaseToCreate, bool>> {
+                    { ValidationError.ObjectNotSet, ReleaseIsNull },
+                    { ValidationError.TitleNotSet, TitleNotSet },
+                    { ValidationError.InvalidVersion, IsInvalidVersion }
+                };
+            }
+        }
+
+        static bool ReleaseIsNull (ReleaseToCreate release)
+        {
+            return release == null;
         }
 
         static bool TitleNotSet(ReleaseToCreate release)
@@ -184,12 +205,10 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             return string.IsNullOrEmpty (release.Title);
         }
 
-        static bool IsInvalidVersion(string version)
+        static bool IsInvalidVersion(ReleaseToCreate release)
         {
             const string regex = @"^\d+[.]\d+[.]\d+[.](\d+|\*)$";
-            var isMatch = new Regex (regex).IsMatch (version);
-            return !isMatch;
+            return !new Regex (regex).IsMatch (release.Version);
         }
     }
 }
-
