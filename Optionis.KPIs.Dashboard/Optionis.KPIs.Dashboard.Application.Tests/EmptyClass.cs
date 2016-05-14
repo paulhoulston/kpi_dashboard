@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
 {
@@ -22,7 +23,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 _startTime = DateTime.Now;
                 new ReleseCreationService(this).Create(new ReleseCreationService.ReleaseToCreate{
-                    Version = "1.2.*"
+                    Version = "2.16.69.0"
                 });
             }
 
@@ -117,7 +118,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         public void Create (ReleaseToCreate release)
         {
             if (release == null ||
-                string.IsNullOrEmpty (release.Version))
+                IsInvalidVersion(release.Version))
                 return;
             
             
@@ -125,6 +126,13 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = release.Version,
                 Created = DateTime.Now
             });
+        }
+
+        static bool IsInvalidVersion(string version)
+        {
+            const string regex = @"^\d+[.]\d+[.]\d+[.](\d+|\*)$";
+            var isMatch = new Regex (regex).IsMatch (version);
+            return !isMatch;
         }
     }
 }
