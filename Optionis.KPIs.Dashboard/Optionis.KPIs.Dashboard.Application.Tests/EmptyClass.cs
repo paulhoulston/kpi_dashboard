@@ -142,16 +142,15 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public void Create (ReleaseToCreate release)
         {
-            if (release == null ||
-                IsInvalidVersion (release.Version)) {
-                _onValidationError (ValidationError.InvalidVersion);   
-                return;
-            }
-            
-            _repository.Create (new RepositoryRelease {
-                Version = release.Version,
-                Created = DateTime.Now
-            });
+            if (release == null)
+                _onValidationError (ValidationError.ObjectNotSet);
+            else if (IsInvalidVersion (release.Version))
+                _onValidationError (ValidationError.InvalidVersion);
+            else
+                _repository.Create (new RepositoryRelease {
+                    Version = release.Version,
+                    Created = DateTime.Now
+                });
         }
 
         static bool IsInvalidVersion(string version)
