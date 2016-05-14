@@ -120,7 +120,28 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.AreEqual (ReleseCreationService.ValidationError.TitleNotSet, _testRunner.ValidationError);
             }
         }
-    }
+
+        public class WHEN_the_creation_model_does_not_have_an_application_set
+        {
+            readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate {
+                Version = "1.0.0.*",
+                Title = "Test release",
+                Application = string.Empty
+            });
+
+            [Test]
+            public void THEN_the_release_is_not_created()
+            {
+                Assert.False (_testRunner.ReleaseCreated);
+            }
+
+            [Test]
+            public void AND_a_validation_message_is_returned()
+            {
+                Assert.AreEqual (ReleseCreationService.ValidationError.ApplicationNotSet, _testRunner.ValidationError);
+            }
+        }
+        }
 
     public class ReleseCreationService
     {
