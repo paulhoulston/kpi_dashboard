@@ -15,15 +15,16 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 new ReleseCreationService().Create(() => releaseCreated = true);
                 Assert.True (releaseCreated);
             }
-
-            public class ReleseCreationService
-            {
-                public void Create (Action onReleaseCreated)
-                {
-                    onReleaseCreated ();
-                }
-            }
         }
     }
+
+    public class ReleseCreationService
+    {
+        public void Create (Action onReleaseCreated)
+        {
+            onReleaseCreated ();
+        }
+    }
+
 }
 
