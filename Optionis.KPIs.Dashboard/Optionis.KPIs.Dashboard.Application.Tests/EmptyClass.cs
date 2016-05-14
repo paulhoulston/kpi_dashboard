@@ -12,7 +12,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void THEN_the_release_is_created()
             {
                 bool releaseCreated = false;
-                new ReleseCreationService().Create(() => releaseCreated = true);
+                new ReleseCreationService().Create(new ReleseCreationService.ReleaseToCreate(), () => releaseCreated = true);
                 Assert.True (releaseCreated);
             }
         }
@@ -23,8 +23,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void THEN_the_release_is_not_created()
             {
                 bool releaseCreated = false;
-                new ReleseCreationService().Create(() => releaseCreated = true);
-                Assert.True (releaseCreated);
+                new ReleseCreationService().Create(null, () => releaseCreated = true);
+                Assert.False (releaseCreated);
             }
         }
     }
@@ -37,7 +37,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public void Create (ReleaseToCreate release, Action onReleaseCreated)
         {
-            onReleaseCreated ();
+            if (release != null)
+                onReleaseCreated ();
         }
     }
 
