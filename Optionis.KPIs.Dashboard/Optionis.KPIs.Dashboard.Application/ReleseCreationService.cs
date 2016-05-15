@@ -11,7 +11,7 @@ namespace Optionis.KPIs.Dashboard.Application
         readonly ICreateReleases _repository;
         readonly ICheckUsersExist _userRepository;
         readonly Action<ValidationError> _onValidationError;
-        readonly Action _onReleaseCreated;
+        readonly Action<int> _onReleaseCreated;
 
         [DefaultValue(None)]
         public enum ValidationError
@@ -46,7 +46,7 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public interface ICreateReleases
         {
-            void Create (ReleaseToCreate model);
+            void Create (ReleaseToCreate model, Action<int> onReleaseCreated);
         }
 
         public interface ICheckUsersExist
@@ -63,7 +63,7 @@ namespace Optionis.KPIs.Dashboard.Application
             ICreateReleases repository,
             ICheckUsersExist userRepository,
             Action<ValidationError> onValidationError,
-            Action onReleaseCreated)
+            Action<int> onReleaseCreated)
         {
             _onReleaseCreated = onReleaseCreated;
             _onValidationError = onValidationError;
@@ -78,8 +78,7 @@ namespace Optionis.KPIs.Dashboard.Application
 
         void CreateRelease(ReleaseToCreate release)
         {
-            _repository.Create (release);
-            _onReleaseCreated ();
+            _repository.Create (release, _onReleaseCreated);
         }
 
         void ModelIsValid(ReleaseToCreate release, Action<ValidationError> onInvalid, Action<ReleaseToCreate> onValid)

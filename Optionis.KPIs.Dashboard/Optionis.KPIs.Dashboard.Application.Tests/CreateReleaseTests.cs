@@ -12,8 +12,9 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public DateTime CreatedDate{ get;private set;}
             public ReleseCreationService.ValidationError ValidationError { get; private set; }
 
-            public void Create (ReleseCreationService.ReleaseToCreate model)
+            public void Create (ReleseCreationService.ReleaseToCreate model, Action<int> onReleaseCreated)
             {
+                onReleaseCreated (-1);
             }
 
             public void UserExists (Action onUserNotExist, Action onUserExist)
@@ -31,7 +32,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     this,
                     this,
                     error => ValidationError = error,
-                    () => ReleaseCreated = true).Create(release);
+                    _ => ReleaseCreated = true).Create(release);
             }
         }
 
