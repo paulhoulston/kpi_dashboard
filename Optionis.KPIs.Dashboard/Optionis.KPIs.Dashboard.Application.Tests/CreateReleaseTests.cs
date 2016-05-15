@@ -81,39 +81,33 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
         }
 
+        [TestFixture("")]
+        [TestFixture("1.")]
+        [TestFixture("1.2")]
+        [TestFixture("1.2.3")]
+        [TestFixture("1.2.3.a")]
+        [TestFixture("RGERsdfG")]
         public class WHEN_the_creation_model_has_an_invalid_version
         {
-            [TestCase("")]
-            [TestCase("1.")]
-            [TestCase("1.2")]
-            [TestCase("1.2.3")]
-            [TestCase("1.2.3.a")]
-            [TestCase("RGERsdfG")]
-            public void THEN_the_release_is_not_created(string version)
+            readonly TestRunner _testRunner;
+
+            public WHEN_the_creation_model_has_an_invalid_version (string version)
             {
-                Assert.False (new TestRunner (new ReleseCreationService.ReleaseToCreate {
+                _testRunner = new TestRunner (new ReleseCreationService.ReleaseToCreate {
                     Version = version,
                     Title = "Test release",
                     Application = "Test application",
                     CreatedBy = 1
-                }).ReleaseCreated);
+                });
+            }
+            public void THEN_the_release_is_not_created()
+            {
+                Assert.False (_testRunner.ReleaseCreated);
             }
 
-            [TestCase("")]
-            [TestCase("1.")]
-            [TestCase("1.2")]
-            [TestCase("1.2.3")]
-            [TestCase("1.2.3.a")]
-            [TestCase("RGERsdfG")]
-            public void AND_a_validation_message_is_returned(string version)
+            public void AND_a_validation_message_is_returned()
             {
-                Assert.AreEqual (ReleseCreationService.ValidationError.InvalidVersion, 
-                    new TestRunner (new ReleseCreationService.ReleaseToCreate {
-                        Version = version,
-                        Title = "Test release",
-                        Application = "Test application",
-                        CreatedBy = 1
-                    }).ValidationError);
+                Assert.AreEqual (ReleseCreationService.ValidationError.InvalidVersion, _testRunner.ValidationError);
             }
         }
 
