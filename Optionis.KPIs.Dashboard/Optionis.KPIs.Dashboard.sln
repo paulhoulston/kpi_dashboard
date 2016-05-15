@@ -7,12 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optionis.KPIs.Dashboard.Rea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optionis.KPIs.Dashboard.Application.Tests", "Optionis.KPIs.Dashboard.Application.Tests\Optionis.KPIs.Dashboard.Application.Tests.csproj", "{E2488FB4-4329-470B-9440-C5620CADF348}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optionis.KPIs.Dashboard.Application", "Optionis.KPIs.Dashboard.Application\Optionis.KPIs.Dashboard.Application.csproj", "{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E5C7D96-E433-4F71-AB1D-198D4113457F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E5C7D96-E433-4F71-AB1D-198D4113457F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E5C7D96-E433-4F71-AB1D-198D4113457F}.Release|Any CPU.ActiveCfg = Release|Any CPU

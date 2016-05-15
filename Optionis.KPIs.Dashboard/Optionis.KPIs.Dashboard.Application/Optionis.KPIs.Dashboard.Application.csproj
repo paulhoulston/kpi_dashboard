@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E2488FB4-4329-470B-9440-C5620CADF348}</ProjectGuid>
+    <ProjectGuid>{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Optionis.KPIs.Dashboard.Application.Tests</RootNamespace>
-    <AssemblyName>Optionis.KPIs.Dashboard.Application.Tests</AssemblyName>
+    <RootNamespace>Optionis.KPIs.Dashboard.Application</RootNamespace>
+    <AssemblyName>Optionis.KPIs.Dashboard.Application</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -27,23 +27,12 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="CreateReleaseTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="MyClass.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Optionis.KPIs.Dashboard.Application\Optionis.KPIs.Dashboard.Application.csproj">
-      <Project>{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}</Project>
-      <Name>Optionis.KPIs.Dashboard.Application</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
