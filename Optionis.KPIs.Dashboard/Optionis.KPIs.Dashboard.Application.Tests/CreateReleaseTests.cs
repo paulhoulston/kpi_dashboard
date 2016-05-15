@@ -40,7 +40,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate{
                 Version = "2.16.69.0",
                 Title = "Test release",
-                Application = "Test application"
+                Application = "Test application",
+                CreatedBy = 1
             });
 
             [Test]
@@ -90,7 +91,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.False (new TestRunner (new ReleseCreationService.ReleaseToCreate {
                     Version = version,
                     Title = "Test release",
-                    Application = "Test application"
+                    Application = "Test application",
+                    CreatedBy = 1
                 }).ReleaseCreated);
             }
 
@@ -106,7 +108,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     new TestRunner (new ReleseCreationService.ReleaseToCreate {
                         Version = version,
                         Title = "Test release",
-                        Application = "Test application"
+                        Application = "Test application",
+                        CreatedBy = 1
                     }).ValidationError);
             }
         }
@@ -116,7 +119,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             readonly TestRunner _testRunner = new TestRunner (new ReleseCreationService.ReleaseToCreate {
                 Version = "1.0.0.*",
                 Title = string.Empty,
-                Application = "Test application"
+                Application = "Test application",
+                Created = 1
             });
 
             [Test]
@@ -137,7 +141,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate {
                 Version = "1.0.0.*",
                 Title = "Test release",
-                Application = string.Empty
+                Application = string.Empty,
+                CreatedBy = 1
             });
 
             [Test]
@@ -174,5 +179,32 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.AreEqual (ReleseCreationService.ValidationError.UserNotFound, _testRunner.ValidationError);
             }
         }
+
+        public class WHEN_the_creation_model_has_associated_issues_and_the_issues_do_not_have_ids
+        {
+            readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate {
+                Version = "1.0.0.*",
+                Title = "Test release",
+                Application = "Test application",
+                CreatedBy = 1,
+                Issues = new []
+                {
+                    new ReleseCreationService.Issue()
+                }
+            }, false);
+
+            [Test]
+            public void THEN_the_release_is_not_created()
+            {
+                Assert.False (_testRunner.ReleaseCreated);
+            }
+
+            [Test]
+            public void AND_a_validation_message_is_returned()
+            {
+                Assert.AreEqual (ReleseCreationService.ValidationError.InvalidIssue, _testRunner.ValidationError);
+            }
+        }
+
     }
 }

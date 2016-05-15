@@ -8,6 +8,7 @@
         public string Application{ get; set; }
         public string Version{ get; set; }
         public Issue[] Issues{get;set;}
+        public string ChangeSets{ get; set; }
     }
 }
 
