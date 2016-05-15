@@ -4,6 +4,7 @@ using Optionis.KPIs.Dashboard.Core;
 using System.Net.Http;
 using System.Net;
 using System;
+using Optionis.KPIs.Dashboard.Application;
 
 namespace Optionis.KPIs.Dashboard
 {
@@ -47,6 +48,8 @@ namespace Optionis.KPIs.Dashboard
 
         public HttpResponseMessage Post(ReleaseToCreate releaseToCreate)
         {
+            var svc = new ReleseCreationService (null, null, null, null);
+
             var id = 1;
             return Request.CreateResponse (HttpStatusCode.Created, new {
                 self = string.Format ("releases/{0}", id)

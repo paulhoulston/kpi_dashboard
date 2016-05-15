@@ -11,6 +11,7 @@ namespace Optionis.KPIs.Dashboard.Application
         readonly ICreateReleases _repository;
         readonly ICheckUsersExist _userRepository;
         readonly Action<ValidationError> _onValidationError;
+        readonly Action _onReleaseCreated;
 
         [DefaultValue(None)]
         public enum ValidationError
@@ -61,8 +62,10 @@ namespace Optionis.KPIs.Dashboard.Application
         public ReleseCreationService (
             ICreateReleases repository,
             ICheckUsersExist userRepository,
-            Action<ValidationError> onValidationError)
+            Action<ValidationError> onValidationError,
+            Action onReleaseCreated)
         {
+            _onReleaseCreated = onReleaseCreated;
             _onValidationError = onValidationError;
             _repository = repository;
             _userRepository = userRepository;
@@ -70,21 +73,24 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public void Create (ReleaseToCreate release)
         {
-            if (ModelIsValid (release)) {
-                release.Created = DateTime.Now;
-                _repository.Create (release);
-            }
+            ModelIsValid (release, _onValidationError, CreateRelease);
         }
 
-        bool ModelIsValid(ReleaseToCreate release)
+        void CreateRelease(ReleaseToCreate release)
+        {
+            _repository.Create (release);
+            _onReleaseCreated ();
+        }
+
+        void ModelIsValid(ReleaseToCreate release, Action<ValidationError> onInvalid, Action<ReleaseToCreate> onValid)
         {
             foreach (var validationMethod in Validators) {
                 if (!validationMethod.Value.IsValid (release)) {
-                    _onValidationError (validationMethod.Key);
-                    return false;
+                    onInvalid (validationMethod.Key);
+                    return;
                 }
             }
-            return true;
+            onValid (release);
         }
 
         IDictionary<ValidationError, ReleseCreationService.IValidateReleasesToCreate> Validators

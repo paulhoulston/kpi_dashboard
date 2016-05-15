@@ -14,8 +14,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             public void Create (ReleseCreationService.ReleaseToCreate model)
             {
-                ReleaseCreated = true;
-                CreatedDate = model.Created;
             }
 
             public void UserExists (Action onUserNotExist, Action onUserExist)
@@ -29,13 +27,16 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public TestRunner (ReleseCreationService.ReleaseToCreate release, bool userExists = true)
             {
                 _userExists = userExists;
-                new ReleseCreationService(this, this, error => ValidationError = error).Create(release);
+                new ReleseCreationService(
+                    this,
+                    this,
+                    error => ValidationError = error,
+                    () => ReleaseCreated = true).Create(release);
             }
         }
 
         public class WHEN_I_do_supply_a_valid_model
         {
-            readonly DateTime _startTime = DateTime.Now;
             readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate{
                 Version = "2.16.69.0",
                 Title = "Test release",
@@ -52,13 +53,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 Assert.True (_testRunner.ReleaseCreated);
             }
-
-            [Test]
-            public void AND_the_creation_date_is_set_to_now()
-            {
-                Assert.IsTrue (_testRunner.CreatedDate >= _startTime);
-            }
-
+                
             [Test]
             public void AND_no_validation_message_is_returned(){
                 Assert.AreEqual (ReleseCreationService.ValidationError.None, _testRunner.ValidationError);

@@ -91,5 +91,9 @@
       <Project>{5E5C7D96-E433-4F71-AB1D-198D4113457F}</Project>
       <Name>Optionis.KPIs.Dashboard.ReadCache</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Optionis.KPIs.Dashboard.Application\Optionis.KPIs.Dashboard.Application.csproj">
+      <Project>{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}</Project>
+      <Name>Optionis.KPIs.Dashboard.Application</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
