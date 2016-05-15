@@ -9,8 +9,9 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
     [TestFixture]
     public class GIVEN_I_want_to_create_a_release
     {
-        class TestRunner : ReleseCreationService.ICreateReleases
+        class TestRunner : ReleseCreationService.ICreateReleases, ReleseCreationService.ICheckUsersExist
         {
+            readonly bool _userExists;
             public bool ReleaseCreated { get; private set;}
             public DateTime CreatedDate{ get;private set;}
             public ReleseCreationService.ValidationError ValidationError { get; private set; }
@@ -21,9 +22,18 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 CreatedDate = model.Created;
             }
 
-            public TestRunner (ReleseCreationService.ReleaseToCreate release)
+            public void UserExists (Action onUserNotExist, Action onUserExist)
             {
-                new ReleseCreationService(this, error => ValidationError = error).Create(release);
+                if (_userExists)
+                    onUserExist ();
+                else
+                    onUserNotExist ();
+            }
+
+            public TestRunner (ReleseCreationService.ReleaseToCreate release, bool userExists = true)
+            {
+                _userExists = userExists;
+                new ReleseCreationService(this, this, error => ValidationError = error).Create(release);
             }
         }
 
@@ -153,7 +163,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Title = "Test release",
                 Application = "Test application",
                 CreatedBy = -1
-            });
+            }, false);
 
             [Test]
             public void THEN_the_release_is_not_created()
@@ -167,16 +177,19 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.AreEqual (ReleseCreationService.ValidationError.UserNotFound, _testRunner.ValidationError);
             }
         }
-        }
+    }
 
     public class ReleseCreationService
     {
         readonly ICreateReleases _repository;
+        readonly ICheckUsersExist _userRepository;
         readonly Action<ValidationError> _onValidationError;
 
         [DefaultValue(None)]
         public enum ValidationError
         {
+            UserNotFound,
+
             None = 0,
             ObjectNotSet = 1,
             InvalidVersion = 2,
@@ -187,6 +200,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         public class ReleaseToCreate
         {
             public DateTime Created{ get; set; }
+            public int CreatedBy{ get; set; }
             public string Version{ get; set; }
             public string Title{ get; set; }
             public string Application{ get; set; }
@@ -196,11 +210,20 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             void Create (ReleaseToCreate model);
         }
+
+        public interface ICheckUsersExist
+        {
+            void UserExists (Action onUserNotExist, Action onUserExist);
+        }
             
-        public ReleseCreationService (ICreateReleases repository, Action<ValidationError> onValidationError)
+        public ReleseCreationService (
+            ICreateReleases repository,
+            ICheckUsersExist userRepository,
+            Action<ValidationError> onValidationError)
         {
             _onValidationError = onValidationError;
             _repository = repository;
+            _userRepository = userRepository;
         }
 
         public void Create (ReleaseToCreate release)
@@ -221,7 +244,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             return true;
         }
 
-        static IDictionary<ValidationError, Func<ReleaseToCreate, bool>> ValidationMethods
+        IDictionary<ValidationError, Func<ReleaseToCreate, bool>> ValidationMethods
         {
             get{
                 return new Dictionary<ValidationError, Func<ReleaseToCreate, bool>> {
@@ -229,6 +252,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     { ValidationError.TitleNotSet, TitleNotSet },
                     { ValidationError.ApplicationNotSet, ApplicationNotSet },
                     { ValidationError.InvalidVersion, InvalidVersion },
+                    { ValidationError.UserNotFound, CreatedByUserNotFound }
                 };
             }
         }
@@ -252,6 +276,13 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             const string regex = @"^\d+[.]\d+[.]\d+[.](\d+|\*)$";
             return !new Regex (regex).IsMatch (release.Version);
+        }
+
+        bool CreatedByUserNotFound(ReleaseToCreate release)
+        {
+            var userExists = false;
+            _userRepository.UserExists (() => userExists = false, () => userExists = true);
+            return !userExists;
         }
     }
 }
