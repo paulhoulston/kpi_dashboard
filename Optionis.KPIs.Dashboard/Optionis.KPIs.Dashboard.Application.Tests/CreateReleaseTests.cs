@@ -46,7 +46,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Issues = new []
                 {
                     new ReleseCreationService.Issue { Id = "1", Title = "An Issue", Link="http://test.com/" }
-                }
+                },
+                DeploymentDate = DateTime.Today.AddDays(-3)
             });
 
             [Test]
@@ -93,7 +94,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     Version = version,
                     Title = "Test release",
                     Application = "Test application",
-                    CreatedBy = 1
+                    CreatedBy = 1,
+                    DeploymentDate = DateTime.Today.AddDays(-3)
                 });
             }
 
@@ -116,7 +118,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "1.0.0.*",
                 Title = string.Empty,
                 Application = "Test application",
-                CreatedBy = 1
+                CreatedBy = 1,
+                DeploymentDate = DateTime.Today.AddDays(-3)
             });
 
             [Test]
@@ -138,7 +141,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "1.0.0.*",
                 Title = "Test release",
                 Application = string.Empty,
-                CreatedBy = 1
+                CreatedBy = 1,
+                DeploymentDate = DateTime.Today.AddDays(-3)
             });
 
             [Test]
@@ -160,7 +164,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "1.0.0.*",
                 Title = "Test release",
                 Application = "Test application",
-                CreatedBy = -1
+                CreatedBy = -1,
+                DeploymentDate = DateTime.Today.AddDays(-3)
             }, false);
 
             [Test]
@@ -186,7 +191,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Issues = new []
                 {
                     new ReleseCreationService.Issue()
-                }
+                },
+                DeploymentDate = DateTime.Today.AddDays(-3)
             });
 
             [Test]
@@ -222,7 +228,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     {
                         new ReleseCreationService.Issue { Id = "1", Title = "An Issue", Link="http://test.com/" }
                     },
-                    Comments = comments
+                    Comments = comments,
+                    DeploymentDate = DateTime.Today.AddDays(-3)
                 });
             }
 
@@ -241,5 +248,33 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     Assert.AreEqual (ReleseCreationService.ValidationError.InvalidComments, _testRunner.ValidationError);
             }
         }
+
+        public class WHEN_the_creation_model_has_a_deployment_date_older_than_30_days
+        {
+            readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate {
+                Version = "1.0.0.*",
+                Title = "Test release",
+                Application = "Test application",
+                CreatedBy = 1,
+                Issues = new []
+                {
+                    new ReleseCreationService.Issue { Id = "1", Link = "http://test.com", Title = "Test Issue" }
+                },
+                DeploymentDate = DateTime.Today.AddDays(-30).AddMilliseconds(-1)
+            });
+
+            [Test]
+            public void THEN_the_release_is_not_created()
+            {
+                Assert.False (_testRunner.ReleaseCreated);
+            }
+
+            [Test]
+            public void AND_a_validation_message_is_returned()
+            {
+                Assert.AreEqual (ReleseCreationService.ValidationError.InvalidDeploymentDate, _testRunner.ValidationError);
+            }
+        }
+
     }
 }

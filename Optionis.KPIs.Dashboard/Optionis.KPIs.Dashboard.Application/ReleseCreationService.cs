@@ -23,7 +23,8 @@ namespace Optionis.KPIs.Dashboard.Application
             ApplicationNotSet = 4,
             UserNotFound = 5,
             InvalidIssue = 6,
-            InvalidComments = 7
+            InvalidComments = 7,
+            InvalidDeploymentDate = 8
         }
 
         public class ReleaseToCreate
@@ -35,6 +36,7 @@ namespace Optionis.KPIs.Dashboard.Application
             public string Application{ get; set; }
             public Issue[] Issues{ get; set; }
             public string Comments{ get; set; }
+            public DateTime DeploymentDate { get; set; }
         }
 
         public class Issue
@@ -102,7 +104,8 @@ namespace Optionis.KPIs.Dashboard.Application
                     { ValidationError.InvalidVersion, new ValidateVersion() },
                     { ValidationError.UserNotFound, new ValidateCreationUser (_userRepository) },
                     { ValidationError.InvalidIssue, new ValidateIssues () },
-                    { ValidationError.InvalidComments, new ValidateComments() }
+                    { ValidationError.InvalidComments, new ValidateComments() },
+                    { ValidationError.InvalidDeploymentDate, new ValidateDeploymentDate() }
                 };
             }
         }
@@ -173,6 +176,14 @@ namespace Optionis.KPIs.Dashboard.Application
         public bool IsValid (ReleseCreationService.ReleaseToCreate release)
         {
             return string.IsNullOrEmpty(release.Comments) || release.Comments.Length <= 255;
+        }
+    }
+
+    class ValidateDeploymentDate : ReleseCreationService.IValidateReleasesToCreate
+    {
+        public bool IsValid (ReleseCreationService.ReleaseToCreate release)
+        {
+            return release.DeploymentDate > DateTime.Today.AddDays(-30);
         }
     }
 }
