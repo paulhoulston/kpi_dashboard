@@ -21,7 +21,8 @@ namespace Optionis.KPIs.Dashboard.Application
             TitleNotSet = 3,
             ApplicationNotSet = 4,
             UserNotFound = 5,
-            InvalidIssue = 6
+            InvalidIssue = 6,
+            InvalidComments = 7
         }
 
         public class ReleaseToCreate
@@ -32,6 +33,7 @@ namespace Optionis.KPIs.Dashboard.Application
             public string Title{ get; set; }
             public string Application{ get; set; }
             public Issue[] Issues{ get; set; }
+            public string Comments{ get; set; }
         }
 
         public class Issue
@@ -76,7 +78,7 @@ namespace Optionis.KPIs.Dashboard.Application
 
         bool ModelIsValid(ReleaseToCreate release)
         {
-            foreach (var validationMethod in ValidationMethods) {
+            foreach (var validationMethod in Validators) {
                 if (!validationMethod.Value.IsValid (release)) {
                     _onValidationError (validationMethod.Key);
                     return false;
@@ -85,7 +87,7 @@ namespace Optionis.KPIs.Dashboard.Application
             return true;
         }
 
-        IDictionary<ValidationError, ReleseCreationService.IValidateReleasesToCreate> ValidationMethods
+        IDictionary<ValidationError, ReleseCreationService.IValidateReleasesToCreate> Validators
         {
             get{
                 return new Dictionary<ValidationError, ReleseCreationService.IValidateReleasesToCreate> {
@@ -94,7 +96,8 @@ namespace Optionis.KPIs.Dashboard.Application
                     { ValidationError.ApplicationNotSet, new ValidateApplication() },
                     { ValidationError.InvalidVersion, new ValidateVersion() },
                     { ValidationError.UserNotFound, new ValidateCreationUser (_userRepository) },
-                    { ValidationError.InvalidIssue, new ValidateIssues () }
+                    { ValidationError.InvalidIssue, new ValidateIssues () },
+                    { ValidationError.InvalidComments, new ValidateComments() }
                 };
             }
         }
@@ -157,6 +160,14 @@ namespace Optionis.KPIs.Dashboard.Application
         {
             return release.Issues == null ||
                 release.Issues.All (issue => !string.IsNullOrEmpty(issue.Id));
+        }
+    }
+
+    class ValidateComments : ReleseCreationService.IValidateReleasesToCreate
+    {
+        public bool IsValid (ReleseCreationService.ReleaseToCreate release)
+        {
+            return string.IsNullOrEmpty(release.Comments) || release.Comments.Length <= 255;
         }
     }
 }

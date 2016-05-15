@@ -3,7 +3,6 @@ using System;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
 {
-    [TestFixture]
     public class GIVEN_I_want_to_create_a_release
     {
         class TestRunner : ReleseCreationService.ICreateReleases, ReleseCreationService.ICheckUsersExist
@@ -41,7 +40,11 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "2.16.69.0",
                 Title = "Test release",
                 Application = "Test application",
-                CreatedBy = 1
+                CreatedBy = 1,
+                Issues = new []
+                {
+                    new ReleseCreationService.Issue { Id = "1", Title = "An Issue", Link="http://test.com/" }
+                }
             });
 
             [Test]
@@ -206,5 +209,44 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
         }
 
+        [TestFixture(true,  "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567891234")]
+        [TestFixture(true,  "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678912345")]
+        [TestFixture(false, "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789123456")]
+        public class WHEN_the_creation_model_has_comments_exceeding_255_characters
+        {
+            readonly TestRunner _testRunner;
+            readonly bool _isValid;
+
+            public WHEN_the_creation_model_has_comments_exceeding_255_characters (bool isValid, string comments)
+            {
+                _isValid = isValid;
+                _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate {
+                    Version = "1.0.0.*",
+                    Title = "Test release",
+                    Application = "Test application",
+                    CreatedBy = 1,
+                    Issues = new []
+                    {
+                        new ReleseCreationService.Issue { Id = "1", Title = "An Issue", Link="http://test.com/" }
+                    },
+                    Comments = comments
+                });
+            }
+
+            [Test]
+            public void THEN_the_release_is_not_created()
+            {
+                Assert.AreEqual(_isValid, _testRunner.ReleaseCreated);
+            }
+
+            [Test]
+            public void AND_a_validation_message_is_returned()
+            {
+                if(_isValid)
+                    Assert.AreEqual (ReleseCreationService.ValidationError.None, _testRunner.ValidationError);
+                else
+                    Assert.AreEqual (ReleseCreationService.ValidationError.InvalidComments, _testRunner.ValidationError);
+            }
+        }
     }
 }
