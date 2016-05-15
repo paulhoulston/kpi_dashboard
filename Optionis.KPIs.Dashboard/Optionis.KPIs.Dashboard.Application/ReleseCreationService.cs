@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
@@ -14,13 +15,13 @@ namespace Optionis.KPIs.Dashboard.Application
         [DefaultValue(None)]
         public enum ValidationError
         {
-            UserNotFound,
-
             None = 0,
             ObjectNotSet = 1,
             InvalidVersion = 2,
             TitleNotSet = 3,
-            ApplicationNotSet = 4
+            ApplicationNotSet = 4,
+            UserNotFound = 5,
+            InvalidIssue = 6
         }
 
         public class ReleaseToCreate
@@ -30,6 +31,14 @@ namespace Optionis.KPIs.Dashboard.Application
             public string Version{ get; set; }
             public string Title{ get; set; }
             public string Application{ get; set; }
+            public Issue[] Issues{ get; set; }
+        }
+
+        public class Issue
+        {
+            public string Id{ get; set; }
+            public string Link{ get; set; }
+            public string Title{ get; set; }
         }
 
         public interface ICreateReleases
@@ -78,7 +87,8 @@ namespace Optionis.KPIs.Dashboard.Application
                     { ValidationError.TitleNotSet, TitleNotSet },
                     { ValidationError.ApplicationNotSet, ApplicationNotSet },
                     { ValidationError.InvalidVersion, InvalidVersion },
-                    { ValidationError.UserNotFound, CreatedByUserNotFound }
+                    { ValidationError.UserNotFound, CreatedByUserNotFound },
+                    { ValidationError.InvalidIssue, IssuesAreNotValid }
                 };
             }
         }
@@ -109,6 +119,11 @@ namespace Optionis.KPIs.Dashboard.Application
             var userExists = false;
             _userRepository.UserExists (() => userExists = false, () => userExists = true);
             return !userExists;
+        }
+
+        static bool IssuesAreNotValid(ReleaseToCreate release)
+        {
+            return release.Issues != null && release.Issues.Any (issue => string.IsNullOrEmpty(issue.Id));
         }
     }
 }

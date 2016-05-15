@@ -120,7 +120,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "1.0.0.*",
                 Title = string.Empty,
                 Application = "Test application",
-                Created = 1
+                CreatedBy = 1
             });
 
             [Test]
@@ -191,7 +191,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 {
                     new ReleseCreationService.Issue()
                 }
-            }, false);
+            });
 
             [Test]
             public void THEN_the_release_is_not_created()
