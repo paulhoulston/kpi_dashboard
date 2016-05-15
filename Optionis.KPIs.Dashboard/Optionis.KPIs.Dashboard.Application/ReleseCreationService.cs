@@ -51,6 +51,11 @@ namespace Optionis.KPIs.Dashboard.Application
             void UserExists (Action onUserNotExist, Action onUserExist);
         }
 
+        public interface IValidateReleasesToCreate
+        {
+            bool IsValid(ReleaseToCreate release);
+        }
+
         public ReleseCreationService (
             ICreateReleases repository,
             ICheckUsersExist userRepository,
@@ -69,9 +74,10 @@ namespace Optionis.KPIs.Dashboard.Application
             }
         }
 
-        bool ModelIsValid(ReleaseToCreate release){
+        bool ModelIsValid(ReleaseToCreate release)
+        {
             foreach (var validationMethod in ValidationMethods) {
-                if (validationMethod.Value (release)) {
+                if (!validationMethod.Value.IsValid (release)) {
                     _onValidationError (validationMethod.Key);
                     return false;
                 }
@@ -79,51 +85,78 @@ namespace Optionis.KPIs.Dashboard.Application
             return true;
         }
 
-        IDictionary<ValidationError, Func<ReleaseToCreate, bool>> ValidationMethods
+        IDictionary<ValidationError, ReleseCreationService.IValidateReleasesToCreate> ValidationMethods
         {
             get{
-                return new Dictionary<ValidationError, Func<ReleaseToCreate, bool>> {
-                    { ValidationError.ObjectNotSet, ReleaseIsNull },
-                    { ValidationError.TitleNotSet, TitleNotSet },
-                    { ValidationError.ApplicationNotSet, ApplicationNotSet },
-                    { ValidationError.InvalidVersion, InvalidVersion },
-                    { ValidationError.UserNotFound, CreatedByUserNotFound },
-                    { ValidationError.InvalidIssue, IssuesAreNotValid }
+                return new Dictionary<ValidationError, ReleseCreationService.IValidateReleasesToCreate> {
+                    { ValidationError.ObjectNotSet, new ValidateReleaseIsSet() },
+                    { ValidationError.TitleNotSet, new ValidateTitle () },
+                    { ValidationError.ApplicationNotSet, new ValidateApplication() },
+                    { ValidationError.InvalidVersion, new ValidateVersion() },
+                    { ValidationError.UserNotFound, new ValidateCreationUser (_userRepository) },
+                    { ValidationError.InvalidIssue, new ValidateIssues () }
                 };
             }
         }
+    }
 
-        static bool ReleaseIsNull (ReleaseToCreate release)
+    class ValidateReleaseIsSet : ReleseCreationService.IValidateReleasesToCreate
+    {
+        public bool IsValid(ReleseCreationService.ReleaseToCreate release)
         {
-            return release == null;
+            return release != null;
+        }
+    }
+
+    class ValidateApplication : ReleseCreationService.IValidateReleasesToCreate
+    {
+        public bool IsValid (ReleseCreationService.ReleaseToCreate release)
+        {
+            return !string.IsNullOrEmpty (release.Application);
+        }
+    }
+
+    class ValidateTitle : ReleseCreationService.IValidateReleasesToCreate
+    {
+        public bool IsValid (ReleseCreationService.ReleaseToCreate release)
+        {
+            return !string.IsNullOrEmpty (release.Title);
+        }
+    }
+
+    class ValidateVersion : ReleseCreationService.IValidateReleasesToCreate
+    {
+        const string VERSION_REGEX = @"^\d+[.]\d+[.]\d+[.](\d+|\*)$";
+
+        public bool IsValid(ReleseCreationService.ReleaseToCreate release)
+        {
+            return new Regex (VERSION_REGEX).IsMatch (release.Version);
+        }
+    }
+
+    class ValidateCreationUser : ReleseCreationService.IValidateReleasesToCreate
+    {
+        readonly ReleseCreationService.ICheckUsersExist _userRepository;
+
+        public ValidateCreationUser (ReleseCreationService.ICheckUsersExist userRepository)
+        {
+            _userRepository = userRepository;    
         }
 
-        static bool TitleNotSet(ReleaseToCreate release)
-        {
-            return string.IsNullOrEmpty (release.Title);
-        }
-
-        static bool ApplicationNotSet(ReleaseToCreate release)
-        {
-            return string.IsNullOrEmpty (release.Application);
-        }
-
-        static bool InvalidVersion(ReleaseToCreate release)
-        {
-            const string regex = @"^\d+[.]\d+[.]\d+[.](\d+|\*)$";
-            return !new Regex (regex).IsMatch (release.Version);
-        }
-
-        bool CreatedByUserNotFound(ReleaseToCreate release)
+        public bool IsValid (ReleseCreationService.ReleaseToCreate release)
         {
             var userExists = false;
             _userRepository.UserExists (() => userExists = false, () => userExists = true);
-            return !userExists;
+            return userExists;
         }
+    }
 
-        static bool IssuesAreNotValid(ReleaseToCreate release)
+    class ValidateIssues : ReleseCreationService.IValidateReleasesToCreate
+    {
+        public bool IsValid (ReleseCreationService.ReleaseToCreate release)
         {
-            return release.Issues != null && release.Issues.Any (issue => string.IsNullOrEmpty(issue.Id));
+            return release.Issues == null ||
+                release.Issues.All (issue => !string.IsNullOrEmpty(issue.Id));
         }
     }
 }
