@@ -73,18 +73,26 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\ReleasesController.cs" />
     <Compile Include="Adapters\ReleasesRepository.cs" />
     <Compile Include="Core\ReleasesLister.cs" />
     <Compile Include="Adapters\DeploymentStatus.cs" />
     <Compile Include="Models\ReleaseToCreate.cs" />
     <Compile Include="Models\Issue.cs" />
+    <Compile Include="Attributes\HttpVerbConstraint.cs" />
+    <Compile Include="Attributes\HttpVerbConstrainedRouteAttribute.cs" />
+    <Compile Include="Attributes\CreateReleaseAttribute.cs" />
+    <Compile Include="Controllers\CreateReleaseController.cs" />
+    <Compile Include="Attributes\GetReleaseAttribute.cs" />
+    <Compile Include="Controllers\GetReleaseController.cs" />
+    <Compile Include="Attributes\ListReleasesAttribute.cs" />
+    <Compile Include="Controllers\ListReleasesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Adapters\" />
     <Folder Include="Core\" />
     <Folder Include="Models\" />
+    <Folder Include="Attributes\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Optionis.KPIs.Dashboard.ReadCache\Optionis.KPIs.Dashboard.ReadCache.csproj">
