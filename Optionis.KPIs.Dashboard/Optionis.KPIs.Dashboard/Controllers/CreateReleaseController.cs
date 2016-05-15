@@ -1,6 +1,5 @@
 using System.Web.Http;
 using Optionis.KPIs.Adapters;
-using Optionis.KPIs.Dashboard.Core;
 using System.Net.Http;
 using System.Net;
 using System;
@@ -17,8 +16,8 @@ namespace Optionis.KPIs.Dashboard
         {
             HttpResponseMessage response = null;
             new ReleseCreationService (
-                null,
-                null,
+                new ReleasesRepository(),
+                new UserRepository(),
                 validationError => response = OnValidationError (validationError),
                 releaseId => response = OnReleaseCreated (releaseId)
             ).Create (ConvertRelease (releaseToCreate));

@@ -17,7 +17,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 onReleaseCreated (-1);
             }
 
-            public void UserExists (Action onUserNotExist, Action onUserExist)
+            public void UserExists (int userid, Action onUserNotExist, Action onUserExist)
             {
                 if (_userExists)
                     onUserExist ();

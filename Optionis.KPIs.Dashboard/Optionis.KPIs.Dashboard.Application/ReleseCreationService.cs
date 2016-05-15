@@ -53,7 +53,7 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public interface ICheckUsersExist
         {
-            void UserExists (Action onUserNotExist, Action onUserExist);
+            void UserExists (int userId, Action onUserNotExist, Action onUserExist);
         }
 
         public interface IValidateReleasesToCreate
@@ -157,7 +157,7 @@ namespace Optionis.KPIs.Dashboard.Application
         public bool IsValid (ReleseCreationService.ReleaseToCreate release)
         {
             var userExists = false;
-            _userRepository.UserExists (() => userExists = false, () => userExists = true);
+            _userRepository.UserExists (release.CreatedBy, () => userExists = false, () => userExists = true);
             return userExists;
         }
     }

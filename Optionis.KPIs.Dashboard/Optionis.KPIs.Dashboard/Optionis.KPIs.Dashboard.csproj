@@ -86,6 +86,7 @@
     <Compile Include="Controllers\GetReleaseController.cs" />
     <Compile Include="Attributes\ListReleasesAttribute.cs" />
     <Compile Include="Controllers\ListReleasesController.cs" />
+    <Compile Include="Adapters\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
