@@ -100,11 +100,14 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     CreatedBy = 1
                 });
             }
+
+            [Test]
             public void THEN_the_release_is_not_created()
             {
                 Assert.False (_testRunner.ReleaseCreated);
             }
 
+            [Test]
             public void AND_a_validation_message_is_returned()
             {
                 Assert.AreEqual (ReleseCreationService.ValidationError.InvalidVersion, _testRunner.ValidationError);
