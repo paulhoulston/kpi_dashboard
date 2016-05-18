@@ -1,20 +1,28 @@
-using System.Web.Http;
-using Optionis.KPIs.Adapters;
-using System.Net.Http;
-using System.Net;
-using System;
-using Optionis.KPIs.Dashboard.Application;
-using System.Linq;
-using Optionis.KPIs.Dashboard.Attributes;
+using Nancy;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Optionis.KPIs.Dashboard
 {
-    public class CreateReleaseController : ApiController
+    public class CreateRelease : NancyModule
     {
-        [CreateRelease]
-        public HttpResponseMessage Post(ReleaseToCreate releaseToCreate)
+        public CreateRelease ()
+        {
+            Post["/releases", runAsync: true] = async (parameters, token) => await PerformPost (parameters, token);
+        }
+
+        async Task<dynamic> PerformPost (dynamic parameters, CancellationToken token)
+        {
+            return new {
+                self = "/releases/1"
+            };
+        }
+
+        /*public dynamic Post(ReleaseToCreate releaseToCreate)
         {
             HttpResponseMessage response = null;
+            response = Request.CreateResponse (HttpStatusCode.OK, releaseToCreate);
+
             new ReleseCreationService (
                 new ReleasesRepository(),
                 new UserRepository(),
@@ -23,9 +31,10 @@ namespace Optionis.KPIs.Dashboard
             ).Create (ConvertRelease (releaseToCreate));
 
             return response;
-        }
+            return null;
+        }*/
 
-        HttpResponseMessage OnReleaseCreated (int releaseId)
+/*        HttpResponseMessage OnReleaseCreated (int releaseId)
         {
             return Request.CreateResponse (HttpStatusCode.Created, new {
                 self = string.Format ("releases/{0}", releaseId)
@@ -62,7 +71,7 @@ namespace Optionis.KPIs.Dashboard
                 Link = issue.Link,
                 Title = issue.Title
             }).ToArray ();
-        }
+        }*/
     }
     
 }

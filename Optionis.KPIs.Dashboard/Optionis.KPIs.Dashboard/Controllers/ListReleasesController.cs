@@ -1,13 +1,11 @@
-using System.Web.Http;
-using Optionis.KPIs.Dashboard.Attributes;
 using Optionis.KPIs.Dashboard.Core;
 using Optionis.KPIs.Adapters;
+using Nancy;
 
 namespace Optionis.KPIs.Dashboard
 {
-    public class ListReleasesController : ApiController
+    public class ListReleasesController : NancyModule
     {
-        [ListReleases]
         public dynamic Get()
         {
             return new

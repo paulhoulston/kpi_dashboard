@@ -1,18 +1,21 @@
-﻿using System.Web.Http;
-using System.Net.Http;
-using System.Net;
-using System;
-using Optionis.KPIs.Dashboard.Attributes;
+﻿using System;
+using Nancy;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Optionis.KPIs.Dashboard
 {
-    public class GetReleaseController : ApiController
+    public class GetRelease : NancyModule
     {
-        [GetRelease]
-        public HttpResponseMessage Get(int id)
+        public GetRelease ()
         {
-            return Request.CreateResponse (HttpStatusCode.OK, new Release{
-                Id = id,
+            Get["/releases/{id}", runAsync: true] = async (parameters, token) => await PerformGet (parameters, token);
+        }
+
+        async Task<Release> PerformGet(dynamic parameters, CancellationToken _)
+        {
+            return new Release{
+                Id = parameters.id,
                 Title = "Scheduled release for ClearSky",
                 CreatedBy = "Paul Houlston",
                 Created = DateTime.Now.AddHours(-1.4),
@@ -34,7 +37,7 @@ namespace Optionis.KPIs.Dashboard
                         Status = DeploymentStatus.Pending
                     }
                 }
-            });
+            };
         }
 
         public class Release

@@ -1,0 +1,31 @@
+﻿
+<html>
+ <head>
+     <title>KPIs</title>
+     <script type="text/javascript" src="Scripts/jquery-2.2.3.min.js"></script>
+ </head>
+ <body>
+    <p>Hello world</p>
+    <script>
+    $.ajax({
+        url: '/releases',
+        type:'POST',
+        data: JSON.stringify({
+            "title": null,
+            "createdBy": 0,
+            "comments": null,
+            "application": null,
+            "version": null,
+            "issues": null,
+            "changeSets": null
+        }),
+        success:function(d){
+            console.log(JSON.stringify(d));
+        },
+        error: function(jqXhr, status, errorMessage) {
+            $('body').html(jqXhr.responseText);
+        }
+    });
+    </script>
+ </body>
+</html>

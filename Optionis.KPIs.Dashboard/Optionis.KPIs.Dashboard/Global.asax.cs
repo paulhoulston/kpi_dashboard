@@ -1,8 +1,5 @@
 ﻿using System.Web;
-using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using System.Net.Http.Formatting;
-using System.Linq;
+using Nancy;
 
 namespace Optionis.KPIs.Dashboard
 {
@@ -10,23 +7,9 @@ namespace Optionis.KPIs.Dashboard
     {
         protected void Application_Start()
         {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-        }
-    }
-
-    public static class WebApiConfig
-    {
-        public static void Register(HttpConfiguration config)
-        {
-            config.Formatters.OfType<JsonMediaTypeFormatter>().First().SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-
-            config.MapHttpAttributeRoutes();
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+#if DEBUG
+            StaticConfiguration.DisableErrorTraces = false;
+#endif
         }
     }
 }
