@@ -9,7 +9,7 @@ namespace Optionis.KPIs.Dashboard.ReadCache.DatabaseModels
         public int Id{ get; set; }
      
         public DateTime Created{ get; set; }
-        public int CreatedBy{ get; set; }
+        public string CreatedBy{ get; set; }
         public string Title{ get; set; }
         public string Application{ get; set; }
         public string Comments{ get; set; }
@@ -38,6 +38,7 @@ namespace Optionis.KPIs.Dashboard.ReadCache.DatabaseModels
     {
         [PrimaryKey, AutoIncrement]
         public int Id{ get; set; }
+        [Unique]
         public string UserName{get;set;}
         public DateTime Created{get;set;}
     }

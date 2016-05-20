@@ -8,18 +8,21 @@ namespace Optionis.KPIs.Dashboard
 {
     public class UserRepository : ReleseCreationService.ICheckUsersExist
     {
-        public void UserExists (int userId, Action onUserNotExist, Action onUserExist)
+        public void UserExists (string userName, Action onUserNotExist, Action onUserExist)
         {
-            using (var connection = new SqliteWrapper ().Connection ()) {
-                var user = 
-                    connection
-                    .Query<User> ("SELECT * FROM User WHERE Id = @userId", new { userId})
-                        .SingleOrDefault ();
-                if (user == null)
-                    onUserNotExist ();
-                else
-                    onUserExist ();
+            if (GetUser (userName) == null)
+                onUserNotExist ();
+            else
+                onUserExist ();
+        }
+
+        static User GetUser (string userName)
+        {
+            User user;
+            using (var cnn = new SqliteWrapper ().Connection ()) {
+                user = cnn.Table<User> ().Where (usr => usr.UserName.Equals (userName)).SingleOrDefault ();
             }
+            return user;
         }
     }
 }

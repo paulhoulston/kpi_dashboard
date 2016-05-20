@@ -30,7 +30,7 @@ namespace Optionis.KPIs.Dashboard.Application
         public class ReleaseToCreate
         {
             public DateTime Created{ get; set; }
-            public int CreatedBy{ get; set; }
+            public string CreatedBy{ get; set; }
             public string Version{ get; set; }
             public string Title{ get; set; }
             public string Application{ get; set; }
@@ -53,7 +53,7 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public interface ICheckUsersExist
         {
-            void UserExists (int userId, Action onUserNotExist, Action onUserExist);
+            void UserExists (string userName, Action onUserNotExist, Action onUserExist);
         }
 
         public interface IValidateReleasesToCreate
@@ -141,7 +141,9 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public bool IsValid(ReleseCreationService.ReleaseToCreate release)
         {
-            return new Regex (VERSION_REGEX).IsMatch (release.Version);
+            return 
+                !string.IsNullOrEmpty(release.Version) &&
+                new Regex (VERSION_REGEX).IsMatch (release.Version);
         }
     }
 

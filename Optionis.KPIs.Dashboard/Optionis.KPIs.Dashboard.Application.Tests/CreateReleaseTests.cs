@@ -17,7 +17,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 onReleaseCreated (-1);
             }
 
-            public void UserExists (int userid, Action onUserNotExist, Action onUserExist)
+            public void UserExists (string userName, Action onUserNotExist, Action onUserExist)
             {
                 if (_userExists)
                     onUserExist ();
@@ -42,7 +42,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "2.16.69.0",
                 Title = "Test release",
                 Application = "Test application",
-                CreatedBy = 1,
+                CreatedBy = "Paul Houlston",
                 Issues = new []
                 {
                     new ReleseCreationService.Issue { Id = "1", Title = "An Issue", Link="http://test.com/" }
@@ -78,6 +78,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
         }
 
+        [TestFixture(null)]
         [TestFixture("")]
         [TestFixture("1.")]
         [TestFixture("1.2")]
@@ -94,7 +95,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     Version = version,
                     Title = "Test release",
                     Application = "Test application",
-                    CreatedBy = 1,
+                    CreatedBy = "Paul Houlston",
                     DeploymentDate = DateTime.Today.AddDays(-3)
                 });
             }
@@ -118,7 +119,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "1.0.0.*",
                 Title = string.Empty,
                 Application = "Test application",
-                CreatedBy = 1,
+                CreatedBy = "Paul Houlston",
                 DeploymentDate = DateTime.Today.AddDays(-3)
             });
 
@@ -141,7 +142,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "1.0.0.*",
                 Title = "Test release",
                 Application = string.Empty,
-                CreatedBy = 1,
+                CreatedBy = "Paul Houlston",
                 DeploymentDate = DateTime.Today.AddDays(-3)
             });
 
@@ -164,7 +165,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "1.0.0.*",
                 Title = "Test release",
                 Application = "Test application",
-                CreatedBy = -1,
+                CreatedBy = "Paul Houlston",
                 DeploymentDate = DateTime.Today.AddDays(-3)
             }, false);
 
@@ -187,7 +188,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "1.0.0.*",
                 Title = "Test release",
                 Application = "Test application",
-                CreatedBy = 1,
+                CreatedBy = "Paul Houlston",
                 Issues = new []
                 {
                     new ReleseCreationService.Issue()
@@ -223,7 +224,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     Version = "1.0.0.*",
                     Title = "Test release",
                     Application = "Test application",
-                    CreatedBy = 1,
+                    CreatedBy = "Paul Houlston",
                     Issues = new []
                     {
                         new ReleseCreationService.Issue { Id = "1", Title = "An Issue", Link="http://test.com/" }
@@ -255,7 +256,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Version = "1.0.0.*",
                 Title = "Test release",
                 Application = "Test application",
-                CreatedBy = 1,
+                CreatedBy = "Paul Houlston",
                 Issues = new []
                 {
                     new ReleseCreationService.Issue { Id = "1", Link = "http://test.com", Title = "Test Issue" }
