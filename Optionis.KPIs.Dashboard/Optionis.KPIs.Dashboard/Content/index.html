@@ -9,18 +9,9 @@
     <script>
     $.ajax({
         url: '/releases',
-        type:'POST',
-        data: JSON.stringify({
-            "title": null,
-            "createdBy": 0,
-            "comments": null,
-            "application": null,
-            "version": null,
-            "issues": null,
-            "changeSets": null
-        }),
+        type:'GET',
         success:function(d){
-            console.log(JSON.stringify(d));
+            $('body').append(JSON.stringify(d));
         },
         error: function(jqXhr, status, errorMessage) {
             $('body').html(jqXhr.responseText);
