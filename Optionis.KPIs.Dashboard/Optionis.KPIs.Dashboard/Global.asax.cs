@@ -1,12 +1,6 @@
 ﻿using System.Web;
 using Nancy;
 using Nancy.Conventions;
-using System.Reflection;
-using System;
-using System.IO;
-using Nancy.Bootstrapper;
-using Nancy.ErrorHandling;
-using Nancy.Responses;
 
 namespace Optionis.KPIs.Dashboard
 {
@@ -17,14 +11,6 @@ namespace Optionis.KPIs.Dashboard
 #if DEBUG
             StaticConfiguration.DisableErrorTraces = false;
 #endif
-        }
-    }
-
-    public class Test : NancyModule
-    {
-        public Test ()
-        {
-            Get ["/test"] = _ => View ["index.html"];   
         }
     }
 
