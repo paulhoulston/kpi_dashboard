@@ -32,38 +32,35 @@ namespace Optionis.KPIs.Dashboard
             };
         }
 
-        Negotiator PerformPost (ReleaseToCreate release)
+        Response PerformPost (ReleaseToCreate release)
         {
-            Negotiator negotiator = null;
+            Response response = null;
+
             new ReleseCreationService (
                 new ReleasesRepository(),
                 new UserRepository(),
-                validationError => negotiator = OnValidationError (validationError),
-                releaseId => negotiator = OnReleaseCreated (releaseId)
+                validationError => response = OnValidationError (validationError),
+                releaseId => response = OnReleaseCreated (releaseId)
             ).Create (ConvertRelease (release));
 
-            return negotiator;
+            return response;
         }
 
-        Negotiator OnReleaseCreated (int releaseId)
+        Response OnReleaseCreated (int releaseId)
         {
-            return Negotiate
-                .WithModel (new {
+            return Response.AsJson (new {
                     self = string.Format ("releases/{0}", releaseId)
-                })
-                .WithStatusCode (HttpStatusCode.Created);
+            }, HttpStatusCode.Created);
         }
 
-        Negotiator OnValidationError (ReleseCreationService.ValidationError validationError)
+        Response OnValidationError (ReleseCreationService.ValidationError validationError)
         {
-            return Negotiate
-                .WithStatusCode (HttpStatusCode.BadRequest)
-                .WithModel (new {
+            return Response.AsJson (new {
                 Error = new {
-                        Code = validationError.ToString (),
-                        Message = _errorMessageLookup[validationError]
-                    }
-                });
+                    Code = validationError.ToString (),
+                    Message = _errorMessageLookup [validationError]
+                }
+            }, HttpStatusCode.BadRequest);
         }
             
         static ReleseCreationService.ReleaseToCreate ConvertRelease (ReleaseToCreate releaseToCreate)
