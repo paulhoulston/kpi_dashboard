@@ -34,6 +34,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReleseCreationService.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="RelaseListingService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

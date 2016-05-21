@@ -74,6 +74,7 @@
     <Compile Include="Controllers\CreateRelease.cs" />
     <Compile Include="Controllers\GetRelease.cs" />
     <Compile Include="Adapters\ReleaseCreator.cs" />
+    <Compile Include="Adapters\ReleaseLister.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

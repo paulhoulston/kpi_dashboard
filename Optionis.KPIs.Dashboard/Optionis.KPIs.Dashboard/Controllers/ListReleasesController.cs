@@ -1,4 +1,6 @@
 using Nancy;
+using Optionis.KPIs.Dashboard.Application;
+using Optionis.KPIs.Dashboard.Adapters;
 
 namespace Optionis.KPIs.Dashboard
 {
@@ -6,9 +8,12 @@ namespace Optionis.KPIs.Dashboard
     {
         public ListReleasesController ()
         {
-            Get ["/releases"] = _ => new
-            {
-                Releases = new dynamic[]{ }
+            Get ["/releases"] = _ => {
+                dynamic response = null;
+                new RelaseListingService (
+                    new ReleaseLister (),
+                    releases => response = new { releases }).List ();
+                return response;
             };
         }
     }
