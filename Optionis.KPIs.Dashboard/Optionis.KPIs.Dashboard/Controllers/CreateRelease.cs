@@ -23,6 +23,25 @@ namespace Optionis.KPIs.Dashboard
             { ReleseCreationService.ValidationError.InvalidDeploymentDate, "The deployment date cannot be more than 30 days in the past" }
         };
 
+        class ReleaseToCreate
+        {
+            public string Title{ get; set; }
+            public string CreatedBy{ get; set; }
+            public string Comments{ get; set; }
+            public string Application{ get; set; }
+            public string Version{ get; set; }
+            public Issue[] Issues{get;set;}
+            public string ChangeSets{ get; set; }
+            public DateTime DeploymentDate{ get; set; }
+        }
+
+        class Issue
+        {
+            public string Id{ get; set; }
+            public string Link{ get; set; }
+            public string Title{ get; set; }
+        }
+
         public CreateRelease ()
         {
             Post ["/releases"] = parameters => {
@@ -36,7 +55,7 @@ namespace Optionis.KPIs.Dashboard
             Response response = null;
 
             new ReleseCreationService (
-                new ReleasesRepository(),
+                new ReleaseCreator(),
                 new UserRepository(),
                 validationError => response = OnValidationError (validationError),
                 releaseId => response = OnReleaseCreated (releaseId)

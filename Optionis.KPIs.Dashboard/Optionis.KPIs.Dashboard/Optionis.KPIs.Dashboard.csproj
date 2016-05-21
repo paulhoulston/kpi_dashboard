@@ -68,21 +68,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Adapters\ReleasesRepository.cs" />
-    <Compile Include="Core\ReleasesLister.cs" />
     <Compile Include="Adapters\DeploymentStatus.cs" />
-    <Compile Include="Models\ReleaseToCreate.cs" />
-    <Compile Include="Models\Issue.cs" />
     <Compile Include="Controllers\ListReleasesController.cs" />
     <Compile Include="Adapters\UserRepository.cs" />
     <Compile Include="Controllers\CreateRelease.cs" />
     <Compile Include="Controllers\GetRelease.cs" />
+    <Compile Include="Adapters\ReleaseCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Adapters\" />
-    <Folder Include="Core\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Optionis.KPIs.Dashboard.ReadCache\Optionis.KPIs.Dashboard.ReadCache.csproj">

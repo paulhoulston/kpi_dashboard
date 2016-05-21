@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Optionis.KPIs.Dashboard.Core;
 using Optionis.KPIs.Dashboard.ReadCache.DatabaseModels;
 using Optionis.KPIs.Dashboard.ReadCache;
 using Optionis.KPIs.Dashboard.Application;
@@ -8,15 +6,8 @@ using SQLite;
 
 namespace Optionis.KPIs.Adapters
 {
-    class ReleasesRepository : ReleasesLister.IStoreReleases, ReleseCreationService.ICreateReleases
+    class ReleaseCreator : ReleseCreationService.ICreateReleases
     {
-        public IEnumerable<Release> GetAll ()
-        {
-            using (var cnn = new SqliteWrapper ().Connection ()) {
-                return cnn.Query<Release> ("SELECT Id FROM Release");
-            }
-        }
-
         public void Create (ReleseCreationService.ReleaseToCreate model, Action<int> onReleaseCreated)
         {
             int releaseId;
