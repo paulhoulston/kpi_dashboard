@@ -6,13 +6,12 @@ namespace Optionis.KPIs.Dashboard
 {
     public class ListReleasesController : NancyModule
     {
-        public dynamic Get()
+        public ListReleasesController ()
         {
-            return new
+            Get["/releases"] = _ => new
             {
                 Releases = new ReleasesLister(new ReleasesRepository()).List()
             };
         }
     }
-    
 }
