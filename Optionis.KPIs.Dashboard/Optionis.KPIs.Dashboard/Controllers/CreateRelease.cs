@@ -3,7 +3,6 @@ using Optionis.KPIs.Dashboard.Application;
 using Optionis.KPIs.Adapters;
 using System.Linq;
 using System;
-using Nancy.Responses.Negotiation;
 using Newtonsoft.Json;
 using Nancy.Extensions;
 using System.Collections.Generic;
