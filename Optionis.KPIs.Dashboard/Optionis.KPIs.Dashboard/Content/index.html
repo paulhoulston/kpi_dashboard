@@ -10,12 +10,20 @@
      </script>
  </head>
  <body>
+    <header>
+    </header>
+    <section id="releases">
+    </section>
+    <footer>
+    </footer>
+
     <script id="releases-template" type="text/x-handlebars-template">​
-    <div>
         {{#releases}}
-        <div>{{uri}}</div>
+        <div data-uri="{{uri}}"></div>
         {{/releases}}
-    </div>
+    </script>
+    <script id="release-details-template" type="text/x-handlebars-template">
+        <p>{{title}}</p>
     </script>
  </body>
 </html>
