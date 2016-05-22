@@ -71,6 +71,7 @@
     <Content Include="Scripts\handlebars.runtime.amd.min.js" />
     <Content Include="Scripts\handlebars.runtime.js" />
     <Content Include="Scripts\handlebars.runtime.min.js" />
+    <Content Include="Content\site.css" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
