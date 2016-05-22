@@ -11,29 +11,36 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void THEN_the_release_is_not_returned()
             {
                 var isNotFound = false;
-                new GetReleaseService (() => isNotFound = true).Get();
+                var isFound = false;
+                new GetReleaseService (() => isNotFound = true, () => isFound = true).Get();
                 Assert.IsTrue (isNotFound);
+                Assert.IsFalse (isFound);
             }
         }
 
-        /*public class WHEN_the_release_exists
+        public class WHEN_the_release_exists
         {
             [Test]
             public void THEN_the_release_is_returned()
             {
                 var isFound = false;
+                var isNotFound = false;
+                new GetReleaseService (() => isNotFound = true, () => isFound = true).Get();
+                Assert.IsFalse (isNotFound);
                 Assert.IsTrue (isFound);
             }
-        }*/
+        }
     }
 
     public class GetReleaseService
     {
         readonly Action _onReleaseNotFound;
+        readonly Action _onReleaseFound;
 
-        public GetReleaseService (Action onReleaseNotFound)
+        public GetReleaseService (Action onReleaseNotFound, Action onReleaseFound)
         {
             _onReleaseNotFound = onReleaseNotFound;
+            _onReleaseFound = onReleaseFound;
         }
 
         public void Get ()
