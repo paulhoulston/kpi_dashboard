@@ -30,6 +30,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="CreateReleaseTests.cs" />
+    <Compile Include="GetReleaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
