@@ -63,6 +63,14 @@
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Content\index.html" />
+    <Content Include="Scripts\handlebars.amd.js" />
+    <Content Include="Scripts\handlebars.amd.min.js" />
+    <Content Include="Scripts\handlebars.js" />
+    <Content Include="Scripts\handlebars.min.js" />
+    <Content Include="Scripts\handlebars.runtime.amd.js" />
+    <Content Include="Scripts\handlebars.runtime.amd.min.js" />
+    <Content Include="Scripts\handlebars.runtime.js" />
+    <Content Include="Scripts\handlebars.runtime.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -94,5 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery-2.2.3.min.map" />
+    <None Include="App_Readme\Handlebarsjs_LICENSE" />
+    <None Include="App_Readme\Handlebarsjs_README.md" />
   </ItemGroup>
 </Project>
