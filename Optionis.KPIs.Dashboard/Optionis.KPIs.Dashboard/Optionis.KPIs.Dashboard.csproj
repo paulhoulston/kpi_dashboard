@@ -72,6 +72,7 @@
     <Content Include="Scripts\handlebars.runtime.js" />
     <Content Include="Scripts\handlebars.runtime.min.js" />
     <Content Include="Content\site.css" />
+    <Content Include="Scripts\releases.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">

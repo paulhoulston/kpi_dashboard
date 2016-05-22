@@ -1,26 +1,21 @@
-﻿
-<html>
+﻿<html>
  <head>
      <title>KPIs</title>
      <link rel="stylesheet" type="text/css" href="Content/site.css">
      <script type="text/javascript" src="Scripts/jquery-2.2.3.min.js"></script>
      <script type="text/javascript" src="Scripts/handlebars.min.js"></script>
+     <script type="text/javascript" src="Scripts/releases.js"></script>
+     <script type="text/javascript">
+     $(Releases.init);
+     </script>
  </head>
  <body>
-    <p>Hello world</p>
-    <script>
-    $.ajax({
-        url: '/releases',
-        type:'GET',
-        success:function(d){
-            $('body').append(JSON.stringify(d));
-        },
-        error: function(jqXhr, status, errorMessage) {
-            $('body').html(jqXhr.responseText);
-        }
-    });
+    <script id="releases-template" type="text/x-handlebars-template">​
+    <div>
+        {{#releases}}
+        <div>{{uri}}</div>
+        {{/releases}}
+    </div>
     </script>
-
-
  </body>
 </html>
