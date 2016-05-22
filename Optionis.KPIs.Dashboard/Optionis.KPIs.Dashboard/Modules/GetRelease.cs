@@ -2,6 +2,7 @@
 using Nancy;
 using System.Threading.Tasks;
 using System.Threading;
+using Optionis.KPIs.Common;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {
@@ -9,7 +10,7 @@ namespace Optionis.KPIs.Dashboard.Modules
     {
         public GetRelease ()
         {
-            Get["/releases/{id}", runAsync: true] = async (parameters, token) => await PerformGet (parameters, token);
+            Get[Routing.Releases.GET, runAsync: true] = async (parameters, token) => await PerformGet (parameters, token);
         }
 
         async Task<Release> PerformGet(dynamic parameters, CancellationToken _)

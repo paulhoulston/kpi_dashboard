@@ -6,6 +6,7 @@ using System;
 using Newtonsoft.Json;
 using Nancy.Extensions;
 using System.Collections.Generic;
+using Optionis.KPIs.Common;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {
@@ -44,7 +45,7 @@ namespace Optionis.KPIs.Dashboard.Modules
 
         public CreateRelease ()
         {
-            Post ["/releases"] = parameters => {
+            Post [Routing.Releases.ROUTE] = parameters => {
                 dynamic request = JsonConvert.DeserializeObject<ReleaseToCreate>(Request.Body.AsString ());
                 return PerformPost(request);
             };
@@ -67,7 +68,7 @@ namespace Optionis.KPIs.Dashboard.Modules
         Response OnReleaseCreated (int releaseId)
         {
             return Response.AsJson (new {
-                    self = string.Format ("releases/{0}", releaseId)
+                    self = Routing.Releases.Get(releaseId)
             }, HttpStatusCode.Created);
         }
 

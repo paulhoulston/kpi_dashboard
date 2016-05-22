@@ -101,6 +101,10 @@
       <Project>{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}</Project>
       <Name>Optionis.KPIs.Dashboard.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Optionis.KPIs.Common\Optionis.KPIs.Common.csproj">
+      <Project>{621E212A-B364-494A-B82E-47E1708965B5}</Project>
+      <Name>Optionis.KPIs.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery-2.2.3.min.map" />

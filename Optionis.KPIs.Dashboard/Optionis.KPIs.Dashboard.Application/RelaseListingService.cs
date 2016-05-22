@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using Optionis.KPIs.Common;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
@@ -15,11 +16,9 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public class Release
         {
-            const string RELEASE_URI = "/releases/{id}";
-
             public Release (int releaseId)
             {
-                Uri= RELEASE_URI.Replace (@"{id}", releaseId.ToString ());
+                Uri = Routing.Releases.Get(releaseId);
             }
 
             public string Uri{ get; private set; }
