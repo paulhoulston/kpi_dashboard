@@ -1,6 +1,8 @@
 ﻿using System.Web;
 using Nancy;
 using Nancy.Conventions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Optionis.KPIs.Dashboard
 {
@@ -8,6 +10,12 @@ namespace Optionis.KPIs.Dashboard
     {
         protected void Application_Start()
         {
+            JsonConvert.DefaultSettings = (() => {
+                return new JsonSerializerSettings {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver ()
+                };
+            });
+            
 #if DEBUG
             StaticConfiguration.DisableErrorTraces = false;
 #endif

@@ -1,8 +1,8 @@
-﻿using Optionis.KPIs.Dashboard.Application;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Optionis.KPIs.Dashboard.Application;
 using Optionis.KPIs.Dashboard.ReadCache;
 using Optionis.KPIs.Dashboard.ReadCache.DatabaseModels;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Optionis.KPIs.Dashboard.Adapters
 {
@@ -18,5 +18,6 @@ namespace Optionis.KPIs.Dashboard.Adapters
             }
         }
     }
+
 }
 

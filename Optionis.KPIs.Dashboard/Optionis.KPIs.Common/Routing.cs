@@ -12,6 +12,28 @@
                 return GET.Replace (@"{id}", id.ToString ());
             }
         }
+
+        public static class Issues
+        {
+            public const string ROUTE = "/issues";
+            public const string GET = "/issues/{id}";
+
+            public static string Get(int id)
+            {
+                return GET.Replace (@"{id}", id.ToString ());
+            }
+        }
+
+        public static class Deployments
+        {
+            public const string ROUTE = "/deployments";
+            public const string GET = "/deployments/{id}";
+
+            public static string Get(int id)
+            {
+                return GET.Replace (@"{id}", id.ToString ());
+            }
+        }
     }
 }
 

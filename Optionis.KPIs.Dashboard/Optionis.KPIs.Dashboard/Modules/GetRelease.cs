@@ -1,8 +1,8 @@
-﻿using System;
-using Nancy;
-using System.Threading.Tasks;
-using System.Threading;
+﻿using Nancy;
 using Optionis.KPIs.Common;
+using Optionis.KPIs.Dashboard.Application;
+using Optionis.KPIs.Dashboard.Adapters;
+using System.Linq;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {
@@ -10,60 +10,38 @@ namespace Optionis.KPIs.Dashboard.Modules
     {
         public GetRelease ()
         {
-            Get[Routing.Releases.GET, runAsync: true] = async (parameters, token) => await PerformGet (parameters, token);
-        }
-
-        async Task<Release> PerformGet(dynamic parameters, CancellationToken _)
-        {
-            return new Release{
-                Id = parameters.id,
-                Title = "Scheduled release for ClearSky",
-                CreatedBy = "Paul Houlston",
-                Created = DateTime.Now.AddHours(-1.4),
-                Comments = "A test release for latest functionality",
-                Issues = new []
-                {
-                    new Release.Issue
-                    {
-                        Id = "49995",
-                        Link = "http://blah.com/49995",
-                        Title = "A CR for an issue"
+            //Get[Routing.Releases.GET, runAsync: true] = async (parameters, token) => await PerformGet (parameters, token);
+            Get [Routing.Releases.GET] = _ => {
+                Response response = null;
+                new GetReleaseService (
+                    new ReleaseRetriever (),
+                    () => response = HttpStatusCode.NotFound,
+                    release => {
+                        response = Newtonsoft.Json.JsonConvert.SerializeObject(Convert (release));
+                        response.StatusCode = HttpStatusCode.OK;
+                        response.ContentType = "application/json";
                     }
-                },
-                Deployments = new []
-                {
-                    new Release.Deployment
-                    {
-                        Due = DateTime.Today.AddDays(1),
-                        Status = DeploymentStatus.Pending
-                    }
-                }
+                ).Get (_.Id);
+                return response;
             };
         }
 
-        public class Release
+        static dynamic Convert(GetReleaseService.Release release)
         {
-            public class Issue
-            {
-                public string Id{ get; set; }
-                public string Link{ get; set; }
-                public string Title{ get; set; }
-            }
-
-            public class Deployment
-            {
-                public DateTime Due{ get; set; }
-                public DeploymentStatus Status { get; set; }
-            }
-                
-            public int Id { get; set; }
-            public string Title{ get; set; }
-            public string CreatedBy{ get; set; }
-            public DateTime Created{ get; set; }
-            public string Comments{ get; set; }
-            public Issue[] Issues{get;set;}
-            public Deployment[] Deployments{ get; set; }
+            return new {
+                Self = Routing.Releases.Get(release.Id),
+                release.Title,
+                release.Created,
+                release.CreatedBy,
+                release.Application,
+                Issues = release.IssueIds.Select(i => Routing.Issues.Get(i)),
+                Deployments = release.DeploymentIds.Select(d => Routing.Deployments.Get(d)),
+            };
         }
+
+        /*async dynamic PerformGet(dynamic parameters, CancellationToken _)
+        {
+        }*/
     }
 }
 

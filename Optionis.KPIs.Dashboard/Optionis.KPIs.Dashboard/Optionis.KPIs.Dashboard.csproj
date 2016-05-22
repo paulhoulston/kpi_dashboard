@@ -86,6 +86,7 @@
     <Compile Include="Modules\CreateRelease.cs" />
     <Compile Include="Modules\GetRelease.cs" />
     <Compile Include="Modules\Default.cs" />
+    <Compile Include="Adapters\ReleaseRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adapters\" />
