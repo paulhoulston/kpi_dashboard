@@ -35,5 +35,33 @@
                 Releases.getRelease($(o).attr('data-uri'));
             });
         });
+
+        var form = $('#createRelease');
+        form.on('submit', function (e) {
+            e.preventDefault();
+            var data = {
+                'title': form.find('#title').val(),
+                'createdBy': form.find('#createdBy').val(),
+                'comments': form.find('#comments').val(),
+                'issues': [],
+                'application': form.find('#application').val(),
+                'version': form.find('#version').val(),
+                'deploymentDate': null
+            };
+            console.log(data);
+            $.ajax({
+                url: Releases.settings.uri,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: data,
+                success: function(d) {
+                    console.log(d);
+                    alert('success');
+                },
+                error: function() {
+                    alert('error');
+                }
+            });
+        });
     }
 };

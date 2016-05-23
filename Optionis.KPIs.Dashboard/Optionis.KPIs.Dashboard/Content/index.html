@@ -12,6 +12,60 @@
  <body>
     <header>
     </header>
+    <section>
+        <form id="createRelease" method="post" action="/releases">
+            <div class="row">
+                <div class="column grid_2 strong">Title</div>
+                <div class="column grid_10">
+                    <input type="text" id="title" name="title" placeholder="Release title..." />
+                </div>
+            </div>
+            <div class="row">
+                <div class="column grid_2 strong">Created by</div>
+                <div class="column grid_10">
+                    <input type="text" id="createdBy" name="createdBy" placeholder="Created by..." value="Paul Houlston" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="column grid_2 strong">Comments</div>
+                <div class="column grid_10">
+                    <input type="text" id="comments" name="comments" placeholder="Release comments..." />
+                </div>
+            </div>
+            <div class="row">
+                <div class="column grid_2 strong">Application</div>
+                <div class="column grid_10">
+                    <select id="application" name="application">
+                        <option value="MyParasol">MyParasol</option>
+                        <option value="MyClearsky">MyClearsky</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column grid_2 strong">Version</div>
+                <div class="column grid_10">
+                    <input type="text" id="version" name="version" placeholder="Release version..." />
+                </div>
+            </div>
+            <div class="row">
+                <div class="column grid_2 strong">Deployment date</div>
+                <div class="column grid_10">
+                    tbd...
+                </div>
+            </div>
+            <div class="row">
+                <div class="column grid_2 strong">Issues</div>
+                <div class="column grid_10">
+                    tbd...
+                </div>
+            </div>
+            <div class="row">
+                <div class="column grid_12">
+                    <input type="submit" value="Create Release"/>
+                </div>
+            </div>
+        </form>
+    </section>
     <section id="releases">
     </section>
     <footer>

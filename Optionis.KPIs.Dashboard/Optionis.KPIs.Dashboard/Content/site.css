@@ -27,6 +27,5 @@ a {
     font-weight: normal;
     font-size: 1.0em
 }
-
-.release-heading .title { font-weight: bold }
+.strong, .release-heading .title { font-weight: bold }
 .release-heading .created { padding-left: 25px }
