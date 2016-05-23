@@ -21,13 +21,15 @@ namespace Optionis.KPIs.Adapters
 
         static int InsertRelease (ReleseCreationService.ReleaseToCreate model, SQLiteConnection connection)
         {
-            return connection.Insert (new Release {
+            var release = new Release {
                 Application = model.Application,
                 Comments = model.Comments,
                 Created = model.Created,
                 CreatedBy = model.CreatedBy,
                 Title = model.Title
-            });
+            };
+            connection.Insert (release);
+            return release.Id;
         }
 
         static void InsertDeployment (ReleseCreationService.ReleaseToCreate model, int releaseId, SQLiteConnection connection)
