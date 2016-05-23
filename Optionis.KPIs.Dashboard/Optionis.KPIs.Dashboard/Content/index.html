@@ -23,7 +23,17 @@
         {{/releases}}
     </script>
     <script id="release-details-template" type="text/x-handlebars-template">
-        <p>{{title}}</p>
+        <div class="release-heading"><span class="title">{{title}}</span><span class="created">{{created}}&nbsp;<a href="#">{{createdBy}}</a></span></div>
+        {{#issues}}
+        <div class="row">
+            <div class="column grid_12">{{issue}}</div>
+        </div>
+        {{/issues}}
+        {{#deployments}}
+        <div class="row">
+            <div class="column grid_12">{{deployment}}</div>
+        </div>
+        {{/deployments}}
     </script>
  </body>
 </html>
