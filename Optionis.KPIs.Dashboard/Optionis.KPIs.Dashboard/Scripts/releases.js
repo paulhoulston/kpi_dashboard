@@ -46,14 +46,14 @@
                 'issues': [],
                 'application': form.find('#application').val(),
                 'version': form.find('#version').val(),
-                'deploymentDate': null
+                'deploymentDate': '2016-05-24T12:00:00'
             };
             console.log(data);
             $.ajax({
                 url: Releases.settings.uri,
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
-                data: data,
+                data: JSON.stringify(data),
                 success: function(d) {
                     console.log(d);
                     alert('success');

@@ -3,10 +3,9 @@ using Optionis.KPIs.Dashboard.Application;
 using Optionis.KPIs.Adapters;
 using System.Linq;
 using System;
-using Newtonsoft.Json;
-using Nancy.Extensions;
 using System.Collections.Generic;
 using Optionis.KPIs.Common;
+using Nancy.ModelBinding;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {
@@ -46,7 +45,7 @@ namespace Optionis.KPIs.Dashboard.Modules
         public CreateRelease ()
         {
             Post [Routing.Releases.ROUTE] = parameters => {
-                dynamic request = JsonConvert.DeserializeObject<ReleaseToCreate>(Request.Body.AsString ());
+                var request = this.Bind<ReleaseToCreate>();
                 return PerformPost(request);
             };
         }
