@@ -21,6 +21,7 @@ namespace Optionis.KPIs.Dashboard.Adapters
                 onReleaseFound (new GetReleaseService.Release {
                     Id = release.Id,
                     Application = release.Application,
+                    Comments = release.Comments,
                     Created = release.Created,
                     CreatedBy = release.CreatedBy,
                     Title = release.Title,

@@ -18,6 +18,7 @@ namespace Optionis.KPIs.Dashboard.Application
         {
             public int Id { get; set; }
             public string Title{ get; set; }
+            public string Comments { get; set; }
             public DateTime Created{ get; set; }
             public string CreatedBy{ get; set; }
             public string Application{ get; set; }

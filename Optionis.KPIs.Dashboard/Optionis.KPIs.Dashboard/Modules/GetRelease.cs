@@ -34,6 +34,7 @@ namespace Optionis.KPIs.Dashboard.Modules
                 release.Created,
                 release.CreatedBy,
                 release.Application,
+                release.Comments,
                 Issues = release.IssueIds.Select (i => new { issue = Routing.Issues.Get (i)}),
                 Deployments = release.DeploymentIds.Select (d => new { deployment = Routing.Deployments.Get (d)}),
             };
