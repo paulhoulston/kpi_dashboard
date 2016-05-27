@@ -30,16 +30,28 @@
     </script>
     <script id="release-details-template" type="text/x-handlebars-template">
         <div class="release-heading"><span class="title">{{title}}</span><span class="created">{{created}}&nbsp;<a href="#">{{createdBy}}</a></span></div>
-        {{#issues}}
+        {{#if issues.length}}
+            <h4>Issues</h4>
+            {{#issues}}
+                <div data-issue-uri="{{issue}}"></div>
+            {{/issues}}
+        {{/if}}
+        {{#if deployments}}
+            <h4>Deployments</h4>
+            {{#deployments}}
+            <div class="row">
+                <div class="column grid_12">{{deployment}}</div>
+            </div>
+            {{/deployments}}
+        {{/if}}
+    </script>
+    <script id="issue-template" type="text/x-handlebars-template">
         <div class="row">
-            <div class="column grid_12">{{issue}}</div>
+            <div class="column grid_2">
+                <a href="{{link}}" title="{{title}}">{{issueId}}</a>
+            </div>
+            <div class="column grid_10">{{title}}</div>
         </div>
-        {{/issues}}
-        {{#deployments}}
-        <div class="row">
-            <div class="column grid_12">{{deployment}}</div>
-        </div>
-        {{/deployments}}
     </script>
     <script id="create-release-template" type="text/x-handlebars-template">
         <form method="post">

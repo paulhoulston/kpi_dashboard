@@ -6,6 +6,7 @@
 
     templates: {
         createRelease: '#create-release-template',
+        issueDetails: '#issue-template',
         releases: '#releases-template',
         releaseDetails: '#release-details-template'
     },
@@ -16,11 +17,21 @@
         return compiledTemplate (opts.data || { });
     },
 
+    getIssue: function(uri) {
+        $.getJSON(uri, function(d) {
+            $('div[data-issue-uri="' + uri + '"]').empty().html(
+                Releases.getView({ template: Releases.templates.issueDetails, data: d })
+            );
+        });
+    },
+
     getRelease: function(uri) {
         $.getJSON(uri, function(d) {
             $('div[data-uri="' + uri + '"]').empty().html(
                 Releases.getView({ template: Releases.templates.releaseDetails, data: d })
-            )
+            ).children('div[data-issue-uri]').each(function(_, o) {
+                Releases.getIssue($(o).attr('data-issue-uri'));
+            });
         });
     },
 
@@ -30,7 +41,7 @@
             $.getJSON(Releases.settings.uri, function(d){
                 $('#releases').empty().html(
                     Releases.getView({ template: Releases.templates.releases, data: d })
-                ).children('div[data-uri]').each(function(i, o) {
+                ).children('div[data-uri]').each(function(_, o) {
                     Releases.getRelease($(o).attr('data-uri'));
                 });
             });
