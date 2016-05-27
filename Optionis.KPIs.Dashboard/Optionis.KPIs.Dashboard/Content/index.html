@@ -1,8 +1,10 @@
 ﻿<html>
  <head>
      <title>KPIs</title>
+     <link rel="stylesheet" type="text/css" href="Content/themes/base/all.css">
      <link rel="stylesheet" type="text/css" href="Content/site.css">
      <script type="text/javascript" src="Scripts/jquery-2.2.3.min.js"></script>
+     <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.min.js"></script>
      <script type="text/javascript" src="Scripts/handlebars.min.js"></script>
      <script type="text/javascript" src="Scripts/releases.js"></script>
      <script type="text/javascript">
@@ -10,61 +12,11 @@
      </script>
  </head>
  <body>
+    <div id="popup" class="hidden"></div>
     <header>
     </header>
     <section>
-        <form id="createRelease" method="post">
-            <div class="row">
-                <div class="column grid_2 strong">Title</div>
-                <div class="column grid_10">
-                    <input type="text" id="title" name="title" placeholder="Release title..." />
-                </div>
-            </div>
-            <div class="row">
-                <div class="column grid_2 strong">Created by</div>
-                <div class="column grid_10">
-                    <input type="text" id="createdBy" name="createdBy" placeholder="Created by..." value="Paul Houlston" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="column grid_2 strong">Comments</div>
-                <div class="column grid_10">
-                    <input type="text" id="comments" name="comments" placeholder="Release comments..." />
-                </div>
-            </div>
-            <div class="row">
-                <div class="column grid_2 strong">Application</div>
-                <div class="column grid_10">
-                    <select id="application" name="application">
-                        <option value="MyParasol">MyParasol</option>
-                        <option value="MyClearsky">MyClearsky</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column grid_2 strong">Version</div>
-                <div class="column grid_10">
-                    <input type="text" id="version" name="version" placeholder="Release version..." />
-                </div>
-            </div>
-            <div class="row">
-                <div class="column grid_2 strong">Deployment date</div>
-                <div class="column grid_10">
-                    tbd...
-                </div>
-            </div>
-            <div class="row">
-                <div class="column grid_2 strong">Issues</div>
-                <div class="column grid_10">
-                    tbd...
-                </div>
-            </div>
-            <div class="row">
-                <div class="column grid_12">
-                    <input type="submit" value="Create Release"/>
-                </div>
-            </div>
-        </form>
+        <input id="btnCreateRelease" type="button" value="Create Release"/>
     </section>
     <section id="releases">
     </section>
@@ -88,6 +40,60 @@
             <div class="column grid_12">{{deployment}}</div>
         </div>
         {{/deployments}}
+    </script>
+    <script id="create-release-template" type="text/x-handlebars-template">
+        <form method="post">
+            <div class="row noMinWidth">
+                <div class="column grid_4 strong">Title</div>
+                <div class="column grid_8">
+                    <input type="text" id="title" name="title" placeholder="Release title..." />
+                </div>
+            </div>
+            <div class="row noMinWidth">
+                <div class="column grid_4 strong">Created by</div>
+                <div class="column grid_8">
+                    <input type="text" id="createdBy" name="createdBy" placeholder="Created by..." value="Paul Houlston" />
+                </div>
+            </div>
+            <div class="row noMinWidth">
+                <div class="column grid_4 strong">Comments</div>
+                <div class="column grid_8">
+                    <input type="text" id="comments" name="comments" placeholder="Release comments..." />
+                </div>
+            </div>
+            <div class="row noMinWidth">
+                <div class="column grid_4 strong">Application</div>
+                <div class="column grid_8">
+                    <select id="application" name="application">
+                        <option value="MyParasol">MyParasol</option>
+                        <option value="MyClearsky">MyClearsky</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row noMinWidth">
+                <div class="column grid_4 strong">Version</div>
+                <div class="column grid_8">
+                    <input type="text" id="version" name="version" placeholder="Release version..." />
+                </div>
+            </div>
+            <div class="row noMinWidth">
+                <div class="column grid_4 strong">Deployment date</div>
+                <div class="column grid_8">
+                    tbd...
+                </div>
+            </div>
+            <div class="row noMinWidth">
+                <div class="column grid_4 strong">Issues</div>
+                <div class="column grid_8">
+                    tbd...
+                </div>
+            </div>
+            <div class="row noMinWidth">
+                <div class="column grid_12">
+                    <input type="submit" value="Create Release"/>
+                </div>
+            </div>
+        </form>
     </script>
  </body>
 </html>

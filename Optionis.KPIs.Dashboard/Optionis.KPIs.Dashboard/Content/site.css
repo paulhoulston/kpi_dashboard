@@ -21,7 +21,7 @@ body {
 .grid_12 { width:97.917%; }
 .column { margin: 0 1.04%; overflow: hidden; float: left; }
 .row { min-width: 960px; width: 97.875%; margin: 0 1.064%; overflow: hidden; }
-
+.row.noMinWidth { min-width: 0 }
 a {
     color: #ca7c00;
     font-weight: normal;
@@ -29,3 +29,4 @@ a {
 }
 .strong, .release-heading .title { font-weight: bold }
 .release-heading .created { padding-left: 25px }
+.hidden { display: none }

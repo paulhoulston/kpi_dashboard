@@ -5,6 +5,7 @@
     },
 
     templates: {
+        createRelease: '#create-release-template',
         releases: '#releases-template',
         releaseDetails: '#release-details-template'
     },
@@ -12,7 +13,7 @@
     getView: function(opts) {
         var theTemplateScript = $(opts.template).html(),
             compiledTemplate = Handlebars.compile (theTemplateScript);
-        return compiledTemplate (opts.data);
+        return compiledTemplate (opts.data || { });
     },
 
     getRelease: function(uri) {
@@ -35,25 +36,44 @@
             });
         }
 
-        function createRelease(e) {
-            var form = $(e.currentTarget);
-            function getData() {
-                return {
-                    'title': form.find('#title').val(),
-                    'createdBy': form.find('#createdBy').val(),
-                    'comments': form.find('#comments').val(),
-                    'issues': [],
-                    'application': form.find('#application').val(),
-                    'version': form.find('#version').val(),
-                    'deploymentDate': '2016-05-24T12:00:00'
-                };
+        function onCreateRelease() {
+
+            function createRelease(e) {
+                var form = $(e.currentTarget);
+                function getData() {
+                    return {
+                        'title': form.find('#title').val(),
+                        'createdBy': form.find('#createdBy').val(),
+                        'comments': form.find('#comments').val(),
+                        'issues': [],
+                        'application': form.find('#application').val(),
+                        'version': form.find('#version').val(),
+                        'deploymentDate': '2016-05-24T12:00:00'
+                    };
+                }
+
+                function onSuccess() {
+                    $('#popup').dialog('close');
+                    bindReleases();
+                }
+
+                e.preventDefault();
+                $.post(Releases.settings.uri, getData(), onSuccess);
             }
 
-            e.preventDefault();
-            $.post(Releases.settings.uri, getData(), bindReleases);
+            function getView() {
+                return Releases.getView({ template: Releases.templates.createRelease });
+            }
+
+            $('#popup').empty().html(getView()).dialog({
+                width: 650,
+                height: 300,
+                title: 'Create Release'
+            }).find('form').on('submit', createRelease  );
         }
 
         bindReleases();
-        $('#createRelease').on('submit', createRelease);
+
+        $('#btnCreateRelease').on('click', onCreateRelease);
     }
 };
