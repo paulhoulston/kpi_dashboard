@@ -13,15 +13,12 @@
  </head>
  <body>
     <div id="popup" class="hidden"></div>
-    <header>
-    </header>
+    <header></header>
     <section>
         <input id="btnCreateRelease" type="button" value="Create Release"/>
     </section>
-    <section id="releases">
-    </section>
-    <footer>
-    </footer>
+    <section id="releases"></section>
+    <footer></footer>
 
     <script id="releases-template" type="text/x-handlebars-template">​
         {{#releases}}
@@ -29,7 +26,7 @@
         {{/releases}}
     </script>
     <script id="release-details-template" type="text/x-handlebars-template">
-        <div class="release-heading"><span class="title">{{title}}</span><span class="created">{{created}}&nbsp;<a href="#">{{createdBy}}</a></span></div>
+        <div class="release-heading"><span class="strong">{{title}}</span><span class="padLeft25">{{created}}&nbsp;<a href="#">{{createdBy}}</a></span></div>
         {{#if issues.length}}
             <h4>Issues</h4>
             {{#issues}}
