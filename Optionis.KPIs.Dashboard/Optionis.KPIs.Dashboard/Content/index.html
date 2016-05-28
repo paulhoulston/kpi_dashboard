@@ -40,7 +40,7 @@
             <h4>Deployments</h4>
             {{#deployments}}
             <div class="row">
-                <div class="column grid_12">{{deployment}}</div>
+                <div data-deployment-uri="{{deployment}}"></div>
             </div>
             {{/deployments}}
         {{/if}}
@@ -51,6 +51,13 @@
                 <a href="{{link}}" title="{{title}}">{{issueId}}</a>
             </div>
             <div class="column grid_10">{{title}}</div>
+        </div>
+    </script>
+    <script id="deployment-template" type="text/x-handlebars-template">
+        <div class="row">
+            <div class="column grid_2">{{deploymentDate}}</div>
+            <div class="column grid_2">Version {{version}}</div>
+            <div class="column grid_2">Status {{status}}</div>
         </div>
     </script>
     <script id="create-release-template" type="text/x-handlebars-template">

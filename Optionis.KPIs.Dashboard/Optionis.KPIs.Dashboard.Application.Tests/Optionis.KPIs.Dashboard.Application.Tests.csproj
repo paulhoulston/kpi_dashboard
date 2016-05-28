@@ -32,6 +32,7 @@
     <Compile Include="CreateReleaseTests.cs" />
     <Compile Include="GetReleaseTests.cs" />
     <Compile Include="GetIssueTests.cs" />
+    <Compile Include="GetDeploymentTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">

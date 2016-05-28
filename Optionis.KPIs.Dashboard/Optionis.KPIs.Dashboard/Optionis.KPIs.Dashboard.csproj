@@ -113,7 +113,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Adapters\DeploymentStatus.cs" />
     <Compile Include="Adapters\UserRepository.cs" />
     <Compile Include="Adapters\ReleaseCreator.cs" />
     <Compile Include="Adapters\ReleaseLister.cs" />
@@ -124,6 +123,8 @@
     <Compile Include="Adapters\ReleaseRetriever.cs" />
     <Compile Include="Adapters\IssueRetriever.cs" />
     <Compile Include="Modules\GetIssue.cs" />
+    <Compile Include="Modules\GetDeployment.cs" />
+    <Compile Include="Adapters\DeploymentRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adapters\" />

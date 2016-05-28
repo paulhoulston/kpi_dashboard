@@ -6,6 +6,7 @@
 
     templates: {
         createRelease: '#create-release-template',
+        deploymentDetails: '#deployment-template',
         issueDetails: '#issue-template',
         releases: '#releases-template',
         releaseDetails: '#release-details-template'
@@ -25,12 +26,26 @@
         });
     },
 
+
+    getDeployment: function(uri) {
+        $.getJSON(uri, function(d) {
+            $('div[data-deployment-uri="' + uri + '"]').empty().html(
+                Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
+            );
+        });
+    },
+
     getRelease: function(uri) {
         $.getJSON(uri, function(d) {
-            $('div[data-uri="' + uri + '"]').empty().html(
-                Releases.getView({ template: Releases.templates.releaseDetails, data: d })
-            ).children('div[data-issue-uri]').each(function(_, o) {
+            var releaseDiv = 
+                $('div[data-uri="' + uri + '"]').empty().html(
+                    Releases.getView({ template: Releases.templates.releaseDetails, data: d })
+                );
+            releaseDiv.find('div[data-issue-uri]').each(function(_, o) {
                 Releases.getIssue($(o).attr('data-issue-uri'));
+            });
+            releaseDiv.find('div[data-deployment-uri]').each(function(_, o) {
+                Releases.getDeployment($(o).attr('data-deployment-uri'));
             });
         });
     },
