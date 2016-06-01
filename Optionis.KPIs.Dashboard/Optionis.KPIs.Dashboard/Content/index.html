@@ -26,7 +26,11 @@
         {{/releases}}
     </script>
     <script id="release-details-template" type="text/x-handlebars-template">
-        <div class="release-heading"><span class="strong">{{title}}</span><span class="padLeft25">{{created}}&nbsp;<a href="#">{{createdBy}}</a></span></div>
+        <div class="release-heading">
+            <span class="strong">{{title}}</span>
+            <span class="padLeft25">{{formatDate created}}&nbsp;
+            <a href="#">{{createdBy}}</a></span>
+        </div>
         {{#if comments}}
         <p>{{comments}}</p>
         {{/if}}

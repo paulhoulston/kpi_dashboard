@@ -101,5 +101,10 @@
         bindReleases();
 
         $('#btnCreateRelease').on('click', onCreateRelease);
+
+        Handlebars.registerHelper("formatDate", function(datetime, format) {
+            return datetime;
+        });
+
     }
 };
