@@ -93,7 +93,7 @@
 
             $('#popup').empty().html(getView()).dialog({
                 width: 650,
-                height: 300,
+                height: 340,
                 title: 'Create Release'
             }).find('form').on('submit', createRelease  );
         }
