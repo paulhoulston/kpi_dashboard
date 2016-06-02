@@ -102,9 +102,9 @@
 
         $('#btnCreateRelease').on('click', onCreateRelease);
 
+        // Format the date
         Handlebars.registerHelper("formatDate", function(datetime, format) {
-            return datetime;
+            return new Date(datetime).toLocaleString();
         });
-
     }
 };
