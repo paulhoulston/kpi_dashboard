@@ -54,3 +54,4 @@ input[type=button]:hover, input[type=submit]:hover {
     border-color: #00ca7c;
     background-color: #eaeaea
 }
+select, input[type=text], textarea { width: 275px }
