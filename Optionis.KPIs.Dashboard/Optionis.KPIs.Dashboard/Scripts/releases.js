@@ -91,12 +91,25 @@
                 return Releases.getView({ template: Releases.templates.createRelease });
             }
 
-            $('#popup').empty().html(getView()).dialog({
+            function tomorrow() {
+                var today = new Date();
+                var tomorrow = new Date();
+                tomorrow.setDate(today.getDate() + 1);
+                return tomorrow;
+            }
+
+            var form = $('#popup').empty().html(getView()).dialog({
                 width: 650,
-                height: 380,
+                height: 400,
                 position: { my: 'center', at: 'center', of: window },
                 title: 'Create Release'
-            }).find('form').on('submit', createRelease  );
+            }).find('form');
+
+            form.find('#deploymentDate').datepicker({
+                showOn: 'both',
+                setDate: tomorrow
+            }).datepicker('setDate', tomorrow());
+            form.on('submit', createRelease  );
         }
 
         bindReleases();

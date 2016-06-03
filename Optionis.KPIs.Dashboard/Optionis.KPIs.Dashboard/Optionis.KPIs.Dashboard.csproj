@@ -78,10 +78,10 @@
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\images\ui-bg_diagonals-small_70_303030_40x40.png" />
     <Content Include="Content\images\ui-icons_303030_256x240.png" />
-    <Content Include="Content\images\ui-icons_444444_256x240.png" />
-    <Content Include="Content\images\ui-icons_555555_256x240.png" />
-    <Content Include="Content\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\images\ui-icons_333333_256x240.png" />
+    <Content Include="Content\images\ui-icons_c0c0c0_256x240.png" />
     <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\images\calendar.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
