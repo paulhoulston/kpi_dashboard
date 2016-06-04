@@ -34,6 +34,17 @@
                 return GET.Replace (@"{id}", id.ToString ());
             }
         }
+
+        public static class Users
+        {
+            public const string ROUTE = "/users";
+            public const string GET = "/users/{id}";
+
+            public static string Get(int id)
+            {
+                return GET.Replace (@"{id}", id.ToString ());
+            }
+        }
     }
 }
 

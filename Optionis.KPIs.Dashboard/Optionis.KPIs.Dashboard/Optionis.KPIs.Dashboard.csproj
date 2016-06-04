@@ -99,6 +99,8 @@
     <Compile Include="Modules\GetDeployment.cs" />
     <Compile Include="Adapters\DeploymentRetriever.cs" />
     <Compile Include="Modules\ListReleases.cs" />
+    <Compile Include="Adapters\UserLister.cs" />
+    <Compile Include="Modules\ListUsers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adapters\" />
