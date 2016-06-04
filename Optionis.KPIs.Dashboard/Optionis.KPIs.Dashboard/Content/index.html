@@ -21,9 +21,13 @@
     <footer></footer>
 
     <script id="releases-template" type="text/x-handlebars-template">​
-        {{#releases}}
-        <div data-uri="{{uri}}"></div>
-        {{/releases}}
+        {{#if releases.count}}
+            {{#releases}}
+            <div data-uri="{{uri}}"></div>
+            {{/releases}}
+        {{else}}
+        <p>No releases found</p>
+        {{/if}}
     </script>
     <script id="release-details-template" type="text/x-handlebars-template">
         <div class="release-heading">
