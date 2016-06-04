@@ -14,9 +14,12 @@
  <body>
     <div id="popup" class="hidden"></div>
     <header></header>
-    <section>
-        <input id="btnCreateRelease" type="button" value="Create Release"/>
+
+    <section id="management">
+        <a id="btnCreateRelease" href="javascript:void(0);" title="Create Release">Create Release</a>
+        <a id="btnCreateUser" href="javascript:void(0);" title="Create User">Create User</a>
     </section>
+
     <section id="releases"></section>
     <footer></footer>
 
@@ -26,7 +29,7 @@
             <div data-uri="{{uri}}"></div>
             {{/releases}}
         {{else}}
-        <p>No releases found</p>
+        <p class="alignCenter">No releases found</p>
         {{/if}}
     </script>
     <script id="release-details-template" type="text/x-handlebars-template">

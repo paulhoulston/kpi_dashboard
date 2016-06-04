@@ -4,7 +4,8 @@ body {
  color: #f0f0f0;
  font-family: Verdana,sans-serif;
  font-size: 0.85em;
- margin: 0 25px
+ margin: 0;
+ padding: 0
 }
 
 .grid_1 { width:6.25%; }
@@ -35,6 +36,7 @@ h4 { margin: 4px 0; font-size: 1.0em }
 .strong { font-weight: bold }
 .padLeft25 { padding-left: 25px }
 .hidden { display: none }
+.alignCenter { text-align: center }
 .release-heading {
     border-bottom: 1px solid #f0f0f0;
     padding: 4px 0;
@@ -55,3 +57,14 @@ input[type=button]:hover, input[type=submit]:hover {
     background-color: #eaeaea
 }
 select, input[type=text], textarea { width: 275px }
+
+section#management {
+    border-bottom: 1px solid #ca7c00;
+    padding: 10px 25px
+}
+section#management a {
+    margin-right: 25px
+}
+section#releases {
+    margin: 0 25px
+}
