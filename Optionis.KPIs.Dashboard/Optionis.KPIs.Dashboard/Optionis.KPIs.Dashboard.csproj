@@ -90,7 +90,6 @@
     <Compile Include="Adapters\UserRepository.cs" />
     <Compile Include="Adapters\ReleaseCreator.cs" />
     <Compile Include="Adapters\ReleaseLister.cs" />
-    <Compile Include="Modules\ListReleasesController.cs" />
     <Compile Include="Modules\CreateRelease.cs" />
     <Compile Include="Modules\GetRelease.cs" />
     <Compile Include="Modules\Default.cs" />
@@ -99,6 +98,7 @@
     <Compile Include="Modules\GetIssue.cs" />
     <Compile Include="Modules\GetDeployment.cs" />
     <Compile Include="Adapters\DeploymentRetriever.cs" />
+    <Compile Include="Modules\ListReleases.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adapters\" />

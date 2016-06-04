@@ -5,9 +5,9 @@ using Optionis.KPIs.Common;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {
-    public class ListReleasesController : NancyModule
+    public class ListReleases : NancyModule
     {
-        public ListReleasesController ()
+        public ListReleases ()
         {
             Get [Routing.Releases.ROUTE] = _ => {
                 dynamic response = null;
