@@ -1,6 +1,7 @@
 ﻿var Releases = {
     
     settings: {
+        dateFormat: 'dd/mm/yy',
         uri: '/releases'
     },
 
@@ -74,7 +75,7 @@
                         'issues': [],
                         'application': form.find('#application').val(),
                         'version': form.find('#version').val(),
-                        'deploymentDate': '2016-05-24T12:00:00'
+                        'deploymentDate': form.find('#deploymentDate').datepicker('getDate')
                     };
                 }
 
@@ -107,7 +108,8 @@
 
             form.find('#deploymentDate').datepicker({
                 showOn: 'both',
-                setDate: tomorrow
+                setDate: tomorrow,
+                dateFormat: Releases.settings.dateFormat
             }).datepicker('setDate', tomorrow());
             form.on('submit', createRelease  );
         }
