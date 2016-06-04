@@ -71,8 +71,19 @@
             <div class="column grid_2">Status {{status}}</div>
         </div>
     </script>
+    <script id="errors-template"  type="text/x-handlebars-template">
+        <div class="errors">
+            The following error prevented submission
+            <ul>
+            {{#errors}}
+                <li>{{error}}</li>
+            {{/errors}}
+            </ul>
+        </div>
+    </script>
     <script id="create-release-template" type="text/x-handlebars-template">
-        <form method="post">
+        <div id="divReleaseToCreate">
+            <div id="errors" class="hidden"></div>
             <div class="row noMinWidth padded">
                 <div class="column grid_4 strong">Title</div>
                 <div class="column grid_8">
@@ -118,12 +129,7 @@
                     tbd...
                 </div>
             </div>
-            <div class="row noMinWidth padded">
-                <div class="column grid_12">
-                    <input type="submit" value="Create Release"/>
-                </div>
-            </div>
-        </form>
+        </div>
     </script>
  </body>
 </html>

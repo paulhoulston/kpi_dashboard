@@ -8,6 +8,7 @@
     templates: {
         createRelease: '#create-release-template',
         deploymentDetails: '#deployment-template',
+        errors: '#errors-template',
         issueDetails: '#issue-template',
         releases: '#releases-template',
         releaseDetails: '#release-details-template'
@@ -65,8 +66,13 @@
 
         function onCreateRelease() {
 
+            function closeDialog() {
+                $('#popup').dialog('close');
+            }
+
             function createRelease(e) {
-                var form = $(e.currentTarget);
+                var form = $('#divReleaseToCreate');
+
                 function getData() {
                     return {
                         'title': form.find('#title').val(),
@@ -79,17 +85,29 @@
                     };
                 }
 
-                function onSuccess() {
-                    $('#popup').dialog('close');
+                function onSuccess(data) {
+                    closeDialog();
                     bindReleases();
                 }
 
-                e.preventDefault();
-                $.post(Releases.settings.uri, getData(), onSuccess);
-            }
+                function onError(jqXHR, _, __) {
+                    if(jqXHR && jqXHR.responseJSON && jqXHR.responseJSON.error && jqXHR.responseJSON.error.message) {
+                        form.find('#errors').removeClass('hidden').empty().html(
+                            Releases.getView({
+                                template: Releases.templates.errors,
+                                data: { errors: [{ error: jqXHR.responseJSON.error.message }] }
+                            }));
+                    }
+                }
 
-            function getView() {
-                return Releases.getView({ template: Releases.templates.createRelease });
+                e.preventDefault();
+                $.ajax({
+                    url: Releases.settings.uri,
+                    type: 'POST',
+                    data: getData(),
+                    success: onSuccess,
+                    error: onError
+                });
             }
 
             function tomorrow() {
@@ -99,19 +117,23 @@
                 return tomorrow;
             }
 
-            var form = $('#popup').empty().html(getView()).dialog({
+            $('#popup').empty().html(Releases.getView({
+                template: Releases.templates.createRelease
+            })).dialog({
                 width: 650,
                 height: 400,
                 position: { my: 'center', at: 'center', of: window },
-                title: 'Create Release'
-            }).find('form');
-
-            form.find('#deploymentDate').datepicker({
+                title: 'Create Release',
+                closeOnEscape: true,
+                buttons: [
+                    { text: 'Create', click: createRelease },
+                    { text: 'Cancel', click: closeDialog }
+                ]
+            }).find('#deploymentDate').datepicker({
                 showOn: 'both',
                 setDate: tomorrow,
                 dateFormat: Releases.settings.dateFormat
             }).datepicker('setDate', tomorrow());
-            form.on('submit', createRelease  );
         }
 
         bindReleases();

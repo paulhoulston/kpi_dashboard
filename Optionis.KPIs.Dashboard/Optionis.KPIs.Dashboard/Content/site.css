@@ -43,21 +43,14 @@ h4 { margin: 4px 0; font-size: 1.0em }
     margin-top: 15px
 }
 
-input[type=button], input[type=submit] {
-    background-color: #f0f0f0;
-    color: #303030;
-    padding: 12px 7px;
-    margin: 2px;
-    font-size: 1.0em;
-    border: 2px solid #ca7c00
-}
-
-input[type=button]:hover, input[type=submit]:hover {
-    border-color: #00ca7c;
-    background-color: #eaeaea
-}
 select, input[type=text], textarea { width: 275px }
-
+.errors {
+    padding: 10px;
+    margin-bottom: 4px;
+    color: #5f3f3f;
+    background-color: #fddfdf;
+    border: 1px solid #f1a899
+}
 section#management {
     border-bottom: 1px solid #ca7c00;
     padding: 10px 25px
