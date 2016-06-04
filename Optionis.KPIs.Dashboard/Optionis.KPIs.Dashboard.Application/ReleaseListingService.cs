@@ -4,14 +4,14 @@ using Optionis.KPIs.Common;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
-    public class RelaseListingService
+    public class ReleaseListingService
     {
         readonly IListReleases _releaseRepository;
         readonly Action<IEnumerable<Release>> _onReleasesRetrieved;
 
         public interface IListReleases
         {
-            IEnumerable<RelaseListingService.Release> List ();
+            IEnumerable<ReleaseListingService.Release> List ();
         }
 
         public class Release
@@ -24,7 +24,7 @@ namespace Optionis.KPIs.Dashboard.Application
             public string Uri{ get; private set; }
         }
 
-        public RelaseListingService (IListReleases releaseRepository, Action<IEnumerable<Release>> onReleasesRetrieved)
+        public ReleaseListingService (IListReleases releaseRepository, Action<IEnumerable<Release>> onReleasesRetrieved)
         {
             _releaseRepository = releaseRepository;
             _onReleasesRetrieved = onReleasesRetrieved;

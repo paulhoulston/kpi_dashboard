@@ -6,15 +6,15 @@ using Optionis.KPIs.Dashboard.ReadCache.DatabaseModels;
 
 namespace Optionis.KPIs.Dashboard.Adapters
 {
-    public class ReleaseLister : RelaseListingService.IListReleases
+    public class ReleaseLister : ReleaseListingService.IListReleases
     {
-        public IEnumerable<RelaseListingService.Release> List ()
+        public IEnumerable<ReleaseListingService.Release> List ()
         {
             using (var connection = new SqliteWrapper ().Connection ()) {
                 return connection
                     .Table<Release> ()
                     .ToArray ()
-                    .Select (releaseId => new RelaseListingService.Release(releaseId.Id));
+                    .Select (releaseId => new ReleaseListingService.Release(releaseId.Id));
             }
         }
     }

@@ -11,7 +11,7 @@ namespace Optionis.KPIs.Dashboard.Modules
         {
             Get [Routing.Releases.ROUTE] = _ => {
                 dynamic response = null;
-                new RelaseListingService (
+                new ReleaseListingService (
                     new ReleaseLister (),
                     releases => response = new { releases }).List ();
                 return response;

@@ -34,11 +34,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReleseCreationService.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="RelaseListingService.cs" />
     <Compile Include="GetReleaseService.cs" />
     <Compile Include="GetIssueService.cs" />
     <Compile Include="GetDeploymentService.cs" />
     <Compile Include="UsersListingService.cs" />
+    <Compile Include="ReleaseListingService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
