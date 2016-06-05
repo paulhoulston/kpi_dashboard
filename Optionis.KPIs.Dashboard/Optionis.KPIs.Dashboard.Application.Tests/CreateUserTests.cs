@@ -12,7 +12,10 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 var userCreated = true;
 
-                new UserCreationService (() => userCreated = false).Create (null);
+                new UserCreationService (
+                    () => userCreated = false,
+                    () => { throw new Exception("Shouldn't hit this"); }
+                ).Create (null);
 
                 Assert.IsFalse (userCreated);
             }
@@ -25,7 +28,12 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 var userCreated = false;
 
-                new UserCreationService (() => userCreated = false).Create (null);
+                new UserCreationService (
+                    () => { throw new Exception("Shouldn't hit this"); },
+                    () => userCreated = true
+                ).Create (new UserCreationService.User{
+                    UserName = "Test User"
+                });
 
                 Assert.IsTrue (userCreated);
             }
@@ -35,20 +43,26 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
     public class UserCreationService
     {
         readonly Action onUserNotCreated;
+        readonly Action onUserCreated;
 
-        public UserCreationService (Action onUserNotCreated)
+        public UserCreationService (Action onUserNotCreated, Action onUserCreated)
         {
+            this.onUserCreated = onUserCreated;
             this.onUserNotCreated = onUserNotCreated;
             
         }
 
         public class User
         {
+            public string UserName { get; set; }
         }
 
         public void Create(User user)
         {
-            onUserNotCreated ();
+            if (user == null)
+                onUserNotCreated ();
+            else
+                onUserCreated ();
         }
     }
 }
