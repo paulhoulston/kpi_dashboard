@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
 {
@@ -10,8 +11,31 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void THEN_the_user_is_not_created()
             {
                 var userCreated = true;
+
+                new UserCreationService (() => userCreated = false).Create (null);
+
                 Assert.IsFalse (userCreated);
             }
+        }
+    }
+
+    public class UserCreationService
+    {
+        readonly Action onUserNotCreated;
+
+        public UserCreationService (Action onUserNotCreated)
+        {
+            this.onUserNotCreated = onUserNotCreated;
+            
+        }
+
+        public class User
+        {
+        }
+
+        public void Create(User user)
+        {
+            onUserNotCreated ();
         }
     }
 }
