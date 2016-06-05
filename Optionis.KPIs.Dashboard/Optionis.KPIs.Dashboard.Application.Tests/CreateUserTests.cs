@@ -17,6 +17,19 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.IsFalse (userCreated);
             }
         }
+
+        public class WHEN_I_supply_a_valid_user
+        {
+            [Test]
+            public void THEN_the_user_is_created()
+            {
+                var userCreated = false;
+
+                new UserCreationService (() => userCreated = false).Create (null);
+
+                Assert.IsTrue (userCreated);
+            }
+        }
     }
 
     public class UserCreationService
