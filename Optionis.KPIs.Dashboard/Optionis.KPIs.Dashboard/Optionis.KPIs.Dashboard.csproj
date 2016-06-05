@@ -101,6 +101,8 @@
     <Compile Include="Modules\ListReleases.cs" />
     <Compile Include="Adapters\UserLister.cs" />
     <Compile Include="Modules\ListUsers.cs" />
+    <Compile Include="Modules\GetUser.cs" />
+    <Compile Include="Adapters\UserRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adapters\" />
