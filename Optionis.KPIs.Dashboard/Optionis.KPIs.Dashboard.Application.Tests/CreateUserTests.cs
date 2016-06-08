@@ -109,7 +109,9 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public void Create(User user)
         {
-            if (user == null || string.IsNullOrEmpty(user.UserName))
+            if (user == null)
+                onUserNotCreated (Error.UserIsNull);
+            else if (string.IsNullOrEmpty(user.UserName))
                 onUserNotCreated (Error.UserNameEmpty);
             else
                 onUserCreated ();
