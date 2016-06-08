@@ -14,6 +14,11 @@ namespace Optionis.KPIs.Dashboard.Modules
             { UserCreationService.ValidationError.UserNameEmpty, "The user name must not be empty" }
         };
 
+        public class UserToCreate
+        {
+            public string UserName { get; set; }
+        }
+
         public CreateUser ()
         {
             Post [Routing.Users.ROUTE] = _ => {
@@ -21,12 +26,7 @@ namespace Optionis.KPIs.Dashboard.Modules
                 return PerformPost(request);
             };
         }
-
-        public class UserToCreate
-        {
-            public string UserName { get; set; }
-        }
-
+            
         Response PerformPost (UserToCreate user)
         {
             Response response = null;
