@@ -103,6 +103,8 @@
     <Compile Include="Modules\ListUsers.cs" />
     <Compile Include="Modules\GetUser.cs" />
     <Compile Include="Adapters\UserRetriever.cs" />
+    <Compile Include="Modules\CreateUser.cs" />
+    <Compile Include="Adapters\UserCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adapters\" />
