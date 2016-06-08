@@ -7,21 +7,30 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
     {
         public class WHEN_I_add_a_null_value
         {
-            [Test]
-            public void THEN_the_user_is_not_created()
-            {
-                var userCreated = true;
-                UserCreationService.Error errorReturned;
+            bool _userCreated = true;
+            UserCreationService.Error _errorReturned;
 
+            public WHEN_I_add_a_null_value ()
+            {
                 new UserCreationService (
                     error => {
-                        userCreated = false;
-                        errorReturned = error;
+                        _userCreated = false;
+                        _errorReturned = error;
                     },
                     () => { throw new Exception("Shouldn't hit this"); }
                 ).Create (null);
+            }
 
-                Assert.IsFalse (userCreated);
+            [Test]
+            public void THEN_the_user_is_not_created()
+            {
+                Assert.IsFalse (_userCreated);
+            }
+
+            [Test]
+            public void AND_a_user_is_null_error_is_returned()
+            {
+                Assert.AreEqual (UserCreationService.Error.UserIsNull, _errorReturned);
             }
         }
 
@@ -89,6 +98,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public enum Error
         {
+            UserIsNull,
             UserNameEmpty
         }
 
