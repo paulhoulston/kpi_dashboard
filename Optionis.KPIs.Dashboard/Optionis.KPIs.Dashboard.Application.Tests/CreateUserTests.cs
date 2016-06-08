@@ -11,9 +11,13 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void THEN_the_user_is_not_created()
             {
                 var userCreated = true;
+                UserCreationService.Error errorReturned;
 
                 new UserCreationService (
-                    () => userCreated = false,
+                    error => {
+                        userCreated = false;
+                        errorReturned = error;
+                    },
                     () => { throw new Exception("Shouldn't hit this"); }
                 ).Create (null);
 
@@ -29,7 +33,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 var userCreated = false;
 
                 new UserCreationService (
-                    () => { throw new Exception("Shouldn't hit this"); },
+                    _ => { throw new Exception("Shouldn't hit this"); },
                     () => userCreated = true
                 ).Create (new UserCreationService.User{
                     UserName = "Test User"
@@ -41,33 +45,51 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         public class WHEN_I_add_a_user_without_a_user_name
         {
-            [Test]
-            public void THEN_the_user_is_not_created()
-            {
-                var userCreated = true;
+            bool _userCreated;
+            UserCreationService.Error _errorReturned;
 
+            public WHEN_I_add_a_user_without_a_user_name ()
+            {
                 new UserCreationService (
-                    () => userCreated = false,
+                    error => {
+                        _userCreated = false;
+                        _errorReturned = error;
+                    },
                     () => { throw new Exception ("Shouldn't hit this"); }
                 ).Create (new UserCreationService.User {
                     UserName = null
                 });
+                   
+            }
 
-                Assert.IsFalse (userCreated);
+            [Test]
+            public void THEN_the_user_is_not_created()
+            {
+                Assert.IsFalse (_userCreated);
+            }
+
+            [Test]
+            public void AND_a_user_name_empty_error_is_returned()
+            {
+                Assert.AreEqual (UserCreationService.Error.UserNameEmpty, _errorReturned);
             }
         }
     }
 
     public class UserCreationService
     {
-        readonly Action onUserNotCreated;
+        readonly Action<Error> onUserNotCreated;
         readonly Action onUserCreated;
 
-        public UserCreationService (Action onUserNotCreated, Action onUserCreated)
+        public UserCreationService (Action<Error> onUserNotCreated, Action onUserCreated)
         {
             this.onUserCreated = onUserCreated;
             this.onUserNotCreated = onUserNotCreated;
-            
+        }
+
+        public enum Error
+        {
+            UserNameEmpty
         }
 
         public class User
@@ -78,7 +100,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         public void Create(User user)
         {
             if (user == null || string.IsNullOrEmpty(user.UserName))
-                onUserNotCreated ();
+                onUserNotCreated (Error.UserNameEmpty);
             else
                 onUserCreated ();
         }
