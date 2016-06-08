@@ -40,6 +40,7 @@
     <Compile Include="UsersListingService.cs" />
     <Compile Include="ReleaseListingService.cs" />
     <Compile Include="GetUserService.cs" />
+    <Compile Include="UserCreationService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
