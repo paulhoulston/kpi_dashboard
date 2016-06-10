@@ -41,6 +41,7 @@
     <Compile Include="ReleaseListingService.cs" />
     <Compile Include="GetUserService.cs" />
     <Compile Include="UserCreationService.cs" />
+    <Compile Include="ValidateObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

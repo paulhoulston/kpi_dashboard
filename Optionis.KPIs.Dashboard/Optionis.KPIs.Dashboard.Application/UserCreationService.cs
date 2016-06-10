@@ -8,6 +8,7 @@ namespace Optionis.KPIs.Dashboard.Application
         readonly Action<ValidationError> _onUserNotCreated;
         readonly Action<int> _onUserCreated;
         readonly ICreateUsers _repository;
+        readonly ValidateObject<User, ValidationError> _validators;
 
         public interface ICreateUsers
         {
@@ -19,6 +20,13 @@ namespace Optionis.KPIs.Dashboard.Application
             _repository = repository;
             _onUserCreated = onUserCreated;
             _onUserNotCreated = onUserNotCreated;
+            _validators =
+                new ValidateObject<User, ValidationError> (
+                    _onUserNotCreated,
+                    DoCreateUser,
+                    new ValidateUserIsNotNull (),
+                    new ValidateUserNameIsNotNull (),
+                    new ValidateUserNameIsLessThan50Characters ());
         }
 
         [DefaultValue(None)]
@@ -26,7 +34,7 @@ namespace Optionis.KPIs.Dashboard.Application
         {
             None = 0,
             UserIsNull = 1,
-            UserNameEmpty = 2,
+            UserNameNotSet = 2,
             UserNameTooLong = 3
         }
 
@@ -37,14 +45,42 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public void Create(User user)
         {
-            if (user == null)
-                _onUserNotCreated (ValidationError.UserIsNull);
-            else if (string.IsNullOrEmpty (user.UserName))
-                _onUserNotCreated (ValidationError.UserNameEmpty);
-            else if (user.UserName.Length > 50)
-                _onUserNotCreated (ValidationError.UserNameTooLong);
-            else
-                _repository.Create (user, _onUserCreated);
+            _validators.IsValid (user);
+        }
+
+        void DoCreateUser(User user)
+        {
+            _repository.Create (user, _onUserCreated);
+        }
+
+        class ValidateUserIsNotNull : IValidateObjects<User, ValidationError>
+        {
+            public ValidationError ValidationError { get { return ValidationError.UserIsNull; } }
+
+            public bool IsValid(User user)
+            {
+                return user != null;
+            }
+        }
+
+        class ValidateUserNameIsNotNull : IValidateObjects<User, ValidationError>
+        {
+            public ValidationError ValidationError { get { return ValidationError.UserNameNotSet; } }
+
+            public bool IsValid(User user)
+            {
+                return !string.IsNullOrEmpty(user.UserName);
+            }
+        }
+
+        class ValidateUserNameIsLessThan50Characters : IValidateObjects<User, ValidationError>
+        {
+            public ValidationError ValidationError { get { return ValidationError.UserNameTooLong; } }
+
+            public bool IsValid(User user)
+            {
+                return user.UserName.Length <= 50;
+            }
         }
     }
 }

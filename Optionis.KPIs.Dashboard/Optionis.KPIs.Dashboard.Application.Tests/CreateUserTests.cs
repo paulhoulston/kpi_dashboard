@@ -71,7 +71,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             [Test]
             public void AND_a_user_name_empty_error_is_returned()
             {
-                Assert.AreEqual (UserCreationService.ValidationError.UserNameEmpty, _testRunner.ErrorReturned);
+                Assert.AreEqual (UserCreationService.ValidationError.UserNameNotSet, _testRunner.ErrorReturned);
             }
         }
 

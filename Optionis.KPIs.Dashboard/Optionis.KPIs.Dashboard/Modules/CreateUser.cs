@@ -11,7 +11,7 @@ namespace Optionis.KPIs.Dashboard.Modules
     {
         readonly static IDictionary<UserCreationService.ValidationError, string> _errorMessageLookup = new Dictionary<UserCreationService.ValidationError, string> {
             { UserCreationService.ValidationError.UserIsNull, "The user is null" },
-            { UserCreationService.ValidationError.UserNameEmpty, "The user name must not be empty" }
+            { UserCreationService.ValidationError.UserNameNotSet, "The user name must not be empty" }
         };
 
         public class UserToCreate
