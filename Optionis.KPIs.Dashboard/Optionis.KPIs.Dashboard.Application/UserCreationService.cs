@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
@@ -20,10 +21,13 @@ namespace Optionis.KPIs.Dashboard.Application
             _onUserNotCreated = onUserNotCreated;
         }
 
+        [DefaultValue(None)]
         public enum ValidationError
         {
-            UserIsNull,
-            UserNameEmpty
+            None = 0,
+            UserIsNull = 1,
+            UserNameEmpty = 2,
+            UserNameTooLong = 3
         }
 
         public class User
@@ -37,6 +41,8 @@ namespace Optionis.KPIs.Dashboard.Application
                 _onUserNotCreated (ValidationError.UserIsNull);
             else if (string.IsNullOrEmpty (user.UserName))
                 _onUserNotCreated (ValidationError.UserNameEmpty);
+            else if (user.UserName.Length > 50)
+                _onUserNotCreated (ValidationError.UserNameTooLong);
             else
                 _repository.Create (user, _onUserCreated);
         }

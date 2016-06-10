@@ -74,6 +74,37 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.AreEqual (UserCreationService.ValidationError.UserNameEmpty, _testRunner.ErrorReturned);
             }
         }
+
+        [TestFixture(true, "01234567890123456789012345678901234567890123456789")]
+        [TestFixture(false, "012345678901234567890123456789012345678901234567890")]
+        public class WHEN_I_add_a_user_with_a_user_name_exceeding_50_characters
+        {
+            readonly TestRunner _testRunner;
+            readonly bool _isValid;
+
+            public WHEN_I_add_a_user_with_a_user_name_exceeding_50_characters (bool isValid, string userName)
+            {
+                _isValid = isValid;
+                _testRunner = new TestRunner(new UserCreationService.User{
+                    UserName = userName
+                });
+            }
+
+            [Test]
+            public void THEN_the_user_is_not_created()
+            {
+                Assert.AreEqual (_isValid, _testRunner.UserCreated);
+            }
+
+            [Test]
+            public void AND_a_user_name_too_long_error_is_returned()
+            {
+                if(_isValid)
+                    Assert.AreEqual (UserCreationService.ValidationError.None, _testRunner.ErrorReturned);
+                else
+                    Assert.AreEqual (UserCreationService.ValidationError.UserNameTooLong, _testRunner.ErrorReturned);
+            }
+        }
     }
 }
 
