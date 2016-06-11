@@ -2,11 +2,13 @@
     
     settings: {
         dateFormat: 'dd/mm/yy',
-        uri: '/releases'
+        releasesUri: '/releases',
+        usersUri: '/users'
     },
 
     templates: {
         createRelease: '#create-release-template',
+        createUser: '#create-user-template',
         deploymentDetails: '#deployment-template',
         errors: '#errors-template',
         issueDetails: '#issue-template',
@@ -52,10 +54,20 @@
         });
     },
 
+    handlePostError: function(errorsEl, jqXHR) {
+        if(jqXHR && jqXHR.responseJSON && jqXHR.responseJSON.error && jqXHR.responseJSON.error.message) {
+            errorsEl.removeClass('hidden').empty().html(
+                Releases.getView({
+                    template: Releases.templates.errors,
+                    data: { errors: [{ error: jqXHR.responseJSON.error.message }] }
+                }));
+        }
+    },
+
     init: function() {
 
         function bindReleases() {
-            $.getJSON(Releases.settings.uri, function(d){
+            $.getJSON(Releases.settings.releasesUri, function(d){
                 $('#releases').empty().html(
                     Releases.getView({ template: Releases.templates.releases, data: d })
                 ).children('div[data-uri]').each(function(_, o) {
@@ -64,12 +76,11 @@
             });
         }
 
+        function closeDialog() {
+            $('#popup').dialog('close');
+        }
+
         function onCreateRelease() {
-
-            function closeDialog() {
-                $('#popup').dialog('close');
-            }
-
             function createRelease(e) {
                 var form = $('#divReleaseToCreate');
 
@@ -90,23 +101,12 @@
                     bindReleases();
                 }
 
-                function onError(jqXHR, _, __) {
-                    if(jqXHR && jqXHR.responseJSON && jqXHR.responseJSON.error && jqXHR.responseJSON.error.message) {
-                        form.find('#errors').removeClass('hidden').empty().html(
-                            Releases.getView({
-                                template: Releases.templates.errors,
-                                data: { errors: [{ error: jqXHR.responseJSON.error.message }] }
-                            }));
-                    }
-                }
-
-                e.preventDefault();
                 $.ajax({
-                    url: Releases.settings.uri,
+                    url: Releases.settings.releasesUri,
                     type: 'POST',
                     data: getData(),
                     success: onSuccess,
-                    error: onError
+                    error: function(jqXHR, _, __) { Releases.handlePostError(form.find('#errors'), jqXHR); }
                 });
             }
 
@@ -136,9 +136,46 @@
             }).datepicker('setDate', tomorrow());
         }
 
+        function onCreateUser() {
+            var popup = $('#popup');
+
+            function onSuccess () {
+                popup.empty().html($('<p/>', { 'text': 'User added successfully' })).dialog('option', 'buttons', [
+                    { 'text': 'Close', click: closeDialog }
+                ]);
+            }
+
+            function createUser() {
+                $.ajax({
+                    url: Releases.settings.usersUri,
+                    type: 'POST',
+                    data: { username: $('#username').val() },
+                    success: onSuccess,
+                    error: function(jqXHR, _, __) { 
+                        Releases.handlePostError(popup.find('#errors'), jqXHR);
+                    }
+                });
+            }
+
+            popup.empty().html(Releases.getView({
+                template: Releases.templates.createUser
+            })).dialog({
+                width: 500,
+                height: 250,
+                position: { my: 'center', at: 'center', of: window },
+                title: 'Create User',
+                closeOnEscape: true,
+                buttons: [
+                    { text: 'Create', click: createUser },
+                    { text: 'Cancel', click: closeDialog }
+                ]
+            });
+        }
+
         bindReleases();
 
         $('#btnCreateRelease').on('click', onCreateRelease);
+        $('#btnCreateUser').on('click', onCreateUser);
 
         // Format the date
         Handlebars.registerHelper("formatDate", function(datetime, format) {
