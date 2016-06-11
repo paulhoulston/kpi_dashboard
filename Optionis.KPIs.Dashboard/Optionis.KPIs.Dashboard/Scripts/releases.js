@@ -117,6 +117,17 @@
                 return tomorrow;
             }
 
+            function bindUsers() {
+                $.getJSON(Releases.settings.usersUri, function(d) {
+                    if(d.users) {
+                        for(ind in d.users)
+                            $.getJSON(d.users[ind].uri, function(usr) {
+                                $('#createdBy').append($('<option/>', { 'value': usr.id, 'text': usr.userName }));
+                            });
+                    }
+                });
+            }
+
             $('#popup').empty().html(Releases.getView({
                 template: Releases.templates.createRelease
             })).dialog({
@@ -134,6 +145,8 @@
                 setDate: tomorrow,
                 dateFormat: Releases.settings.dateFormat
             }).datepicker('setDate', tomorrow());
+
+            bindUsers();
         }
 
         function onCreateUser() {
