@@ -15,7 +15,7 @@ namespace Optionis.KPIs.Dashboard.Modules
             { UserCreationService.ValidationError.UserNameTooLong, "The user name cannot exceed 50 characters" }
         };
 
-        public class UserToCreate
+        class UserToCreate
         {
             public string UserName { get; set; }
         }
