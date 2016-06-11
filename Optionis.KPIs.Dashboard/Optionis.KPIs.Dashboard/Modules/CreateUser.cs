@@ -11,7 +11,8 @@ namespace Optionis.KPIs.Dashboard.Modules
     {
         readonly static IDictionary<UserCreationService.ValidationError, string> _errorMessageLookup = new Dictionary<UserCreationService.ValidationError, string> {
             { UserCreationService.ValidationError.UserIsNull, "The user is null" },
-            { UserCreationService.ValidationError.UserNameNotSet, "The user name must not be empty" }
+            { UserCreationService.ValidationError.UserNameNotSet, "The user name must not be empty" },
+            { UserCreationService.ValidationError.UserNameTooLong, "The user name cannot exceed 50 characters" }
         };
 
         public class UserToCreate
