@@ -85,6 +85,13 @@
                 var form = $('#divReleaseToCreate');
 
                 function getData() {
+                    function toString(date) {
+                        return date.getFullYear() +
+                            ((date.getMonth() < 9 ? '0' : '') + (1 + date.getMonth())) +
+                            ((date.getDate() < 10 ? '0' : '') + date.getDate()) +
+                            'T000000';
+                    }
+                    
                     return {
                         'title': form.find('#title').val(),
                         'createdBy': form.find('#createdBy').val(),
@@ -92,7 +99,7 @@
                         'issues': [],
                         'application': form.find('#application').val(),
                         'version': form.find('#version').val(),
-                        'deploymentDate': form.find('#deploymentDate').datepicker('getDate')
+                        'deploymentDate': toString(form.find('#deploymentDate').datepicker('getDate'))
                     };
                 }
 
