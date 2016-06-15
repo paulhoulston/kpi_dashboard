@@ -16,6 +16,13 @@
         releaseDetails: '#release-details-template'
     },
 
+    formatString: function (str, args) {
+        args = typeof args === 'object' ? args : Array.prototype.slice.call(arguments, 1);
+        return str.replace(/\{([^}]+)\}/gm, function () {
+            return args[arguments[1]];
+        });
+    },
+
     getView: function(opts) {
         var theTemplateScript = $(opts.template).html(),
             compiledTemplate = Handlebars.compile (theTemplateScript);
@@ -86,10 +93,11 @@
 
                 function getData() {
                     function toString(date) {
-                        return date.getFullYear() +
-                            ((date.getMonth() < 9 ? '0' : '') + (1 + date.getMonth())) +
-                            ((date.getDate() < 10 ? '0' : '') + date.getDate()) +
-                            'T000000';
+                        return Releases.formatString(
+                            '{0}-{1}-{2}T00:00:00',
+                            date.getFullYear(),
+                            (date.getMonth() < 9 ? '0' : '') + (1 + date.getMonth()),
+                            (date.getDate() < 10 ? '0' : '') + date.getDate());
                     }
                     
                     return {
