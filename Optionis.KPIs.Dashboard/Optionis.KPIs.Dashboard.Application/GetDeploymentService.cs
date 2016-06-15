@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
@@ -13,16 +11,6 @@ namespace Optionis.KPIs.Dashboard.Application
         public interface IGetDeployments
         {
             void Get(int deploymentId, Action onDeploymentNotFound, Action<Deployment> onDeploymentFound);
-        }
-
-        [DefaultValue(Unknown)]
-        public enum DeploymentStatus
-        {
-            Unknown = 0,
-            Pending = 1,
-            Success = 2,
-            Failed = 3,
-            Aborted = 4
         }
 
         public class Deployment

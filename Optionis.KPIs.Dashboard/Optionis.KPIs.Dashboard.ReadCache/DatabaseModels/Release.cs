@@ -22,6 +22,7 @@ namespace Optionis.KPIs.Dashboard.ReadCache.DatabaseModels
         public int ReleaseId{get;set;}
         public DateTime DeploymentDate { get; set; }
         public string Version{ get; set; }
+        public string DeploymentStaus { get; set; }
     }
 
     public class Issue : IAmADatabaseModel

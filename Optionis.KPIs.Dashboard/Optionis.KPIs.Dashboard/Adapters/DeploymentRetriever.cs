@@ -22,7 +22,7 @@ namespace Optionis.KPIs.Dashboard.Adapters
                     Id = deployment.Id,
                     DeploymentDate = deployment.DeploymentDate,
                     Version = deployment.Version,
-                    Status = GetDeploymentService.DeploymentStatus.Unknown
+                    Status = (DeploymentStatus)Enum.Parse(typeof(DeploymentStatus), deployment.DeploymentStaus)
                 });
             }
         }
