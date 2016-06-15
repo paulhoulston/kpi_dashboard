@@ -29,38 +29,6 @@
         return compiledTemplate (opts.data || { });
     },
 
-    getIssue: function(uri) {
-        $.getJSON(uri, function(d) {
-            $('div[data-issue-uri="' + uri + '"]').empty().html(
-                Releases.getView({ template: Releases.templates.issueDetails, data: d })
-            );
-        });
-    },
-
-
-    getDeployment: function(uri) {
-        $.getJSON(uri, function(d) {
-            $('div[data-deployment-uri="' + uri + '"]').empty().html(
-                Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
-            );
-        });
-    },
-
-    getRelease: function(uri) {
-        $.getJSON(uri, function(d) {
-            var releaseDiv = 
-                $('div[data-uri="' + uri + '"]').empty().html(
-                    Releases.getView({ template: Releases.templates.releaseDetails, data: d })
-                );
-            releaseDiv.find('div[data-issue-uri]').each(function(_, o) {
-                Releases.getIssue($(o).attr('data-issue-uri'));
-            });
-            releaseDiv.find('div[data-deployment-uri]').each(function(_, o) {
-                Releases.getDeployment($(o).attr('data-deployment-uri'));
-            });
-        });
-    },
-
     handlePostError: function(errorsEl, jqXHR) {
         if(jqXHR && jqXHR.responseJSON && jqXHR.responseJSON.error && jqXHR.responseJSON.error.message) {
             errorsEl.removeClass('hidden').empty().html(
@@ -74,11 +42,46 @@
     init: function() {
 
         function bindReleases() {
+
+            function getRelease(uri) {
+
+                function getIssue(uri) {
+                    $.getJSON(uri, function(d) {
+                        $('div[data-issue-uri="' + uri + '"]').empty().html(
+                            Releases.getView({ template: Releases.templates.issueDetails, data: d })
+                        );
+                    });
+                }
+
+                function getDeployment(uri) {
+                    $.getJSON(uri, function(d) {
+                        $('div[data-deployment-uri="' + uri + '"]').empty().html(
+                            Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
+                        ).find('a[data-deployment-uri]').click(function(e) {
+                            console.log('Update deployment status');
+                        });
+                    });
+                }
+
+                $.getJSON(uri, function(d) {
+                    var releaseDiv = 
+                        $('div[data-uri="' + uri + '"]').empty().html(
+                            Releases.getView({ template: Releases.templates.releaseDetails, data: d })
+                        );
+                    releaseDiv.find('div[data-issue-uri]').each(function(_, o) {
+                        getIssue($(o).attr('data-issue-uri'));
+                    });
+                    releaseDiv.find('div[data-deployment-uri]').each(function(_, o) {
+                        getDeployment($(o).attr('data-deployment-uri'));
+                    });
+                });
+            }
+
             $.getJSON(Releases.settings.releasesUri, function(d){
                 $('#releases').empty().html(
                     Releases.getView({ template: Releases.templates.releases, data: d })
                 ).children('div[data-uri]').each(function(_, o) {
-                    Releases.getRelease($(o).attr('data-uri'));
+                    getRelease($(o).attr('data-uri'));
                 });
             });
         }
