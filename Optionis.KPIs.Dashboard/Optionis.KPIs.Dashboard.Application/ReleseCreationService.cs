@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -38,6 +37,7 @@ namespace Optionis.KPIs.Dashboard.Application
             public Issue[] Issues{ get; set; }
             public string Comments{ get; set; }
             public DateTime DeploymentDate { get; set; }
+            public DeploymentStatus DeploymentStatus { get; set; }
         }
 
         public class Issue

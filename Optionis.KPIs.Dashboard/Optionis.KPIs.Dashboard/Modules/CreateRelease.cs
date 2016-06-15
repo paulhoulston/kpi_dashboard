@@ -91,7 +91,8 @@ namespace Optionis.KPIs.Dashboard.Modules
                 Issues = ConvertIssues (releaseToCreate),
                 Title = releaseToCreate.Title,
                 Version = releaseToCreate.Version,
-                DeploymentDate = releaseToCreate.DeploymentDate
+                DeploymentDate = releaseToCreate.DeploymentDate,
+                DeploymentStatus = DeploymentStatus.Pending
             };
         }
 

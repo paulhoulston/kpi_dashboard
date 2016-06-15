@@ -37,7 +37,8 @@ namespace Optionis.KPIs.Adapters
             connection.Insert (new Deployment {
                 DeploymentDate = model.DeploymentDate,
                 ReleaseId = releaseId,
-                Version = model.Version
+                Version = model.Version,
+                DeploymentStaus = model.DeploymentStatus.ToString()
             });
         }
 
