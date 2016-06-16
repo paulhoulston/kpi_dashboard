@@ -68,9 +68,9 @@
         <div class="row">
             <div class="column grid_2">{{formatDate deploymentDate}}</div>
             <div class="column grid_2">Version: {{version}}</div>
-            <div class="column grid_8">
+            <div class="column grid_8" name="statusDiv">
                 Status: {{status}}
-                <a href="javascript:void(0);" title="Update status" data-deployment-uri="{{self}}" data-property="DeploymentStatus">[update]</a>
+                <a href="javascript:void(0);" title="Update status" data-deployment-uri="{{self}}" data-status="{{status}}" data-property="DeploymentStatus">[update]</a>
             </div>
         </div>
     </script>
@@ -144,6 +144,18 @@
                 <input type="text" id="username" placeholder="User name to create..." maxlength="50" required />
             </div>
         </div>
+    </script>
+    <script id="update-status-template" type="text/x-handlebars-template">
+        Status 
+        <select>
+            {{#options}}
+                {{#if selected}}
+                <option selected="selected">{{value}}</option>
+                {{else}}
+                <option>{{value}}</option>
+                {{/if}}
+            {{/options}}
+        </select>
     </script>
  </body>
 </html>

@@ -2,6 +2,7 @@
     
     settings: {
         dateFormat: 'dd/mm/yy',
+        deploymentStatuses: '/deployments/statuses',
         releasesUri: '/releases',
         usersUri: '/users'
     },
@@ -10,6 +11,7 @@
         createRelease: '#create-release-template',
         createUser: '#create-user-template',
         deploymentDetails: '#deployment-template',
+        deploymentStatus: 'update-status-template',
         errors: '#errors-template',
         issueDetails: '#issue-template',
         releases: '#releases-template',
@@ -54,12 +56,34 @@
                 }
 
                 function getDeployment(uri) {
+                    function onUpdateStatus(e) {
+                        function onGetStatuses(d) {
+                            var trg = $(e.currentTarget);
+    
+                            function getStatusOptions() {
+                                var currentStatus = trg.attr('data-status'),
+                                    opts = [];
+                                $(d.statuses).each(function(_, val) {
+                                    opts.push({ value: val, selected: val === currentStatus }); 
+                                });
+                                return opts;
+                            }
+                            var trg = $(e.currentTarget),
+                                div = trg.parents('div[name="statusDiv"]');
+                            
+                            div.empty().html(Releases.getView({ 
+                                template: Releases.templates.deploymentStatus,
+                                data: getStatusOptions()
+                            }));
+                        }
+
+                        $.getJSON(Releases.settings.deploymentStatuses, onGetStatuses);
+                    }
+
                     $.getJSON(uri, function(d) {
                         $('div[data-deployment-uri="' + uri + '"]').empty().html(
                             Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
-                        ).find('a[data-deployment-uri]').click(function(e) {
-                            console.log('Update deployment status');
-                        });
+                        ).find('a[data-deployment-uri]').click(onUpdateStatus);
                     });
                 }
 
