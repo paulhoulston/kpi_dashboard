@@ -4,14 +4,13 @@ using System.ComponentModel;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
-    [DefaultValue(Unknown)]
+    [DefaultValue(Pending)]
     public enum DeploymentStatus
     {
-        Unknown = 0,
-        Pending = 1,
-        Success = 2,
-        Failed = 3,
-        Aborted = 4
+        Pending = 0,
+        Success = 1,
+        Failed = 2,
+        Aborted = 3
     }
     
 }

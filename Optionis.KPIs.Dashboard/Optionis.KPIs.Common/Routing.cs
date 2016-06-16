@@ -35,6 +35,11 @@
             }
         }
 
+        public static class DeploymentStatuses
+        {
+            public const string ROUTE = "/deployments/statuses";
+        }
+
         public static class Users
         {
             public const string ROUTE = "/users";

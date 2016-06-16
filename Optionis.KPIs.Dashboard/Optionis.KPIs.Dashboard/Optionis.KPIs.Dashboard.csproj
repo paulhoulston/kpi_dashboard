@@ -105,6 +105,7 @@
     <Compile Include="Adapters\UserRetriever.cs" />
     <Compile Include="Modules\CreateUser.cs" />
     <Compile Include="Adapters\UserCreator.cs" />
+    <Compile Include="Modules\GetDeploymentStatuses.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adapters\" />
