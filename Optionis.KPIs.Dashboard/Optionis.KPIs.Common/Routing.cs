@@ -28,6 +28,7 @@
         {
             public const string ROUTE = "/deployments";
             public const string GET = "/deployments/{id}";
+            public const string DELETE = "/deployments/{id}";
 
             public static string Get(int id)
             {

@@ -96,6 +96,7 @@
                     function onDeleteDeployment(e) {
 
                         function deleteDeployment() {
+                            Releases.closeDialog();
                             $.ajax({ 
                                 url: $(e.currentTarget).attr('data-deployment-uri'),
                                 type: 'DELETE',
