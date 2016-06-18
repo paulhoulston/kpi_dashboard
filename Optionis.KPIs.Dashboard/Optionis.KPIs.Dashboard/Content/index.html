@@ -70,7 +70,8 @@
             <div class="column grid_2">Version: {{version}}</div>
             <div class="column grid_8" name="statusDiv">
                 Status: {{status}}
-                <a href="javascript:void(0);" title="Update status" data-deployment-uri="{{self}}" data-status="{{status}}" data-property="DeploymentStatus">[update]</a>
+                <a href="javascript:void(0);" title="Update status" data-action="update" data-deployment-uri="{{self}}" data-status="{{status}}">[update]</a>
+                <a href="javascript:void(0);" title="Delete deployment" data-action="delete" data-deployment-uri="{{self}}">[delete]</a>
             </div>
         </div>
     </script>

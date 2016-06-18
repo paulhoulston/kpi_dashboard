@@ -25,6 +25,10 @@
         });
     },
 
+    closeDialog: function() {
+        $('#popup').dialog('close');
+    },
+
     getView: function(opts) {
         var theTemplateScript = $(opts.template).html(),
             compiledTemplate = Handlebars.compile (theTemplateScript);
@@ -89,10 +93,33 @@
                         $.getJSON(Releases.settings.deploymentStatuses, onGetStatuses);
                     }
 
+                    function onDeleteDeployment(e) {
+
+                        function deleteDeployment() {
+                            $.ajax({ 
+                                url: $(e.currentTarget).attr('data-deployment-uri'),
+                                type: 'DELETE',
+                                success: bindReleases
+                            });
+                        }
+
+                        $('#popup').empty().html($('<p/>', { 
+                            text: 'Are you sure wish to delete the deployment' 
+                        })).dialog({
+                            title: 'Delete deployment?',
+                            buttons: [
+                                { text: 'OK', click: deleteDeployment },
+                                { text: 'Cancel', click: Releases.closeDialog }
+                            ]
+                        });
+                    }
+
                     $.getJSON(uri, function(d) {
-                        $('div[data-deployment-uri="' + uri + '"]').empty().html(
+                        var deployment = $('div[data-deployment-uri="' + uri + '"]').empty().html(
                             Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
-                        ).find('a[data-deployment-uri]').on('click', onUpdateStatus);
+                        );
+                        deployment.find('a[data-action="update"][data-deployment-uri]').on('click', onUpdateStatus);
+                        deployment.find('a[data-action="delete"][data-deployment-uri]').on('click', onDeleteDeployment);
                     });
                 }
 
@@ -117,10 +144,6 @@
                     getRelease($(o).attr('data-uri'));
                 });
             });
-        }
-
-        function closeDialog() {
-            $('#popup').dialog('close');
         }
 
         function onCreateRelease() {
@@ -148,7 +171,7 @@
                 }
 
                 function onSuccess(data) {
-                    closeDialog();
+                    Releases.closeDialog();
                     bindReleases();
                 }
 
@@ -189,7 +212,7 @@
                 closeOnEscape: true,
                 buttons: [
                     { text: 'Create', click: createRelease },
-                    { text: 'Cancel', click: closeDialog }
+                    { text: 'Cancel', click: Releases.closeDialog }
                 ]
             }).find('#deploymentDate').datepicker({
                 showOn: 'both',
@@ -205,7 +228,7 @@
 
             function onSuccess () {
                 popup.empty().html($('<p/>', { 'text': 'User added successfully' })).dialog('option', 'buttons', [
-                    { 'text': 'Close', click: closeDialog }
+                    { 'text': 'Close', click: Releases.closeDialog }
                 ]);
             }
 
@@ -231,7 +254,7 @@
                 closeOnEscape: true,
                 buttons: [
                     { text: 'Create', click: createUser },
-                    { text: 'Cancel', click: closeDialog }
+                    { text: 'Cancel', click: Releases.closeDialog }
                 ]
             });
         }
