@@ -62,3 +62,4 @@ section#management a {
 section#releases {
     margin: 0 25px
 }
+a.showAll { float: right }

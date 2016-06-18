@@ -11,7 +11,7 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public interface IListReleases
         {
-            IEnumerable<ReleaseListingService.Release> List ();
+            IEnumerable<ReleaseListingService.Release> List (int top);
         }
 
         public class Release
@@ -30,9 +30,9 @@ namespace Optionis.KPIs.Dashboard.Application
             _onReleasesRetrieved = onReleasesRetrieved;
         }
 
-        public void List()
+        public void List(int top)
         {
-            _onReleasesRetrieved (_releaseRepository.List ());
+            _onReleasesRetrieved (_releaseRepository.List (top));
         }
     }
 }

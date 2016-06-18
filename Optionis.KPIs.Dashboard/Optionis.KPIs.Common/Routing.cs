@@ -5,6 +5,7 @@
         public static class Releases
         {
             public const string ROUTE = "/releases";
+            public const string ROUTE_ALL = "/releases/all";
             public const string GET = "/releases/{id}";
 
             public static string Get(int id)

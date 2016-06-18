@@ -13,9 +13,16 @@ namespace Optionis.KPIs.Dashboard.Modules
                 dynamic response = null;
                 new ReleaseListingService (
                     new ReleaseLister (),
-                    releases => response = new { releases }).List ();
+                    releases => response = new { releases }).List (NumberOfResultsToReturn ());
                 return response;
             };
+        }
+
+        int NumberOfResultsToReturn ()
+        {
+            if (Request.Query ["top"].HasValue)
+                return int.Parse (Request.Query ["top"].Value);
+            return 5;
         }
     }
 }

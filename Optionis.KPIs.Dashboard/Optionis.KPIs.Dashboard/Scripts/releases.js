@@ -1,6 +1,7 @@
 ﻿var Releases = {
     
     settings: {
+        allReleasesUri: '/releases?top=10000',
         dateFormat: 'dd/mm/yy',
         deploymentStatuses: '/deployments/statuses',
         releasesUri: '/releases',
@@ -47,7 +48,7 @@
 
     init: function() {
 
-        function bindReleases() {
+        function bindReleases(releasesUri) {
 
             function getRelease(uri) {
 
@@ -138,11 +139,15 @@
                 });
             }
 
-            $.getJSON(Releases.settings.releasesUri, function(d){
+            $.getJSON(releasesUri || Releases.settings.releasesUri, function(d){
                 $('#releases').empty().html(
                     Releases.getView({ template: Releases.templates.releases, data: d })
                 ).children('div[data-uri]').each(function(_, o) {
                     getRelease($(o).attr('data-uri'));
+                });
+
+                $('a.showAll').on('click', function() {
+                    bindReleases(Releases.settings.allReleasesUri);
                 });
             });
         }
