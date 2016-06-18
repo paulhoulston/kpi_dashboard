@@ -11,7 +11,7 @@
         createRelease: '#create-release-template',
         createUser: '#create-user-template',
         deploymentDetails: '#deployment-template',
-        deploymentStatus: 'update-status-template',
+        deploymentStatus: '#update-status-template',
         errors: '#errors-template',
         issueDetails: '#issue-template',
         releases: '#releases-template',
@@ -66,8 +66,13 @@
                                 $(d.statuses).each(function(_, val) {
                                     opts.push({ value: val, selected: val === currentStatus }); 
                                 });
-                                return opts;
+                                return { deploymentUri: uri, options: opts };
                             }
+
+                            function onUpdateDeployent() { 
+                                bindReleases();
+                            }
+
                             var trg = $(e.currentTarget),
                                 div = trg.parents('div[name="statusDiv"]');
                             
@@ -75,6 +80,10 @@
                                 template: Releases.templates.deploymentStatus,
                                 data: getStatusOptions()
                             }));
+
+                            div.find('a[name="cancel"]').on('click', bindReleases);
+                            div.find('a[name="save"]').on('click', onUpdateDeployent);
+
                         }
 
                         $.getJSON(Releases.settings.deploymentStatuses, onGetStatuses);
@@ -83,7 +92,7 @@
                     $.getJSON(uri, function(d) {
                         $('div[data-deployment-uri="' + uri + '"]').empty().html(
                             Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
-                        ).find('a[data-deployment-uri]').click(onUpdateStatus);
+                        ).find('a[data-deployment-uri]').on('click', onUpdateStatus);
                     });
                 }
 

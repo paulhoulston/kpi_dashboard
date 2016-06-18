@@ -147,7 +147,7 @@
     </script>
     <script id="update-status-template" type="text/x-handlebars-template">
         Status 
-        <select>
+        <select class="short">
             {{#options}}
                 {{#if selected}}
                 <option selected="selected">{{value}}</option>
@@ -156,6 +156,9 @@
                 {{/if}}
             {{/options}}
         </select>
+        <input type="text" id="deploymentComments" placeholder="Any deployment comments..." />
+        <a href="#" name="save" data-deployment-id="{{deploymentUri}}" title="Save deployment comments">Save</a>
+        <a href="#" name="cancel" title="Cancel">Cancel</a>
     </script>
  </body>
 </html>

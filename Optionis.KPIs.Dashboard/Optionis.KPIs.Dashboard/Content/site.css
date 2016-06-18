@@ -44,6 +44,7 @@ h4 { margin: 4px 0; font-size: 1.0em }
 }
 
 select, input[type=text], textarea { width: 275px }
+select.short { width: 100px }
 .errors {
     padding: 10px;
     margin-bottom: 4px;
