@@ -1,0 +1,164 @@
+﻿<html>
+ <head>
+     <title>KPIs</title>
+     <link rel="stylesheet" type="text/css" href="Content/jquery-ui.min.css">
+     <link rel="stylesheet" type="text/css" href="Content/site.css">
+     <script type="text/javascript" src="Scripts/jquery-2.2.3.min.js"></script>
+     <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.min.js"></script>
+     <script type="text/javascript" src="Scripts/handlebars.min.js"></script>
+     <script type="text/javascript" src="Scripts/releases.js"></script>
+     <script type="text/javascript">
+     $(Releases.init);
+     </script>
+ </head>
+ <body>
+    <div id="popup" class="hidden"></div>
+    <header></header>
+
+    <section id="management">
+        <a id="btnCreateRelease" href="javascript:void(0);" title="Create Release">Create Release</a>
+        <a id="btnCreateUser" href="javascript:void(0);" title="Create User">Create User</a>
+    </section>
+
+    <section id="releases"></section>
+    <footer></footer>
+
+    <script id="releases-template" type="text/x-handlebars-template">​
+        {{#if releases}}
+            {{#releases}}
+            <div data-uri="{{uri}}"></div>
+            {{/releases}}
+        {{else}}
+            <p class="alignCenter">No releases found</p>
+        {{/if}}
+    </script>
+    <script id="release-details-template" type="text/x-handlebars-template">
+        <div class="release-heading">
+            <span class="strong">{{title}}</span>
+            <span class="padLeft25">{{formatDate created}}&nbsp;
+            <a href="#">{{createdBy}}</a></span>
+        </div>
+        {{#if comments}}
+        <p>{{comments}}</p>
+        {{/if}}
+        {{#if issues.length}}
+            <h4>Issues</h4>
+            {{#issues}}
+                <div data-issue-uri="{{issue}}"></div>
+            {{/issues}}
+        {{/if}}
+        {{#if deployments}}
+            <h4>Deployments</h4>
+            {{#deployments}}
+            <div class="row">
+                <div data-deployment-uri="{{deployment}}"></div>
+            </div>
+            {{/deployments}}
+        {{/if}}
+    </script>
+    <script id="issue-template" type="text/x-handlebars-template">
+        <div class="row">
+            <div class="column grid_2">
+                <a href="{{link}}" title="{{title}}">{{issueId}}</a>
+            </div>
+            <div class="column grid_10">{{title}}</div>
+        </div>
+    </script>
+    <script id="deployment-template" type="text/x-handlebars-template">
+        <div class="row">
+            <div class="column grid_2">{{formatDate deploymentDate}}</div>
+            <div class="column grid_2">Version: {{version}}</div>
+            <div class="column grid_8" name="statusDiv">
+                Status: {{status}}
+                <a href="javascript:void(0);" title="Update status" data-deployment-uri="{{self}}" data-status="{{status}}" data-property="DeploymentStatus">[update]</a>
+            </div>
+        </div>
+    </script>
+    <script id="errors-template"  type="text/x-handlebars-template">
+        <div class="errors">
+            The following error prevented submission
+            <ul>
+            {{#errors}}
+                <li>{{error}}</li>
+            {{/errors}}
+            </ul>
+        </div>
+    </script>
+    <script id="create-release-template" type="text/x-handlebars-template">
+        <div id="divReleaseToCreate">
+            <div id="errors" class="hidden"></div>
+            <div class="row noMinWidth padded">
+                <div class="column grid_4 strong">Title</div>
+                <div class="column grid_8">
+                    <input type="text" id="title" placeholder="Release title..." />
+                </div>
+            </div>
+            <div class="row noMinWidth padded">
+                <div class="column grid_4 strong">Created by</div>
+                <div class="column grid_8">
+                    <select id="createdBy">
+                        <option>Select user</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row noMinWidth padded">
+                <div class="column grid_4 strong">Comments</div>
+                <div class="column grid_8">
+                    <textarea id="comments" placeholder="Release comments..." rows="4"></textarea>
+                </div>
+            </div>
+            <div class="row noMinWidth padded">
+                <div class="column grid_4 strong">Application</div>
+                <div class="column grid_8">
+                    <select id="application">
+                        <option value="MyParasol">MyParasol</option>
+                        <option value="MyClearsky">MyClearsky</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row noMinWidth padded">
+                <div class="column grid_4 strong">Version</div>
+                <div class="column grid_8">
+                    <input type="text" id="version" placeholder="Release version (e.g. 1.0.24.*) ..." />
+                </div>
+            </div>
+            <div class="row noMinWidth padded">
+                <div class="column grid_4 strong">Deployment date</div>
+                <div class="column grid_8">
+                    <input type="text" id="deploymentDate" readonly="readonly" />
+                </div>
+            </div>
+            <div class="row noMinWidth padded">
+                <div class="column grid_4 strong">Issues</div>
+                <div class="column grid_8">
+                    tbd...
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="create-user-template" type="text/x-handlebars-template">
+        <div id="errors" class="hidden"></div>
+        <div class="row noMinWidth padded">
+            <div class="column grid_4 strong">User Name</div>
+            <div class="column grid_8">
+                <input type="text" id="username" placeholder="User name to create..." maxlength="50" required />
+            </div>
+        </div>
+    </script>
+    <script id="update-status-template" type="text/x-handlebars-template">
+        Status 
+        <select class="short">
+            {{#options}}
+                {{#if selected}}
+                <option selected="selected">{{value}}</option>
+                {{else}}
+                <option>{{value}}</option>
+                {{/if}}
+            {{/options}}
+        </select>
+        <input type="text" id="deploymentComments" placeholder="Any deployment comments..." />
+        <a href="#" name="save" data-deployment-id="{{deploymentUri}}" title="Save deployment comments">Save</a>
+        <a href="#" name="cancel" title="Cancel">Cancel</a>
+    </script>
+ </body>
+</html>

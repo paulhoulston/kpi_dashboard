@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E2488FB4-4329-470B-9440-C5620CADF348}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Optionis.KPIs.Dashboard.Application.Tests</RootNamespace>
+    <AssemblyName>Optionis.KPIs.Dashboard.Application.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="CreateReleaseTests.cs" />
+    <Compile Include="GetReleaseTests.cs" />
+    <Compile Include="GetIssueTests.cs" />
+    <Compile Include="GetDeploymentTests.cs" />
+    <Compile Include="GetUserTests.cs" />
+    <Compile Include="CreateUserTests.cs" />
+    <Compile Include="DeleteDeploymentTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Optionis.KPIs.Dashboard.Application\Optionis.KPIs.Dashboard.Application.csproj">
+      <Project>{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}</Project>
+      <Name>Optionis.KPIs.Dashboard.Application</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
