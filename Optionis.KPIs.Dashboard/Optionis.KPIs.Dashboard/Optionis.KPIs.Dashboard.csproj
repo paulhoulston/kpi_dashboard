@@ -105,12 +105,12 @@
     <Compile Include="Adapters\UserRetriever.cs" />
     <Compile Include="Modules\CreateUser.cs" />
     <Compile Include="Adapters\UserCreator.cs" />
-    <Compile Include="Modules\GetDeploymentStatuses.cs" />
     <Compile Include="Modules\DeleteDeployment.cs" />
     <Compile Include="Adapters\ReleaseHasAssignedDeploymentsChecker.cs" />
     <Compile Include="Adapters\ReleaseRemover.cs" />
     <Compile Include="Adapters\DeploymentRemover.cs" />
     <Compile Include="Adapters\DeploymentExistenceChecker.cs" />
+    <Compile Include="Modules\ListDeploymentStatuses.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adapters\" />

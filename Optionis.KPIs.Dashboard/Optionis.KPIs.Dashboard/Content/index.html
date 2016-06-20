@@ -36,8 +36,7 @@
     <script id="release-details-template" type="text/x-handlebars-template">
         <div class="release-heading">
             <span class="strong">{{title}}</span>
-            <span class="padLeft25">{{formatDate created}}&nbsp;
-            <a href="#">{{createdBy}}</a></span>
+            <span class="padLeft25">Created {{formatDate created}} by <i>{{createdBy}}</i></span>
         </div>
         {{#if comments}}
         <p>{{comments}}</p>
@@ -49,7 +48,7 @@
             {{/issues}}
         {{/if}}
         {{#if deployments}}
-            <h4>Deployments</h4>
+            <h4>Deployments <a href="#" title="Add deployment" data-add-deployment-uri="{{self}}"">[add deployment]</a></h4>
             {{#deployments}}
             <div class="row">
                 <div data-deployment-uri="{{deployment}}"></div>
@@ -71,8 +70,28 @@
             <div class="column grid_2">Version: {{version}}</div>
             <div class="column grid_8" name="statusDiv">
                 Status: {{status}}
-                <a href="javascript:void(0);" title="Update status" data-action="update" data-deployment-uri="{{self}}" data-status="{{status}}">[update]</a>
                 <a href="javascript:void(0);" title="Delete deployment" data-action="delete" data-deployment-uri="{{self}}">[delete]</a>
+            </div>
+        </div>
+    </script>
+    <script id="add-deployment-template" type="text/x-handlebars-template">
+        <div class="row padded">
+            <div class="column grid_2">
+                <input type="text" class="short" id="deploymentDate" />
+            </div>
+            <div class="column grid_2">
+                <input type="text" id="version" placeholder="Deployment version..." />
+            </div>
+            <div class="column grid_2" name="statusDiv">
+                <select id="status" class="short">
+                {{#statuses}}
+                    <option>{{status}}</option>
+                {{/statuses}}
+                </select>
+            </div>
+            <div class="column grid_6">
+                <a href="#" data-action="save" title="Add deployment">[save]</a>&nbsp;
+                <a href="#" data-action="cancel" title="Cancel">[cancel]</a>
             </div>
         </div>
     </script>
@@ -146,21 +165,6 @@
                 <input type="text" id="username" placeholder="User name to create..." maxlength="50" required />
             </div>
         </div>
-    </script>
-    <script id="update-status-template" type="text/x-handlebars-template">
-        Status 
-        <select class="short">
-            {{#options}}
-                {{#if selected}}
-                <option selected="selected">{{value}}</option>
-                {{else}}
-                <option>{{value}}</option>
-                {{/if}}
-            {{/options}}
-        </select>
-        <input type="text" id="deploymentComments" placeholder="Any deployment comments..." />
-        <a href="#" name="save" data-deployment-id="{{deploymentUri}}" title="Save deployment comments">Save</a>
-        <a href="#" name="cancel" title="Cancel">Cancel</a>
     </script>
  </body>
 </html>

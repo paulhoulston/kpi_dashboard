@@ -9,6 +9,7 @@
     },
 
     templates: {
+        addDeployment: '#add-deployment-template',
         createRelease: '#create-release-template',
         createUser: '#create-user-template',
         deploymentDetails: '#deployment-template',
@@ -33,6 +34,7 @@
     getView: function(opts) {
         var theTemplateScript = $(opts.template).html(),
             compiledTemplate = Handlebars.compile (theTemplateScript);
+        //console.log(JSON.stringify(opts.data||{}));
         return compiledTemplate (opts.data || { });
     },
 
@@ -46,101 +48,94 @@
         }
     },
 
+    tomorrow: function() {
+        var today = new Date();
+        var tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+        return tomorrow;
+    },
+
     init: function() {
 
         function bindReleases(releasesUri) {
 
             function getRelease(uri) {
+                function onGetReleaseDetails(d) {
+                    var releaseDiv = $('div[data-uri="' + uri + '"]').empty().html(Releases.getView({ template: Releases.templates.releaseDetails, data: d }));
 
-                function getIssue(uri) {
-                    $.getJSON(uri, function(d) {
-                        $('div[data-issue-uri="' + uri + '"]').empty().html(
-                            Releases.getView({ template: Releases.templates.issueDetails, data: d })
-                        );
-                    });
-                }
-
-                function getDeployment(uri) {
-                    function onUpdateStatus(e) {
-                        function onGetStatuses(d) {
-                            var trg = $(e.currentTarget);
-    
-                            function getStatusOptions() {
-                                var currentStatus = trg.attr('data-status'),
-                                    opts = [];
-                                $(d.statuses).each(function(_, val) {
-                                    opts.push({ value: val, selected: val === currentStatus }); 
-                                });
-                                return { deploymentUri: uri, options: opts };
-                            }
-
-                            function onUpdateDeployent() { 
-                                bindReleases();
-                            }
-
-                            var trg = $(e.currentTarget),
-                                div = trg.parents('div[name="statusDiv"]');
-                            
-                            div.empty().html(Releases.getView({ 
-                                template: Releases.templates.deploymentStatus,
-                                data: getStatusOptions()
-                            }));
-
-                            div.find('a[name="cancel"]').on('click', bindReleases);
-                            div.find('a[name="save"]').on('click', onUpdateDeployent);
-
-                        }
-
-                        $.getJSON(Releases.settings.deploymentStatuses, onGetStatuses);
+                    function getIssue(uri) {
+                        $.getJSON(uri, function(d) {
+                            $('div[data-issue-uri="' + uri + '"]').empty().html(
+                                Releases.getView({ template: Releases.templates.issueDetails, data: d })
+                            );
+                        });
                     }
+                    
+                    function getDeployment(uri) {
+                        function onDeleteDeployment(e) {
+                            function deleteDeployment() {
+                                Releases.closeDialog();
+                                $.ajax({ 
+                                    url: $(e.currentTarget).attr('data-deployment-uri'),
+                                    type: 'DELETE',
+                                    success: bindReleases
+                                });
+                            }
 
-                    function onDeleteDeployment(e) {
-
-                        function deleteDeployment() {
-                            Releases.closeDialog();
-                            $.ajax({ 
-                                url: $(e.currentTarget).attr('data-deployment-uri'),
-                                type: 'DELETE',
-                                success: bindReleases
+                            $('#popup').empty().html($('<p/>', { 
+                                text: 'Are you sure wish to delete the deployment' 
+                            })).dialog({
+                                title: 'Delete deployment?',
+                                buttons: [
+                                    { text: 'OK', click: deleteDeployment },
+                                    { text: 'Cancel', click: Releases.closeDialog }
+                                ]
                             });
                         }
 
-                        $('#popup').empty().html($('<p/>', { 
-                            text: 'Are you sure wish to delete the deployment' 
-                        })).dialog({
-                            title: 'Delete deployment?',
-                            buttons: [
-                                { text: 'OK', click: deleteDeployment },
-                                { text: 'Cancel', click: Releases.closeDialog }
-                            ]
+                        $.getJSON(uri, function(d) {
+                            var deployment = $('div[data-deployment-uri="' + uri + '"]').empty().html(
+                                Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
+                            );
+                            deployment.find('a[data-action="delete"][data-deployment-uri]').on('click', onDeleteDeployment);
                         });
                     }
 
-                    $.getJSON(uri, function(d) {
-                        var deployment = $('div[data-deployment-uri="' + uri + '"]').empty().html(
-                            Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
-                        );
-                        deployment.find('a[data-action="update"][data-deployment-uri]').on('click', onUpdateStatus);
-                        deployment.find('a[data-action="delete"][data-deployment-uri]').on('click', onDeleteDeployment);
-                    });
-                }
+                    function addDeployment() {
+                        $.getJSON(Releases.settings.deploymentStatuses, function(d) {
+                            releaseDiv.append(Releases.getView({
+                                template: Releases.templates.addDeployment,
+                                data: { statuses: d.statuses }
+                            }));
 
-                $.getJSON(uri, function(d) {
-                    var releaseDiv = 
-                        $('div[data-uri="' + uri + '"]').empty().html(
-                            Releases.getView({ template: Releases.templates.releaseDetails, data: d })
-                        );
+                            var deploymentRow = releaseDiv.children('div:last');
+                            deploymentRow.find('input[type=text][id="deploymentDate"]').datepicker({
+                                showOn: 'both',
+                                dateFormat: Releases.settings.dateFormat
+                            }).datepicker('setDate', Releases.tomorrow());;
+                            deploymentRow.find('a[data-action="cancel"]').on('click', function(e) {
+                                deploymentRow.remove();
+                            });
+                            deploymentRow.find('a[data-action="save"]').on('click', function(e) {
+                                console.log('save deployment');
+                            });
+                        });
+                    }
+
                     releaseDiv.find('div[data-issue-uri]').each(function(_, o) {
                         getIssue($(o).attr('data-issue-uri'));
                     });
                     releaseDiv.find('div[data-deployment-uri]').each(function(_, o) {
                         getDeployment($(o).attr('data-deployment-uri'));
                     });
-                });
+                    releaseDiv.find('a[data-add-deployment-uri]').on('click', addDeployment);
+                }
+
+                $.getJSON(uri, onGetReleaseDetails);
             }
 
             $.getJSON(releasesUri || Releases.settings.releasesUri, function(d){
-                $('#releases').empty().html(
+                var releasesDiv = $('#releases').empty().html(
                     Releases.getView({ template: Releases.templates.releases, data: d })
                 ).children('div[data-uri]').each(function(_, o) {
                     getRelease($(o).attr('data-uri'));
@@ -190,13 +185,6 @@
                 });
             }
 
-            function tomorrow() {
-                var today = new Date();
-                var tomorrow = new Date();
-                tomorrow.setDate(today.getDate() + 1);
-                return tomorrow;
-            }
-
             function bindUsers() {
                 $.getJSON(Releases.settings.usersUri, function(d) {
                     if(d.users) {
@@ -222,9 +210,8 @@
                 ]
             }).find('#deploymentDate').datepicker({
                 showOn: 'both',
-                setDate: tomorrow,
                 dateFormat: Releases.settings.dateFormat
-            }).datepicker('setDate', tomorrow());
+            }).datepicker('setDate', Releases.tomorrow());
 
             bindUsers();
         }

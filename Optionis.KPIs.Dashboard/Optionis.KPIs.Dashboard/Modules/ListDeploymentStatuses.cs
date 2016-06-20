@@ -6,14 +6,16 @@ using System.Linq;
 
 namespace Optionis.KPIs.Dashboard
 {
-    public class GetDeploymentStatuses : NancyModule
+    public class ListDeploymentStatuses : NancyModule
     {
-        public GetDeploymentStatuses ()
+        public ListDeploymentStatuses ()
         {
             Get [Routing.DeploymentStatuses.ROUTE] = _ => new {
                 self = Routing.DeploymentStatuses.ROUTE,
-                statuses = Enum.GetNames (typeof(DeploymentStatus)).OrderBy (status => status)
-            };
+                statuses = Enum.GetNames (typeof(DeploymentStatus))
+                    .Select (status => new { status })
+                    .OrderBy (status => status.status)
+                };
         }
     }
 }
