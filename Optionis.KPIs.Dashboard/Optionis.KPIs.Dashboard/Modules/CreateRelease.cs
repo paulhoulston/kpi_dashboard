@@ -67,7 +67,9 @@ namespace Optionis.KPIs.Dashboard.Modules
         Response OnReleaseCreated (int releaseId)
         {
             return Response.AsJson (new {
+                links = new { 
                     self = Routing.Releases.Get(releaseId)
+                }
             }, HttpStatusCode.Created);
         }
 

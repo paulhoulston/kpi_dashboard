@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
@@ -17,6 +16,7 @@ namespace Optionis.KPIs.Dashboard.Application
         public class Issue
         {
             public int Id { get; set; }
+            public int ReleaseId { get; set; }
             public string IssueId{ get; set; }
             public string Title{ get; set; }
             public string Link{ get; set; }

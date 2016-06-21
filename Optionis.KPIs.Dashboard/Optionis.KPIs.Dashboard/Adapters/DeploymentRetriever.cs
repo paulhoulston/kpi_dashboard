@@ -19,7 +19,8 @@ namespace Optionis.KPIs.Dashboard.Adapters
                 }
 
                 onDeploymentFound (new GetDeploymentService.Deployment {
-                    Id = deployment.Id,
+                    DeploymentId = deployment.Id,
+                    ReleaseId = deployment.ReleaseId,
                     DeploymentDate = deployment.DeploymentDate,
                     Version = deployment.Version,
                     Status = (DeploymentStatus)Enum.Parse(typeof(DeploymentStatus), deployment.DeploymentStaus)

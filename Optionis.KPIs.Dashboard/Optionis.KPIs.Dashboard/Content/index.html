@@ -26,7 +26,7 @@
     <script id="releases-template" type="text/x-handlebars-template">​
         {{#if releases}}
             {{#releases}}
-            <div data-uri="{{uri}}"></div>
+            <div data-uri="{{.}}"></div>
             {{/releases}}
             <a class="showAll" href="#" title="Show all releases">Show all releases</a>
         {{else}}
@@ -41,19 +41,19 @@
         {{#if comments}}
         <p>{{comments}}</p>
         {{/if}}
-        {{#if issues.length}}
+        {{#if links.issues.list}}
             <h4>Issues</h4>
-            {{#issues}}
-                <div data-issue-uri="{{issue}}"></div>
-            {{/issues}}
+            {{#links.issues.list}}
+                <div data-issue-uri="{{.}}"></div>
+            {{/links.issues.list}}
         {{/if}}
-        {{#if deployments}}
+        {{#if links.deployments.list}}
             <h4>Deployments <a href="#" title="Add deployment" data-add-deployment-uri="{{self}}"">[add deployment]</a></h4>
-            {{#deployments}}
+            {{#links.deployments.list}}
             <div class="row">
-                <div data-deployment-uri="{{deployment}}"></div>
+                <div data-deployment-uri="{{.}}"></div>
             </div>
-            {{/deployments}}
+            {{/links.deployments.list}}
         {{/if}}
     </script>
     <script id="issue-template" type="text/x-handlebars-template">
@@ -70,7 +70,7 @@
             <div class="column grid_2">Version: {{version}}</div>
             <div class="column grid_8" name="statusDiv">
                 Status: {{status}}
-                <a href="javascript:void(0);" title="Delete deployment" data-action="delete" data-deployment-uri="{{self}}">[delete]</a>
+                <a href="javascript:void(0);" title="Delete deployment" data-action="delete" data-deployment-uri="{{links.self}}">[delete]</a>
             </div>
         </div>
     </script>

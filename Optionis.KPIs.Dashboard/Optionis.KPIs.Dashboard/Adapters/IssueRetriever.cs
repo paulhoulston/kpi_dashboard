@@ -20,6 +20,7 @@ namespace Optionis.KPIs.Dashboard.Adapters
 
                 onIssueFound (new GetIssueService.Issue {
                     Id = issue.Id,
+                    ReleaseId = issue.ReleaseId,
                     IssueId = issue.IssueId,
                     Link = issue.Link,
                     Title = issue.Title

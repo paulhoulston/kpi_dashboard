@@ -55,7 +55,9 @@ namespace Optionis.KPIs.Dashboard.Modules
         Response OnUserCreated (int userId)
         {
             return Response.AsJson (new {
-                self = Routing.Users.Get(userId)
+                links = new {
+                    self = Routing.Users.Get(userId)
+                }
             }, HttpStatusCode.Created);
         }
 

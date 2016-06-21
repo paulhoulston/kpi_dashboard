@@ -29,14 +29,21 @@ namespace Optionis.KPIs.Dashboard.Modules
         static dynamic Convert(GetReleaseService.Release release)
         {
             return new {
-                Self = Routing.Releases.Get (release.Id),
+                links = new {
+                    self = Routing.Releases.Get (release.Id),
+                    issues = new {
+                        list = release.IssueIds.Select (issueId => Routing.Issues.Get (release.Id, issueId))
+                    },
+                    deployments = new {
+                        add = Routing.Deployments.Add(release.Id),
+                        list = release.DeploymentIds.Select (deploymentId => Routing.Deployments.Get (release.Id, deploymentId))
+                    },
+                },
                 release.Title,
                 release.Created,
                 release.CreatedBy,
                 release.Application,
-                release.Comments,
-                Issues = release.IssueIds.Select (i => new { issue = Routing.Issues.Get (i)}),
-                Deployments = release.DeploymentIds.Select (d => new { deployment = Routing.Deployments.Get (d)}),
+                release.Comments
             };
         }
 

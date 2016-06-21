@@ -27,7 +27,9 @@ namespace Optionis.KPIs.Dashboard.Modules
         static dynamic Convert(GetUserService.User user)
         {
             return new {
-                Self = Routing.Users.Get (user.Id),
+                links = new {
+                    self = Routing.Users.Get (user.Id)
+                },
                 user.UserName,
                 user.Created
             };

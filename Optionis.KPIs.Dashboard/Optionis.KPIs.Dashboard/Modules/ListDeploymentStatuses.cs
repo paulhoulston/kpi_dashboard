@@ -11,7 +11,9 @@ namespace Optionis.KPIs.Dashboard
         public ListDeploymentStatuses ()
         {
             Get [Routing.DeploymentStatuses.ROUTE] = _ => new {
-                self = Routing.DeploymentStatuses.ROUTE,
+                links = new {
+                    self = Routing.DeploymentStatuses.ROUTE
+                },
                 statuses = Enum.GetNames (typeof(DeploymentStatus))
                     .Select (status => new { status })
                     .OrderBy (status => status.status)

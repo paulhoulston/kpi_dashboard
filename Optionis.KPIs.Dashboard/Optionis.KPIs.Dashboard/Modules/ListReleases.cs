@@ -2,6 +2,7 @@ using Nancy;
 using Optionis.KPIs.Dashboard.Application;
 using Optionis.KPIs.Dashboard.Adapters;
 using Optionis.KPIs.Common;
+using System.Linq;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {
@@ -13,7 +14,7 @@ namespace Optionis.KPIs.Dashboard.Modules
                 dynamic response = null;
                 new ReleaseListingService (
                     new ReleaseLister (),
-                    releases => response = new { releases }).List (NumberOfResultsToReturn ());
+                    releases => response = new { releases = releases.Select (r => Routing.Releases.Get (r.ReleaseId))}).List (NumberOfResultsToReturn ());
                 return response;
             };
         }

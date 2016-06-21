@@ -13,7 +13,7 @@ namespace Optionis.KPIs.Dashboard
                     new DeploymentRemover(),
                     new ReleaseRemover(),
                     new ReleaseHasAssignedDeploymentsChecker(),
-                    new DeploymentExistenceChecker()).DeleteDeployment (_.Id);
+                    new DeploymentExistenceChecker()).DeleteDeployment (_.DeploymentId);
                 return HttpStatusCode.NoContent;
             };
         }

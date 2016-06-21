@@ -14,12 +14,12 @@ namespace Optionis.KPIs.Dashboard.Modules
                 new GetDeploymentService (
                     new DeploymentRetriever (),
                     () => response = HttpStatusCode.NotFound,
-                    issue => {
-                        response = Newtonsoft.Json.JsonConvert.SerializeObject(Convert (issue));
+                    deployment => {
+                        response = Newtonsoft.Json.JsonConvert.SerializeObject(Convert (deployment));
                         response.StatusCode = HttpStatusCode.OK;
                         response.ContentType = "application/json";
                     }
-                ).Get (_.Id);
+                ).Get (_.DeploymentId);
                 return response;
             };
         }
@@ -27,7 +27,9 @@ namespace Optionis.KPIs.Dashboard.Modules
         static dynamic Convert(GetDeploymentService.Deployment deployment)
         {
             return new {
-                Self = Routing.Deployments.Get (deployment.Id),
+                links = new {
+                    self = Routing.Deployments.Get (deployment.ReleaseId, deployment.DeploymentId)
+                },
                 deployment.DeploymentDate,
                 deployment.Version,
                 status = deployment.Status.ToString()

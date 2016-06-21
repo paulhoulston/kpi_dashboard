@@ -19,7 +19,7 @@ namespace Optionis.KPIs.Dashboard.Modules
                         response.StatusCode = HttpStatusCode.OK;
                         response.ContentType = "application/json";
                     }
-                ).Get (_.Id);
+                ).Get (_.IssueId);
                 return response;
             };
         }
@@ -27,7 +27,9 @@ namespace Optionis.KPIs.Dashboard.Modules
         static dynamic Convert(GetIssueService.Issue issue)
         {
             return new {
-                Self = Routing.Issues.Get (issue.Id),
+                links = new {
+                    self = Routing.Issues.Get (issue.ReleaseId, issue.Id)
+                },
                 issue.IssueId,
                 issue.Link,
                 issue.Title

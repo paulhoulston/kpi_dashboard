@@ -14,9 +14,9 @@ namespace Optionis.KPIs.Dashboard.Adapters
                 return connection
                     .Table<Release> ()
                     .ToArray ()
-                    .Take(top)
-                    .OrderByDescending(release => release.Created)
-                    .Select (releaseId => new ReleaseListingService.Release(releaseId.Id));
+                    .Take (top)
+                    .OrderByDescending (release => release.Created)
+                    .Select (releaseId => new ReleaseListingService.Release{ ReleaseId = releaseId.Id });
             }
         }
     }
