@@ -27,6 +27,17 @@
         });
     },
 
+    datePickerSubmitDate: function(el) {
+        function toString(date) {
+            return Releases.formatString(
+                '{0}-{1}-{2}T00:00:00',
+                date.getFullYear(),
+                (date.getMonth() < 9 ? '0' : '') + (1 + date.getMonth()),
+                (date.getDate() < 10 ? '0' : '') + date.getDate());
+        }
+        return toString($(el).datepicker('getDate'));
+    },
+
     closeDialog: function() {
         $('#popup').dialog('close');
     },
@@ -101,11 +112,16 @@
                         });
                     }
 
-                    function addDeployment() {
+                    function addDeployment(e) {
+                        var addDeploymentUri = $(e.currentTarget).attr('data-add-deployment-uri');
+
                         $.getJSON(Releases.settings.deploymentStatuses, function(d) {
                             releaseDiv.append(Releases.getView({
                                 template: Releases.templates.addDeployment,
-                                data: { statuses: d.statuses }
+                                data: { 
+                                    statuses: d.statuses,
+                                    saveUri: addDeploymentUri
+                                 }
                             }));
 
                             var deploymentRow = releaseDiv.children('div:last');
@@ -113,11 +129,22 @@
                                 showOn: 'both',
                                 dateFormat: Releases.settings.dateFormat
                             }).datepicker('setDate', Releases.tomorrow());;
-                            deploymentRow.find('a[data-action="cancel"]').on('click', function(e) {
+                            deploymentRow.find('a[data-action="cancel"]').on('click', function() {
                                 deploymentRow.remove();
                             });
-                            deploymentRow.find('a[data-action="save"]').on('click', function(e) {
-                                console.log('save deployment');
+                            deploymentRow.find('a[data-action="save"]').on('click', function(evt) {
+                                var trg = $(evt.currentTarget),
+                                    row = trg.parents('div[name="addDeploymentRow"]');
+                                $.ajax({
+                                    url: trg.attr('data-save-uri'),
+                                    type: 'POST',
+                                    success: bindReleases,
+                                    data: {
+                                        status: row.find('#status').val(),
+                                        version: row.find('#version').val(),
+                                        deploymentDate: Releases.datePickerSubmitDate(row.find('#deploymentDate'))
+                                    }
+                                });
                             });
                         });
                     }
@@ -152,14 +179,6 @@
                 var form = $('#divReleaseToCreate');
 
                 function getData() {
-                    function toString(date) {
-                        return Releases.formatString(
-                            '{0}-{1}-{2}T00:00:00',
-                            date.getFullYear(),
-                            (date.getMonth() < 9 ? '0' : '') + (1 + date.getMonth()),
-                            (date.getDate() < 10 ? '0' : '') + date.getDate());
-                    }
-                    
                     return {
                         'title': form.find('#title').val(),
                         'createdBy': form.find('#createdBy').val(),
@@ -167,7 +186,7 @@
                         'issues': [],
                         'application': form.find('#application').val(),
                         'version': form.find('#version').val(),
-                        'deploymentDate': toString(form.find('#deploymentDate').datepicker('getDate'))
+                        'deploymentDate': Releases.datePickerSubmitDate(form.find('#deploymentDate'))
                     };
                 }
 

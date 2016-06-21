@@ -48,7 +48,7 @@
             {{/links.issues.list}}
         {{/if}}
         {{#if links.deployments.list}}
-            <h4>Deployments <a href="#" title="Add deployment" data-add-deployment-uri="{{self}}"">[add deployment]</a></h4>
+            <h4>Deployments <a href="#" title="Add deployment" data-add-deployment-uri="{{links.deployments.add}}"">[add deployment]</a></h4>
             {{#links.deployments.list}}
             <div class="row">
                 <div data-deployment-uri="{{.}}"></div>
@@ -75,7 +75,7 @@
         </div>
     </script>
     <script id="add-deployment-template" type="text/x-handlebars-template">
-        <div class="row padded">
+        <div class="row padded" name="addDeploymentRow">
             <div class="column grid_2">
                 <input type="text" class="short" id="deploymentDate" />
             </div>
@@ -90,7 +90,7 @@
                 </select>
             </div>
             <div class="column grid_6">
-                <a href="#" data-action="save" title="Add deployment">[save]</a>&nbsp;
+                <a href="#" data-action="save" data-save-uri="{{saveUri}}" title="Add deployment">[save]</a>&nbsp;
                 <a href="#" data-action="cancel" title="Cancel">[cancel]</a>
             </div>
         </div>

@@ -25,7 +25,7 @@
 
         public static class Deployments
         {
-            const string ROUTE = "/releases/{releaseId}/deployments";
+            public const string ROUTE = "/releases/{releaseId}/deployments";
             public const string GET = "/releases/{releaseId}/deployments/{deploymentId}";
             public const string DELETE = "/releases/{releaseId}/deployments/{deploymentId}";
 

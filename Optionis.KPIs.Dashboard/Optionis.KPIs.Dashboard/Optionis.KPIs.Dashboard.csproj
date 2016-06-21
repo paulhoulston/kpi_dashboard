@@ -111,6 +111,7 @@
     <Compile Include="Adapters\DeploymentRemover.cs" />
     <Compile Include="Adapters\DeploymentExistenceChecker.cs" />
     <Compile Include="Modules\ListDeploymentStatuses.cs" />
+    <Compile Include="Modules\CreateDeployment.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adapters\" />
