@@ -36,6 +36,7 @@
     <Compile Include="GetUserTests.cs" />
     <Compile Include="CreateUserTests.cs" />
     <Compile Include="DeleteDeploymentTests.cs" />
+    <Compile Include="CreateDeploymentTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
