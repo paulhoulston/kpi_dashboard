@@ -44,6 +44,9 @@
     <Compile Include="ValidateObject.cs" />
     <Compile Include="DeploymentStatus.cs" />
     <Compile Include="DeploymentDeletionService.cs" />
+    <Compile Include="Validators\ValidateVersionNumber.cs" />
+    <Compile Include="Validators\ValidateDeploymentDate.cs" />
+    <Compile Include="DeploymentCreationService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -51,5 +54,8 @@
       <Project>{621E212A-B364-494A-B82E-47E1708965B5}</Project>
       <Name>Optionis.KPIs.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Validators\" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Linq;
+using Optionis.KPIs.Dashboard.Application.Validators;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
@@ -27,7 +27,7 @@ namespace Optionis.KPIs.Dashboard.Application
             InvalidDeploymentDate = 8
         }
 
-        public class ReleaseToCreate
+        public class ReleaseToCreate : IHaveAVersionNumber, IHaveADeploymentDate
         {
             public DateTime Created{ get; set; }
             public string CreatedBy{ get; set; }
@@ -69,16 +69,16 @@ namespace Optionis.KPIs.Dashboard.Application
             _userRepository = userRepository;
             _validators =
                 new ValidateObject<ReleaseToCreate, ValidationError> (
-                    _onValidationError,
-                    CreateRelease,
-                    new ValidateReleaseIsSet (),
-                    new ValidateTitle (),
-                    new ValidateApplication (),
-                    new ValidateVersion (),
-                    new ValidateCreationUser (_userRepository),
-                    new ValidateIssues (),
-                    new ValidateComments (),
-                    new ValidateDeploymentDate ());
+                _onValidationError,
+                CreateRelease,
+                new ValidateReleaseIsSet (),
+                new ValidateTitle (),
+                new ValidateApplication (),
+                new ValidateVersionNumber<ReleaseToCreate, ValidationError> (() => ReleseCreationService.ValidationError.InvalidVersion),
+                new ValidateCreationUser (_userRepository),
+                new ValidateIssues (),
+                new ValidateComments (),
+                new ValidateDeploymentDate<ReleaseToCreate, ValidationError> (() => ReleseCreationService.ValidationError.InvalidDeploymentDate));
         }
 
         public void Create (ReleaseToCreate release)
@@ -121,20 +121,6 @@ namespace Optionis.KPIs.Dashboard.Application
             }
         }
 
-        class ValidateVersion : IValidateObjects<ReleaseToCreate, ValidationError>
-        {
-            public ValidationError ValidationError { get { return ValidationError.InvalidVersion; } }
-
-            const string VERSION_REGEX = @"^\d+[.]\d+[.]\d+[.](\d+|\*)$";
-
-            public bool IsValid(ReleaseToCreate release)
-            {
-                return 
-                    !string.IsNullOrEmpty(release.Version) &&
-                    new Regex (VERSION_REGEX).IsMatch (release.Version);
-            }
-        }
-
         class ValidateCreationUser : IValidateObjects<ReleaseToCreate, ValidationError>
         {
             public ValidationError ValidationError { get { return ValidationError.UserNotFound; } }
@@ -172,16 +158,6 @@ namespace Optionis.KPIs.Dashboard.Application
             public bool IsValid (ReleaseToCreate release)
             {
                 return string.IsNullOrEmpty(release.Comments) || release.Comments.Length <= 255;
-            }
-        }
-
-        class ValidateDeploymentDate : IValidateObjects<ReleaseToCreate, ValidationError>
-        {
-            public ValidationError ValidationError { get { return ValidationError.InvalidDeploymentDate; } }
-
-            public bool IsValid (ReleaseToCreate release)
-            {
-                return release.DeploymentDate > DateTime.Today.AddDays(-30);
             }
         }
     }

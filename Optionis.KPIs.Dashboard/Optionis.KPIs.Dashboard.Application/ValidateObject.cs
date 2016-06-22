@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
-    interface IValidateObjects<T, TU>
+    public interface IValidateObjects<T, TU>
     {
         TU ValidationError { get; }
         bool IsValid(T obj);
     }
 
-    class ValidateObject<T, TU>
+    public class ValidateObject<T, TU>
     {
         readonly IDictionary<TU, Func<T, bool>> _validators = new Dictionary<TU, Func<T, bool>>();
         readonly Action<TU> _onInvalid;
