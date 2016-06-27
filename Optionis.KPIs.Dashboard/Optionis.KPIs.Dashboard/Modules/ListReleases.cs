@@ -1,8 +1,8 @@
 using Nancy;
 using Optionis.KPIs.Dashboard.Application;
-using Optionis.KPIs.Dashboard.Adapters;
 using Optionis.KPIs.Common;
 using System.Linq;
+using Optionis.KPIs.DataAccess;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {

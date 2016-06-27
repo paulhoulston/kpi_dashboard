@@ -10,7 +10,7 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public interface IListReleases
         {
-            IEnumerable<ReleaseListingService.Release> List (int top);
+            IEnumerable<Release> List (int top);
         }
 
         public class Release

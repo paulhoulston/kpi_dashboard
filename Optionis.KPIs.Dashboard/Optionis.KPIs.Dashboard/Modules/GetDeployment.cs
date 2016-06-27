@@ -1,7 +1,7 @@
 ﻿using Nancy;
 using Optionis.KPIs.Common;
 using Optionis.KPIs.Dashboard.Application;
-using Optionis.KPIs.Dashboard.Adapters;
+using Optionis.KPIs.DataAccess;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {
@@ -32,7 +32,7 @@ namespace Optionis.KPIs.Dashboard.Modules
                 },
                 deployment.DeploymentDate,
                 deployment.Version,
-                status = deployment.Status.ToString()
+                status = deployment.DeploymentStatus.ToString()
             };
         }
     }

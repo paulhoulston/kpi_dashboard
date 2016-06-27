@@ -11,7 +11,7 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public class Deployment
         {
-            public int DeploymentId{ get; set; }
+            public int DeploymentId { get; set; }
             public int ReleaseId { get; set; }
         }
 

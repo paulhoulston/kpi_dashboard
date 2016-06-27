@@ -1,11 +1,11 @@
 using Nancy;
 using Optionis.KPIs.Dashboard.Application;
-using Optionis.KPIs.Adapters;
 using System.Linq;
 using System;
 using System.Collections.Generic;
 using Optionis.KPIs.Common;
 using Nancy.ModelBinding;
+using Optionis.KPIs.DataAccess;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {
@@ -56,7 +56,7 @@ namespace Optionis.KPIs.Dashboard.Modules
 
             new ReleseCreationService (
                 new ReleaseCreator(),
-                new UserRepository(),
+                new UserExistenceChecker(),
                 validationError => response = OnValidationError (validationError),
                 releaseId => response = OnReleaseCreated (releaseId)
             ).Create (ConvertRelease (release));

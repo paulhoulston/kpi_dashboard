@@ -3,7 +3,7 @@ using Optionis.KPIs.Common;
 using Nancy.ModelBinding;
 using Optionis.KPIs.Dashboard.Application;
 using System.Collections.Generic;
-using Optionis.KPIs.Dashboard.Adapters;
+using Optionis.KPIs.DataAccess;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {

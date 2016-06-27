@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,6 +9,17 @@
     <RootNamespace>Optionis.KPIs.Dashboard</RootNamespace>
     <AssemblyName>Optionis.KPIs.Dashboard</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +65,22 @@
         <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
       </Properties>
     </MonoDevelop>
+    <VisualStudio>
+      <FlavorProperties GUID="{349C5851-65DF-11DA-9384-00065B846F21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:50042/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -87,42 +114,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Adapters\UserRepository.cs" />
-    <Compile Include="Adapters\ReleaseCreator.cs" />
-    <Compile Include="Adapters\ReleaseLister.cs" />
     <Compile Include="Modules\CreateRelease.cs" />
     <Compile Include="Modules\GetRelease.cs" />
     <Compile Include="Modules\Default.cs" />
-    <Compile Include="Adapters\ReleaseRetriever.cs" />
-    <Compile Include="Adapters\IssueRetriever.cs" />
     <Compile Include="Modules\GetIssue.cs" />
     <Compile Include="Modules\GetDeployment.cs" />
-    <Compile Include="Adapters\DeploymentRetriever.cs" />
     <Compile Include="Modules\ListReleases.cs" />
-    <Compile Include="Adapters\UserLister.cs" />
     <Compile Include="Modules\ListUsers.cs" />
     <Compile Include="Modules\GetUser.cs" />
-    <Compile Include="Adapters\UserRetriever.cs" />
     <Compile Include="Modules\CreateUser.cs" />
-    <Compile Include="Adapters\UserCreator.cs" />
     <Compile Include="Modules\DeleteDeployment.cs" />
-    <Compile Include="Adapters\ReleaseHasAssignedDeploymentsChecker.cs" />
-    <Compile Include="Adapters\ReleaseRemover.cs" />
-    <Compile Include="Adapters\DeploymentRemover.cs" />
-    <Compile Include="Adapters\DeploymentExistenceChecker.cs" />
     <Compile Include="Modules\ListDeploymentStatuses.cs" />
     <Compile Include="Modules\CreateDeployment.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Adapters\" />
-    <Folder Include="Content\" />
-    <Folder Include="Modules\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Optionis.KPIs.Dashboard.ReadCache\Optionis.KPIs.Dashboard.ReadCache.csproj">
-      <Project>{5E5C7D96-E433-4F71-AB1D-198D4113457F}</Project>
-      <Name>Optionis.KPIs.Dashboard.ReadCache</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Optionis.KPIs.Dashboard.Application\Optionis.KPIs.Dashboard.Application.csproj">
       <Project>{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}</Project>
       <Name>Optionis.KPIs.Dashboard.Application</Name>
@@ -131,10 +137,15 @@
       <Project>{621E212A-B364-494A-B82E-47E1708965B5}</Project>
       <Name>Optionis.KPIs.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Optionis.KPIs.DataAccess\Optionis.KPIs.DataAccess.csproj">
+      <Project>{a9da828a-65b3-4c21-bbf1-b807d0f97239}</Project>
+      <Name>Optionis.KPIs.DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery-2.2.3.min.map" />
     <None Include="App_Readme\Handlebarsjs_LICENSE" />
     <None Include="App_Readme\Handlebarsjs_README.md" />
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" />
 </Project>
