@@ -6,10 +6,10 @@ namespace Optionis.KPIs.DataAccess
     public class ReleaseRetriever : GetReleaseService.IGetReleases
     {
         const string SQL =
-            "SELECT r.Id, r.Application, r.Comments, r.Created, r.CreatedBy, r.Title, i.Id AS r.IssueIds, d.Id AS DeploymentsIds " +
+            "SELECT r.Id, r.Application, r.Comments, r.Created, r.CreatedBy, r.Title, i.Id AS IssueIds, d.Id AS DeploymentsIds " +
             "FROM Releases r " +
-            "JOIN Issues i ON i.ReleaseId = r.Id " +
-            "JOIN Deployments d ON d.ReleaseId = r.Id " +
+            "LEFT JOIN Issues i ON i.ReleaseId = r.Id " +
+            "LEFT JOIN Deployments d ON d.ReleaseId = r.Id " +
             "WHERE r.Id = @releaseId";
 
         public void Get(int releaseId, Action onReleaseNotFound, Action<GetReleaseService.Release> onReleaseFound)
