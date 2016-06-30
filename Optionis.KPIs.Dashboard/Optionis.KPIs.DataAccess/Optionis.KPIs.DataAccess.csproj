@@ -49,6 +49,7 @@
     <Compile Include="DbWrapper.cs" />
     <Compile Include="DeploymentRemover.cs" />
     <Compile Include="DeploymentRetriever.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IssueRetriever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReleaseCreator.cs" />
@@ -69,6 +70,9 @@
       <Project>{3a5a21ba-ce8a-44b1-acab-d2f309319b3f}</Project>
       <Name>Optionis.KPIs.Dashboard.Application</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Queries\GetReleaseById.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

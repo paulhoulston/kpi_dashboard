@@ -28,7 +28,7 @@ namespace Optionis.KPIs.DataAccess
         {
             return Query(sqlConnection => sqlConnection.Query<T>(sql, sqlParams).FirstOrDefault());
         }
-
+    
         public IEnumerable<T> Get<T>(string sql, object sqlParams = null) where T : class
         {
             return Query(sqlConnection => sqlConnection.Query<T>(sql, sqlParams));
