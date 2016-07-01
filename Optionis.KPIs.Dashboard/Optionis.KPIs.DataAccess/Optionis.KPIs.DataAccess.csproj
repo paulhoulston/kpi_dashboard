@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Database\CreateDatabaseScript.sql" />
     <Compile Include="DeploymentExistenceChecker.cs" />
     <Compile Include="DbWrapper.cs" />
     <Compile Include="DeploymentRemover.cs" />
