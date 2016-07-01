@@ -17,7 +17,7 @@ namespace Optionis.KPIs.DataAccess
 
         static ReleaseRetriever()
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Optionis.KPIs.DataAccess.Queries.GetReleaseById.sql"))
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Optionis.KPIs.DataAccess.Database.GetReleaseById.sql"))
             using (StreamReader reader = new StreamReader(stream))
             {
                 _sql = reader.ReadToEnd();
