@@ -5,7 +5,7 @@ namespace Optionis.KPIs.DataAccess
 {
     public class UserRetriever : GetUserService.IGetUsers
     {
-        const string SQL = @"SELECT Id, UserName, Created FROM User WHERE Id = @userId";
+        const string SQL = @"SELECT Id, UserName, Created FROM Users WHERE Id = @userId ORDER BY UserName";
 
         public void Get(int userId, Action onUserNotFound, Action<GetUserService.User> onUserFound)
         {

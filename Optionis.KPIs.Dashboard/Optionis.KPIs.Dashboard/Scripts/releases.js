@@ -208,7 +208,7 @@
                 $.getJSON(Releases.settings.usersUri, function(d) {
                     if(d.users) {
                         for(ind in d.users)
-                            $.getJSON(d.users[ind].uri, function(usr) {
+                            $.getJSON(d.users[ind], function(usr) {
                                 $('#createdBy').append($('<option/>', { 'value': usr.id, 'text': usr.userName }));
                             });
                     }

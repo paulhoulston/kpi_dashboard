@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System;
-using Optionis.KPIs.Common;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
@@ -11,17 +10,12 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public interface IListUsers
         {
-            IEnumerable<UserListingService.User> List ();
+            IEnumerable<User> List ();
         }
 
         public class User
         {
-            public User (int userId)
-            {
-                Uri = Routing.Users.Get(userId);
-            }
-
-            public string Uri{ get; private set; }
+            public int Id { get; set; }
         }
 
         public UserListingService (IListUsers userRepository, Action<IEnumerable<User>> onUsersRetrieved)
