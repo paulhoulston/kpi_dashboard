@@ -80,7 +80,7 @@
                 <input type="text" class="short" id="deploymentDate" />
             </div>
             <div class="column grid_2">
-                <input type="text" id="version" placeholder="Deployment version..." />
+                <input type="text" id="version" class="medium" placeholder="Deployment version..." />
             </div>
             <div class="column grid_2" name="statusDiv">
                 <select id="status" class="short">
@@ -92,6 +92,7 @@
             <div class="column grid_6">
                 <a href="#" data-action="save" data-save-uri="{{saveUri}}" title="Add deployment">[save]</a>&nbsp;
                 <a href="#" data-action="cancel" title="Cancel">[cancel]</a>
+                <span class="error"></span>
             </div>
         </div>
     </script>

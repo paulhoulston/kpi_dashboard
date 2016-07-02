@@ -43,14 +43,29 @@ h4 { margin: 4px 0; font-size: 1.0em }
     margin-top: 15px
 }
 
+input[type=text], select {
+    margin: 1px;
+    border: 1px solid #ca7c00;
+    padding: 4px 5px 3px 5px;
+}
 select, input[type=text], textarea { width: 275px }
 select.short, input[type=text].short { width: 100px }
+input[type=text].medium { width: 150px }
+
 .errors {
     padding: 10px;
     margin-bottom: 4px;
     color: #5f3f3f;
     background-color: #fddfdf;
     border: 1px solid #f1a899
+}
+span.error, input[type=text].error {
+    color: #ff3f3f;
+}
+input[type=text].error {
+    border-color: #ff3f3f;
+    margin: 0;
+    border-width: 2px
 }
 section#management {
     border-bottom: 1px solid #ca7c00;

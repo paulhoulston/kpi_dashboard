@@ -139,6 +139,23 @@
                                     url: trg.attr('data-save-uri'),
                                     type: 'POST',
                                     success: function () { bindReleases(); },
+                                    error: function(jqXhr, error, response) {
+                                        if (jqXhr && jqXhr.responseJSON && jqXhr.responseJSON.error && jqXhr.responseJSON.error.message) {
+
+                                            deploymentRow.find('input[type=text].error').removeClass('error');
+                                            switch (jqXhr.responseJSON.error.code) {
+                                                case 'InvalidVersionNumber':
+                                                    deploymentRow.find('#version').addClass('error');
+                                                    break;
+
+                                                case 'InvalidDeploymentDate':
+                                                    deploymentRow.find('#deploymentDate').addClass('error');
+                                                    break;
+                                            }
+
+                                            deploymentRow.find('span.error').empty().html(jqXhr.responseJSON.error.message);
+                                        }
+                                    },
                                     data: {
                                         status: row.find('#status').val(),
                                         version: row.find('#version').val(),
