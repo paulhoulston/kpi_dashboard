@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Database\CreateDatabaseScript.sql" />
+    <EmbeddedResource Include="Database\CreateDeployment.sql" />
     <Compile Include="DeploymentExistenceChecker.cs" />
     <Compile Include="DbWrapper.cs" />
     <Compile Include="DeploymentRemover.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="ReleaseLister.cs" />
     <Compile Include="ReleaseRemover.cs" />
     <Compile Include="ReleaseRetriever.cs" />
+    <Compile Include="DeploymentCreator.cs" />
     <Compile Include="UserCreator.cs" />
     <Compile Include="UserLister.cs" />
     <Compile Include="UserExistenceChecker.cs" />

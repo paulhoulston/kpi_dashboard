@@ -89,7 +89,7 @@
                                 $.ajax({ 
                                     url: $(e.currentTarget).attr('data-deployment-uri'),
                                     type: 'DELETE',
-                                    success: bindReleases
+                                    success: function () { bindReleases(); }
                                 });
                             }
 
@@ -138,7 +138,7 @@
                                 $.ajax({
                                     url: trg.attr('data-save-uri'),
                                     type: 'POST',
-                                    success: bindReleases,
+                                    success: function () { bindReleases(); },
                                     data: {
                                         status: row.find('#status').val(),
                                         version: row.find('#version').val(),
