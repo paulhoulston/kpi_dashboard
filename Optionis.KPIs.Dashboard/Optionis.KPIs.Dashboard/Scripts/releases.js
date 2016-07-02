@@ -133,33 +133,34 @@
                                 deploymentRow.remove();
                             });
                             deploymentRow.find('a[data-action="save"]').on('click', function(evt) {
-                                var trg = $(evt.currentTarget),
-                                    row = trg.parents('div[name="addDeploymentRow"]');
+                                var trg = $(evt.currentTarget);
+
+                                function onError(jqXhr) {
+                                    if (jqXhr && jqXhr.responseJSON && jqXhr.responseJSON.error && jqXhr.responseJSON.error.message) {
+
+                                        function clearErrors() {
+                                            deploymentRow.find('input[type=text].error').removeClass('error');
+                                        }
+
+                                        function addErrorTo(selector) {
+                                            deploymentRow.find(selector).addClass('error');
+                                        }
+
+                                        clearErrors();
+                                        addErrorTo(jqXhr.responseJSON.error.code === 'InvalidVersionNumber' ? '#version' : '#deploymentDate');
+                                        deploymentRow.find('span.error').empty().html(jqXhr.responseJSON.error.message);
+                                    }
+                                }
+
                                 $.ajax({
                                     url: trg.attr('data-save-uri'),
                                     type: 'POST',
                                     success: function () { bindReleases(); },
-                                    error: function(jqXhr, error, response) {
-                                        if (jqXhr && jqXhr.responseJSON && jqXhr.responseJSON.error && jqXhr.responseJSON.error.message) {
-
-                                            deploymentRow.find('input[type=text].error').removeClass('error');
-                                            switch (jqXhr.responseJSON.error.code) {
-                                                case 'InvalidVersionNumber':
-                                                    deploymentRow.find('#version').addClass('error');
-                                                    break;
-
-                                                case 'InvalidDeploymentDate':
-                                                    deploymentRow.find('#deploymentDate').addClass('error');
-                                                    break;
-                                            }
-
-                                            deploymentRow.find('span.error').empty().html(jqXhr.responseJSON.error.message);
-                                        }
-                                    },
+                                    error: onError,
                                     data: {
-                                        status: row.find('#status').val(),
-                                        version: row.find('#version').val(),
-                                        deploymentDate: Releases.datePickerSubmitDate(row.find('#deploymentDate'))
+                                        status: deploymentRow.find('#status').val(),
+                                        version: deploymentRow.find('#version').val(),
+                                        deploymentDate: Releases.datePickerSubmitDate(deploymentRow.find('#deploymentDate'))
                                     }
                                 });
                             });

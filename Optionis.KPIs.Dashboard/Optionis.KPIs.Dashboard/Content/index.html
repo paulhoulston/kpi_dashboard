@@ -67,8 +67,8 @@
     <script id="deployment-template" type="text/x-handlebars-template">
         <div class="row">
             <div class="column grid_2">{{formatDate deploymentDate}}</div>
-            <div class="column grid_2">Version: {{version}}</div>
-            <div class="column grid_8" name="statusDiv">
+            <div class="column grid_3">Version: {{version}}</div>
+            <div class="column grid_7" name="statusDiv">
                 Status: {{status}}
                 <a href="javascript:void(0);" title="Delete deployment" data-action="delete" data-deployment-uri="{{links.self}}">[delete]</a>
             </div>
