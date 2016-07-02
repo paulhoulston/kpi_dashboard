@@ -2,7 +2,7 @@
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[ReleaseId] [int] NOT NULL,
 	[DeploymentDate] [datetime] NOT NULL CONSTRAINT [DF_Deploymen_DeploymentDate]  DEFAULT (getdate()),
-	[Version] [nvarchar](10) NOT NULL,
+	[Version] [nvarchar](25) NOT NULL,
 	[DeploymentStatus] [nvarchar](25) NULL,
  CONSTRAINT [PK_Deployments] PRIMARY KEY CLUSTERED 
 (
