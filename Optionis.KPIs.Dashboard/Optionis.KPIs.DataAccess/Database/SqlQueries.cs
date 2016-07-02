@@ -12,8 +12,10 @@ namespace Optionis.KPIs.DataAccess.Database
 
         public enum Query
         {
-            CreateDeployment,
             GetReleaseById,
+            InsertDeployment,
+            InsertIssue,
+            InsertRelease,
         }
 
         static SqlQueries()

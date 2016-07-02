@@ -13,7 +13,7 @@ namespace Optionis.KPIs.DataAccess
     {
         public void CreateDeployment(DeploymentCreationService.Deployment deployment, Action<int> onDeploymentCreated)
         {
-            var deploymentId = new DbWrapper().ExecuteScalar(SqlQueries.Queries[SqlQueries.Query.CreateDeployment], new
+            var deploymentId = new DbWrapper().ExecuteScalar(SqlQueries.Queries[SqlQueries.Query.InsertDeployment], new
             {
                 releaseId = deployment.ReleaseId,
                 deploymentDate = deployment.DeploymentDate,
