@@ -47,6 +47,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Database\CreateDatabaseScript.sql" />
     <EmbeddedResource Include="Database\CreateDeployment.sql" />
+    <Compile Include="Database\SqlQueries.cs" />
     <Compile Include="DeploymentExistenceChecker.cs" />
     <Compile Include="DbWrapper.cs" />
     <Compile Include="DeploymentRemover.cs" />

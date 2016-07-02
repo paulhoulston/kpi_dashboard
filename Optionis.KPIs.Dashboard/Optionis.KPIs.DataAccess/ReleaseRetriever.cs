@@ -2,27 +2,16 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Dapper;
 using Optionis.KPIs.Dashboard.Application;
+using Optionis.KPIs.DataAccess.Database;
 
 namespace Optionis.KPIs.DataAccess
 {
     public class ReleaseRetriever : GetReleaseService.IGetReleases
     {
-        static readonly string _sql;
         static readonly string _connectionString = ConfigurationManager.ConnectionStrings["DeploymentsDb"].ConnectionString;
-
-        static ReleaseRetriever()
-        {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Optionis.KPIs.DataAccess.Database.GetReleaseById.sql"))
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                _sql = reader.ReadToEnd();
-            }
-        }
 
         class MultilpleResult
         {
@@ -53,7 +42,7 @@ namespace Optionis.KPIs.DataAccess
 
         public void Get(int releaseId, Action onReleaseNotFound, Action<GetReleaseService.Release> onReleaseFound)
         {
-            var release = QueryDatabase(_sql, new { releaseId });
+            var release = QueryDatabase(SqlQueries.Queries[SqlQueries.Query.GetReleaseById], new { releaseId });
             if (release != null && release.Release != null)
                 onReleaseFound(Convert(release));
             else
