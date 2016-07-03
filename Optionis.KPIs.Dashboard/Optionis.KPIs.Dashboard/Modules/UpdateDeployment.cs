@@ -1,5 +1,5 @@
 ﻿using Nancy;
-using Optionis.KPIs.Common;
+using Optionis.KPIs.Dashboard.Modules.Routes;
 
 namespace Optionis.KPIs.Dashboard.Modules
 {

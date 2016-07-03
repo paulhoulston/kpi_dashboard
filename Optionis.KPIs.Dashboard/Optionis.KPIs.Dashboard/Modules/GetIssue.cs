@@ -1,6 +1,6 @@
 ﻿using Nancy;
-using Optionis.KPIs.Common;
 using Optionis.KPIs.Dashboard.Application;
+using Optionis.KPIs.Dashboard.Modules.Routes;
 using Optionis.KPIs.DataAccess;
 
 namespace Optionis.KPIs.Dashboard.Modules

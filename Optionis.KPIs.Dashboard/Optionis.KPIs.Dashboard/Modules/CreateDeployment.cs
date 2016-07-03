@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Nancy;
 using Nancy.ModelBinding;
-using Optionis.KPIs.Common;
 using Optionis.KPIs.Dashboard.Application;
+using Optionis.KPIs.Dashboard.Modules.Routes;
 using Optionis.KPIs.DataAccess;
 
-namespace Optionis.KPIs.Dashboard
+namespace Optionis.KPIs.Dashboard.Modules
 {
     public class CreateDeployment : NancyModule
     {

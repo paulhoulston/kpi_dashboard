@@ -132,6 +132,7 @@
     <Compile Include="Modules\DeleteDeployment.cs" />
     <Compile Include="Modules\ListDeploymentStatuses.cs" />
     <Compile Include="Modules\CreateDeployment.cs" />
+    <Compile Include="Modules\Routes\Routing.cs" />
     <Compile Include="Modules\UpdateDeployment.cs" />
   </ItemGroup>
   <ItemGroup />
@@ -139,10 +140,6 @@
     <ProjectReference Include="..\Optionis.KPIs.Dashboard.Application\Optionis.KPIs.Dashboard.Application.csproj">
       <Project>{3A5A21BA-CE8A-44B1-ACAB-D2F309319B3F}</Project>
       <Name>Optionis.KPIs.Dashboard.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Optionis.KPIs.Common\Optionis.KPIs.Common.csproj">
-      <Project>{621E212A-B364-494A-B82E-47E1708965B5}</Project>
-      <Name>Optionis.KPIs.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Optionis.KPIs.DataAccess\Optionis.KPIs.DataAccess.csproj">
       <Project>{a9da828a-65b3-4c21-bbf1-b807d0f97239}</Project>

@@ -1,4 +1,4 @@
-﻿namespace Optionis.KPIs.Common
+﻿namespace Optionis.KPIs.Dashboard.Modules.Routes
 {
     public static class Routing
     {
