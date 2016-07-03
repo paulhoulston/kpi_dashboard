@@ -17,7 +17,8 @@
         errors: '#errors-template',
         issueDetails: '#issue-template',
         releases: '#releases-template',
-        releaseDetails: '#release-details-template'
+        releaseDetails: '#release-details-template',
+        statuses: '#status-template'
     },
 
     formatString: function (str, args) {
@@ -87,7 +88,7 @@
                             function deleteDeployment() {
                                 Releases.closeDialog();
                                 $.ajax({ 
-                                    url: $(e.currentTarget).attr('data-deployment-uri'),
+                                    url: $(e.currentTarget).attr('data-delete-deployment-uri'),
                                     type: 'DELETE',
                                     success: function () { bindReleases(); }
                                 });
@@ -97,6 +98,8 @@
                                 text: 'Are you sure wish to delete the deployment' 
                             })).dialog({
                                 title: 'Delete deployment?',
+                                width: 350,
+                                height: 175,
                                 buttons: [
                                     { text: 'OK', click: deleteDeployment },
                                     { text: 'Cancel', click: Releases.closeDialog }
@@ -104,11 +107,43 @@
                             });
                         }
 
+                        function onChangeStatus(e) {
+                            $.getJSON(Releases.settings.deploymentStatuses, function (d) {
+                                var trg = $(e.currentTarget),
+                                    statusDiv = trg.parents('div[name="statusDiv"]'),
+                                    url = trg.attr('data-deployment-status-uri');
+
+                                function onUpdate() {
+                                    $.ajax({
+                                        url: url,
+                                        type: 'PATCH',
+                                        data: {
+                                            propertyName: 'status',
+                                            propertyValue: statusDiv.find('select option:selected').val()
+                                        },
+                                        success: function () { bindReleases(); }
+                                    });
+                                }
+
+                                statusDiv.empty().html(Releases.getView({
+                                    template: Releases.templates.statuses,
+                                    data: {
+                                        statuses: d,
+                                        saveUri: url
+                                    }
+                                }));
+
+                                statusDiv.find('a[data-action="save"]').on('click', onUpdate);
+                                statusDiv.find('a[data-action="cancel"]').on('click', function () { bindReleases(); });
+                            });
+                        }
+
                         $.getJSON(uri, function(d) {
                             var deployment = $('div[data-deployment-uri="' + uri + '"]').empty().html(
                                 Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
                             );
-                            deployment.find('a[data-action="delete"][data-deployment-uri]').on('click', onDeleteDeployment);
+                            deployment.find('a[data-delete-deployment-uri]').on('click', onDeleteDeployment);
+                            deployment.find('a[data-deployment-status-uri]').on('click', onChangeStatus);
                         });
                     }
 

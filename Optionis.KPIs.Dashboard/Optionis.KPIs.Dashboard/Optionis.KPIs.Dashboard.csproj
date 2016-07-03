@@ -132,6 +132,7 @@
     <Compile Include="Modules\DeleteDeployment.cs" />
     <Compile Include="Modules\ListDeploymentStatuses.cs" />
     <Compile Include="Modules\CreateDeployment.cs" />
+    <Compile Include="Modules\UpdateDeployment.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

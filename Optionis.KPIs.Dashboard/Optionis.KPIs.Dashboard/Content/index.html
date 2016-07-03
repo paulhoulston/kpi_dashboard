@@ -69,9 +69,9 @@
             <div class="column grid_2">{{formatDate deploymentDate}}</div>
             <div class="column grid_3">Version: {{version}}</div>
             <div class="column grid_7" name="statusDiv">
-                Status: {{status}}
-                <a href="javascript:void(0);" title="Delete deployment" data-action="delete" data-deployment-uri="{{links.self}}">[delete]</a>
-                <a href="javascript:void(0);" title="Change deployment status" data-deployment-uri="{{links.status}}">[change status]</a>
+                Status: <span>{{status}}</span>
+                <a href="javascript:void(0);" title="Change deployment status" data-deployment-status-uri="{{links.self}}">[change status]</a>
+                <a href="javascript:void(0);" title="Delete deployment" data-delete-deployment-uri="{{links.self}}">[delete]</a>
             </div>
         </div>
     </script>
@@ -96,6 +96,15 @@
                 <span class="error"></span>
             </div>
         </div>
+    </script>
+    <script id="status-template" type="text/x-handlebars-template">
+        <select id="status" class="short">
+            {{#statuses.statuses}}
+            <option>{{status}}</option>
+            {{/statuses.statuses}}
+        </select>
+        <a href="#" data-action="save" data-save-uri="{{saveUri}}" title="Update deployment status">[save]</a>&nbsp;
+        <a href="#" data-action="cancel" title="Cancel">[cancel]</a>&nbsp;
     </script>
     <script id="errors-template"  type="text/x-handlebars-template">
         <div class="errors">

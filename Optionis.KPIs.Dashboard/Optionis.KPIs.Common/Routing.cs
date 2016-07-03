@@ -28,6 +28,7 @@
             public const string ROUTE = "/releases/{releaseId}/deployments";
             public const string GET = "/releases/{releaseId}/deployments/{deploymentId}";
             public const string DELETE = "/releases/{releaseId}/deployments/{deploymentId}";
+            public const string PATCH = "/releases/{releaseId}/deployments/{deploymentId}";
 
             public static string Get(int releaseId, int deploymentId)
             {
