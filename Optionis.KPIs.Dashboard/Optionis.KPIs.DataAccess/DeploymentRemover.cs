@@ -1,15 +1,14 @@
 ﻿using System;
 using Optionis.KPIs.Dashboard.Application;
+using Optionis.KPIs.DataAccess.Database;
 
 namespace Optionis.KPIs.DataAccess
 {
     public class DeploymentRemover : DeploymentDeletionService.IDeleteDeployments
     {
-        const string SQL = @"DELETE FROM Deployments WHERE Id = @deploymentId";
-
         public void DeleteDeployment(int deploymentId, Action onDeploymentDeleted)
         {
-            new DbWrapper().ExecuteScalar(SQL, new { deploymentId });
+            new DbWrapper().ExecuteScalar(SqlQueries.Queries[SqlQueries.Query.DeleteDeploymentById], new { deploymentId });
             onDeploymentDeleted();
         }
     }

@@ -1,0 +1,1 @@
+﻿DELETE FROM Releases WHERE Id = @releaseId

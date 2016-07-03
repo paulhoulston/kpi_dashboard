@@ -1,0 +1,1 @@
+﻿SELECT ISNULL((SELECT TOP 1 1 FROM Users WHERE UserName = @userName), 0) AS Result

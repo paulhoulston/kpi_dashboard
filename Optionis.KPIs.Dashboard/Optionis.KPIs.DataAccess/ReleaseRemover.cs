@@ -1,14 +1,13 @@
 ﻿using Optionis.KPIs.Dashboard.Application;
+using Optionis.KPIs.DataAccess.Database;
 
 namespace Optionis.KPIs.DataAccess
 {
     public class ReleaseRemover : DeploymentDeletionService.IDeleteReleases
     {
-        const string SQL = @"DELETE FROM Releases WHERE Id = @releaseId";
-
         public void DeleteRelease(int releaseId)
         {
-            new DbWrapper().ExecuteScalar(SQL, new { releaseId });
+            new DbWrapper().ExecuteScalar(SqlQueries.Queries[SqlQueries.Query.DeleteReleaseById], new { releaseId });
         }
     }
 }

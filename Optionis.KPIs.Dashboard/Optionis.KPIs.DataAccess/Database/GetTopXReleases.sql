@@ -1,0 +1,1 @@
+﻿SELECT TOP {=top} Id AS ReleaseId FROM Releases ORDER BY Created DESC

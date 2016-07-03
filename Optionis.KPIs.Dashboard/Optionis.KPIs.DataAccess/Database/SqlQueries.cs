@@ -12,10 +12,20 @@ namespace Optionis.KPIs.DataAccess.Database
 
         public enum Query
         {
+            CheckReleaseExists,
+            CheckUserExists,
+            DeleteDeploymentById,
+            DeleteReleaseById,
+            GetDeploymentById,
+            GetIssueById,
             GetReleaseById,
+            GetTopXReleases,
+            GetUserById,
+            GetUserIds,
             InsertDeployment,
             InsertIssue,
             InsertRelease,
+            InsertUser,
         }
 
         static SqlQueries()

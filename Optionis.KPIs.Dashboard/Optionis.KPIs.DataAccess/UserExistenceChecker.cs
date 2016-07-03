@@ -1,12 +1,11 @@
 ﻿using System;
 using Optionis.KPIs.Dashboard.Application;
+using Optionis.KPIs.DataAccess.Database;
 
 namespace Optionis.KPIs.DataAccess
 {
     public class UserExistenceChecker : ReleseCreationService.ICheckUsersExist
     {
-        const string SQL = @"SELECT COUNT(*) FROM Users WHERE UserName = '@userName'";
-
         public void UserExists(string userName, Action onUserNotExist, Action onUserExist)
         {
             if (UserDoesNotExist(userName))
@@ -17,7 +16,7 @@ namespace Optionis.KPIs.DataAccess
 
         static bool UserDoesNotExist(string userName)
         {
-            return new DbWrapper().ExecuteScalar(SQL, new { userName }) == 0;
+            return new DbWrapper().ExecuteScalar(SqlQueries.Queries[SqlQueries.Query.CheckUserExists], new { userName }) == 0;
         }
     }
 }

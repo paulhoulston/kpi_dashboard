@@ -1,12 +1,11 @@
 ﻿using System;
 using Optionis.KPIs.Dashboard.Application;
+using Optionis.KPIs.DataAccess.Database;
 
 namespace Optionis.KPIs.DataAccess
 {
     public class ReleaseHasAssignedDeploymentsChecker : DeploymentDeletionService.ICheckIfReleaseHasDeployments
     {
-        const string SQL = @"SELECT COUNT(ReleaseId) FROM Deployments WHERE ReleaseId = @releaseId";
-
         public void DeploymentsAssigned(int releaseId, Action onNoDeploymentsAssigned)
         {
             if (ReleaseHasNoDeployments(releaseId))
@@ -17,7 +16,7 @@ namespace Optionis.KPIs.DataAccess
 
         static bool ReleaseHasNoDeployments(int releaseId)
         {
-            return new DbWrapper().ExecuteScalar(SQL, new { releaseId }) == 0;
+            return new DbWrapper().ExecuteScalar(SqlQueries.Queries[SqlQueries.Query.CheckReleaseExists], new { releaseId }) == 0;
         }
     }
 }

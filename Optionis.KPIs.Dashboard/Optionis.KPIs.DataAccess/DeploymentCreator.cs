@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.IO;
-using System.Reflection;
 using Optionis.KPIs.Dashboard.Application;
 using Optionis.KPIs.DataAccess.Database;
 

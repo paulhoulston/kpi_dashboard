@@ -1,0 +1,1 @@
+﻿SELECT Id, ReleaseId, IssueId, Link, Title FROM Issues WHERE Id = @issueId

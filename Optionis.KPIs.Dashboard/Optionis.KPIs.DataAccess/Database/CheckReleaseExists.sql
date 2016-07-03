@@ -1,0 +1,1 @@
+﻿SELECT ISNULL((SELECT TOP 1 1 FROM Deployments WHERE ReleaseId = @releaseId), 0) AS Result

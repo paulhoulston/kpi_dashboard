@@ -1,0 +1,1 @@
+﻿DELETE FROM Deployments WHERE Id = @deploymentId
