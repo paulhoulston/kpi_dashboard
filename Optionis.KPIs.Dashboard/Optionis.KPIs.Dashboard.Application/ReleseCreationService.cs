@@ -74,11 +74,11 @@ namespace Optionis.KPIs.Dashboard.Application
                 new ValidateReleaseIsSet (),
                 new ValidateTitle (),
                 new ValidateApplication (),
-                new ValidateVersionNumber<ReleaseToCreate, ValidationError> (() => ReleseCreationService.ValidationError.InvalidVersion),
+                new ValidateVersionNumber<ReleaseToCreate, ValidationError> (() => ValidationError.InvalidVersion),
                 new ValidateCreationUser (_userRepository),
                 new ValidateIssues (),
                 new ValidateComments (),
-                new ValidateDeploymentDate<ReleaseToCreate, ValidationError> (() => ReleseCreationService.ValidationError.InvalidDeploymentDate));
+                new ValidateDeploymentDate<ReleaseToCreate, ValidationError> (() => ValidationError.InvalidDeploymentDate));
         }
 
         public void Create (ReleaseToCreate release)

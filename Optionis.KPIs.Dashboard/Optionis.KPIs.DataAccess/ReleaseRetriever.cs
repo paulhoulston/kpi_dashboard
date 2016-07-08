@@ -42,7 +42,7 @@ namespace Optionis.KPIs.DataAccess
 
         public void Get(int releaseId, Action onReleaseNotFound, Action<GetReleaseService.Release> onReleaseFound)
         {
-            var release = QueryDatabase(SqlQueries.Queries[SqlQueries.Query.GetReleaseById], new { releaseId });
+            var release = QueryDatabase(releaseId);
             if (release != null && release.Release != null)
                 onReleaseFound(Convert(release));
             else
@@ -64,13 +64,13 @@ namespace Optionis.KPIs.DataAccess
             };
         }
 
-        MultilpleResult QueryDatabase(string sql, object sqlParams = null)
+        MultilpleResult QueryDatabase(int releaseId)
         {
             var results = new MultilpleResult();
             using (var sqlConnection = new SqlConnection(_connectionString))
             {
                 sqlConnection.Open();
-                using (var multi = sqlConnection.QueryMultiple(sql, sqlParams))
+                using (var multi = sqlConnection.QueryMultiple(SqlQueries.Queries[SqlQueries.Query.GetReleaseById], new { releaseId }))
                 {
                     results.Release = multi.Read<ReleaseModel>().SingleOrDefault();
                     results.Deployments = multi.Read<DeploymentModel>().ToArray();
