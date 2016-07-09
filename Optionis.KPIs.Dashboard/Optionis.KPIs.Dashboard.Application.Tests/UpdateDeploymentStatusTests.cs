@@ -1,13 +1,13 @@
 ﻿using System;
 using NUnit.Framework;
+using Optionis.KPIs.Dashboard.Application.Interfaces;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
 {
     public class GIVEN_I_want_to_update_the_status_of_a_deployment
     {
-        class TestRunner : DeploymentStatusUpdaterService.ICheckIfDeploymentsExist, DeploymentStatusUpdaterService.IUpdateDeploymentStatuses
+        class TestRunner : ICheckIfDeploymentsExist, DeploymentStatusUpdaterService.IUpdateDeploymentStatuses
         {
-            public bool _statusNotUpdated { get; private set; }
             public bool _statusUpdated { get; private set; }
             readonly bool _deploymentExists;
 
@@ -15,18 +15,15 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 _deploymentExists = deploymentExists;
                 new DeploymentStatusUpdaterService(
-                    () => _statusNotUpdated = true,
                     () => _statusUpdated = true,
                     this,
                     this).UpdateStatus(1, DeploymentStatus.Aborted);
             }
 
-            public void IfDeploymentExists(int deploymentId, Action onDeploymentNotExists, Action onDeploymentExists)
+            public void DeploymentExists(int deploymentId, Action<Deployment> onDeploymentExists)
             {
                 if (_deploymentExists)
-                    onDeploymentExists();
-                else
-                    onDeploymentNotExists();
+                    onDeploymentExists(null);
             }
 
             public void Update(int deploymentId, DeploymentStatus status, Action onDeploymentUpdated)
@@ -42,20 +39,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             [Test]
             public void THEN_the_status_is_updated()
             {
-                Assert.IsFalse(_testRunner._statusNotUpdated);
                 Assert.IsTrue(_testRunner._statusUpdated);
-            }
-        }
-
-        public class WHEN_the_deployment_cannot_be_found
-        {
-            readonly TestRunner _testRunner = new TestRunner(false);
-
-            [Test]
-            public void THEN_the_status_is_not_updated()
-            {
-                Assert.IsFalse(_testRunner._statusUpdated);
-                Assert.IsTrue(_testRunner._statusNotUpdated);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Optionis.KPIs.Dashboard.Application.Interfaces;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
@@ -8,17 +9,6 @@ namespace Optionis.KPIs.Dashboard.Application
         readonly IDeleteReleases _releaseRepository;
         readonly ICheckIfReleaseHasDeployments _releaseAssignedDeploymentChecker;
         readonly ICheckIfDeploymentsExist _deploymentExistenceChecker;
-
-        public class Deployment
-        {
-            public int DeploymentId { get; set; }
-            public int ReleaseId { get; set; }
-        }
-
-        public interface ICheckIfDeploymentsExist
-        {
-            void DeploymentExists(int deploymentId, Action<Deployment> onDeploymentFound);
-        }
 
         public interface IDeleteDeployments
         {

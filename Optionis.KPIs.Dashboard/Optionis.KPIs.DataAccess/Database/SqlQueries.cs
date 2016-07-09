@@ -26,6 +26,7 @@ namespace Optionis.KPIs.DataAccess.Database
             InsertIssue,
             InsertRelease,
             InsertUser,
+            UpdateDeploymentStatus,
         }
 
         static SqlQueries()
