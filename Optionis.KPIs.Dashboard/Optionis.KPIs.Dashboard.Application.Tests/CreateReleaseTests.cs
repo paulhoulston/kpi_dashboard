@@ -36,7 +36,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
         }
 
-        public class WHEN_I_do_supply_a_valid_model
+        public class WHEN_I_supply_a_valid_model
         {
             readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate{
                 Version = "2.16.69.0",
