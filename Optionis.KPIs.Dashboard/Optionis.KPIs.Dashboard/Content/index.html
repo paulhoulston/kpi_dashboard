@@ -68,8 +68,10 @@
         <div class="row">
             <div class="column grid_2">{{formatDate deploymentDate}}</div>
             <div class="column grid_3">Version: {{version}}</div>
-            <div class="column grid_5" name="statusDiv">
-                Status: <span>{{status}}</span>
+            <div class="column grid_3">
+                Status: <span class="status">{{status}}</span>
+            </div>
+            <div class="column grid_2">
                 <a href="javascript:void(0);" title="Change deployment status" data-deployment-status-uri="{{links.self}}">[change status]</a>
                 <a href="javascript:void(0);" title="Delete deployment" data-delete-deployment-uri="{{links.self}}">[delete]</a>
             </div>
@@ -103,14 +105,23 @@
             </div>
         </div>
     </script>
-    <script id="status-template" type="text/x-handlebars-template">
-        <select id="status" class="short">
-            {{#statuses.statuses}}
-            <option>{{status}}</option>
-            {{/statuses.statuses}}
-        </select>
-        <a href="#" data-action="save" data-save-uri="{{saveUri}}" title="Update deployment status">[save]</a>&nbsp;
-        <a href="#" data-action="cancel" title="Cancel">[cancel]</a>&nbsp;
+    <script id="update-status-template" type="text/x-handlebars-template">
+        <div class="row padded" name="addDeploymentRow">
+            <div class="column grid_2">{{formatDate deploymentDate}}</div>
+            <div class="column grid_3">Version: {{version}}</div>
+            <div class="column grid_3">
+                <span>Status: </span>
+                <select id="status" class="short">
+                    {{#statuses}}
+                    <option>{{status}}</option>
+                    {{/statuses}}
+                </select>
+            </div>
+            <div class="column grid_3">
+                <a href="#" data-action="save" title="Update deployment status">[save]</a>&nbsp;
+                <a href="#" data-action="cancel" title="Cancel">[cancel]</a>&nbsp;
+            </div>
+        </div>
     </script>
     <script id="errors-template"  type="text/x-handlebars-template">
         <div class="errors">

@@ -13,12 +13,11 @@
         createRelease: '#create-release-template',
         createUser: '#create-user-template',
         deploymentDetails: '#deployment-template',
-        deploymentStatus: '#update-status-template',
         errors: '#errors-template',
         issueDetails: '#issue-template',
         releases: '#releases-template',
         releaseDetails: '#release-details-template',
-        statuses: '#status-template'
+        statuses: '#update-status-template'
     },
 
     formatString: function (str, args) {
@@ -45,8 +44,8 @@
 
     getView: function(opts) {
         var theTemplateScript = $(opts.template).html(),
-            compiledTemplate = Handlebars.compile (theTemplateScript);
-        //console.log(JSON.stringify(opts.data||{}));
+            compiledTemplate = Handlebars.compile(theTemplateScript);
+        //console.log('Releases.getView called with data: ' + JSON.stringify(opts.data));
         return compiledTemplate (opts.data || { });
     },
 
@@ -108,33 +107,45 @@
                         }
 
                         function onChangeStatus(e) {
-                            $.getJSON(Releases.settings.deploymentStatuses, function (d) {
-                                var trg = $(e.currentTarget),
-                                    statusDiv = trg.parents('div[name="statusDiv"]'),
-                                    url = trg.attr('data-deployment-status-uri');
+                            var trg = $(e.currentTarget),
+                                deploymentUri = trg.attr('data-deployment-status-uri'),
+                                row = trg.parents('.row');
 
-                                function onUpdate() {
+                            function onChangeStatusACtion(ev) {
+                                var link = $(ev.currentTarget);
+
+                                function updateStatus() {
                                     $.ajax({
-                                        url: url,
+                                        url: deploymentUri,
                                         type: 'PATCH',
                                         data: {
                                             propertyName: 'status',
-                                            propertyValue: statusDiv.find('select option:selected').val()
+                                            propertyValue: row.find('select option:selected').val()
                                         },
                                         success: function () { bindReleases(); }
                                     });
                                 }
 
-                                statusDiv.empty().html(Releases.getView({
-                                    template: Releases.templates.statuses,
-                                    data: {
-                                        statuses: d,
-                                        saveUri: url
-                                    }
-                                }));
+                                if (link.attr('data-action') === 'cancel') {
+                                    bindReleases();
+                                } else {
+                                    updateStatus();
+                                }
+                            }
 
-                                statusDiv.find('a[data-action="save"]').on('click', onUpdate);
-                                statusDiv.find('a[data-action="cancel"]').on('click', function () { bindReleases(); });
+                            $.getJSON(deploymentUri, function (deployment) {
+                                $.getJSON(Releases.settings.deploymentStatuses, function (statuses) {
+                                    row.empty().html(
+                                        Releases.getView({
+                                            template: Releases.templates.statuses,
+                                            data: {
+                                                version: deployment.version,
+                                                deploymentDate: deployment.deploymentDate,
+                                                status: deployment.status,
+                                                statuses: statuses.statuses
+                                            }
+                                        })).find('a[data-action]').click(onChangeStatusACtion);
+                                });
                             });
                         }
 
