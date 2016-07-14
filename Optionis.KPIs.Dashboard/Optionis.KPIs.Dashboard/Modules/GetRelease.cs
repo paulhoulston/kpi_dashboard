@@ -32,6 +32,7 @@ namespace Optionis.KPIs.Dashboard.Modules
                 links = new {
                     self = Routing.Releases.Get (release.Id),
                     issues = new {
+                        add = Routing.Issues.Add(release.Id),
                         list = release.IssueIds.NullSafe().Select (issueId => Routing.Issues.Get (release.Id, issueId))
                     },
                     deployments = new {

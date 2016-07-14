@@ -41,11 +41,13 @@
         {{#if comments}}
         <p>{{comments}}</p>
         {{/if}}
+        <h4>Issues</h4>
         {{#if links.issues.list}}
-            <h4>Issues</h4>
             {{#links.issues.list}}
                 <div data-issue-uri="{{.}}"></div>
             {{/links.issues.list}}
+        {{else}}
+            <i>No issues are assigned</i> <a data-add-issue-uri="{{links.issues.add}}" href="#" title="Add issue">[add issue]</a>
         {{/if}}
         {{#if links.deployments.list}}
             <h4>Deployments <a href="#" title="Add deployment" data-add-deployment-uri="{{links.deployments.add}}"">[add deployment]</a></h4>
@@ -175,12 +177,6 @@
                 <div class="column grid_4 strong">Deployment date</div>
                 <div class="column grid_8">
                     <input type="text" id="deploymentDate" readonly="readonly" />
-                </div>
-            </div>
-            <div class="row noMinWidth padded">
-                <div class="column grid_4 strong">Issues</div>
-                <div class="column grid_8">
-                    tbd...
                 </div>
             </div>
         </div>

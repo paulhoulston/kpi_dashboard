@@ -144,7 +144,7 @@
                                                 status: deployment.status,
                                                 statuses: statuses.statuses
                                             }
-                                        })).find('a[data-action]').click(onChangeStatusACtion);
+                                        })).find('a[data-action]').on('click', onChangeStatusACtion);
                                 });
                             });
                         }
@@ -156,6 +156,11 @@
                             deployment.find('a[data-delete-deployment-uri]').on('click', onDeleteDeployment);
                             deployment.find('a[data-deployment-status-uri]').on('click', onChangeStatus);
                         });
+                    }
+
+                    function addIssue(e) {
+                        var uri = $(e.currentTarget).attr('data-add-issue-uri');
+                        console.log('add issue clicked with uri ' + uri);
                     }
 
                     function addDeployment(e) {
@@ -220,6 +225,7 @@
                         getDeployment($(o).attr('data-deployment-uri'));
                     });
                     releaseDiv.find('a[data-add-deployment-uri]').on('click', addDeployment);
+                    releaseDiv.find('a[data-add-issue-uri]').on('click', addIssue);
                 }
 
                 $.getJSON(uri, onGetReleaseDetails);
