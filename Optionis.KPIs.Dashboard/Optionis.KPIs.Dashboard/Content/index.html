@@ -42,13 +42,20 @@
         <p>{{comments}}</p>
         {{/if}}
         <h4>Issues</h4>
-        {{#if links.issues.list}}
-            {{#links.issues.list}}
+        <div data-container-id="issuesList">
+            <div id="issues">
+                {{#if links.issues.list}}
+                {{#links.issues.list}}
                 <div data-issue-uri="{{.}}"></div>
-            {{/links.issues.list}}
-        {{else}}
-            <i>No issues are assigned</i> <a data-add-issue-uri="{{links.issues.add}}" href="#" title="Add issue">[add issue]</a>
-        {{/if}}
+                {{/links.issues.list}}
+                {{/if}}
+            </div>
+            <div class="row padded">
+                <div class="column grid_12">
+                    Click <a data-add-issue-uri="{{links.issues.add}}" href="#" title="Add issue">here</a> to add an issue.
+                </div>
+            </div>
+        </div>
         {{#if links.deployments.list}}
             <h4>Deployments <a href="#" title="Add deployment" data-add-deployment-uri="{{links.deployments.add}}"">[add deployment]</a></h4>
             {{#links.deployments.list}}
@@ -66,6 +73,24 @@
             <div class="column grid_10">{{title}}</div>
         </div>
     </script>
+     <script id="add-issue-template" type="text/x-handlebars-template">
+         <div class="row">
+             <div class="column grid_2">
+                 Issue ID: <input type="text" class="short" name="issueId" placeholder="Issue ID..." />
+             </div>
+             <div class="column" grid_3">
+                 Title: <input type="text" class="medium" name="title" placeholder="Issue title..." />
+             </div>
+             <div class="column grid_3">
+                 Link: <input type="text" class="medium" name="link" placeholder="Issue url..." />
+             </div>
+             <div class="column grid_2">
+                 <a href="#" data-action="save" title="Add issue">[save]</a>
+                 <a href="#" data-action="cancel" title="Cancel">[cancel]</a>
+             </div>
+         </div>
+     </script>
+
     <script id="deployment-template" type="text/x-handlebars-template">
         <div class="row">
             <div class="column grid_2">{{formatDate deploymentDate}}</div>

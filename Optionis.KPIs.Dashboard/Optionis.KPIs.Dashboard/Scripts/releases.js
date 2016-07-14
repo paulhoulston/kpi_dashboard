@@ -10,6 +10,7 @@
 
     templates: {
         addDeployment: '#add-deployment-template',
+        addIssue: '#add-issue-template',
         createRelease: '#create-release-template',
         createUser: '#create-user-template',
         deploymentDetails: '#deployment-template',
@@ -159,14 +160,29 @@
                     }
 
                     function addIssue(e) {
-                        $.ajax({
-                            url: $(e.currentTarget).attr('data-add-issue-uri'),
-                            type: 'POST',
-                            success: function () {
-                                console.log('Create issue endpoint called successfully.');
+                        var trg = $(e.currentTarget),
+                            issuesList = trg.parents('div[data-container-id="issuesList"]');
+
+                        function onAddIssueAction(ev) {
+                            var link = $(ev.currentTarget);
+                            if (link.attr('data-action') === 'cancel') {
                                 bindReleases();
+                            } else {
+                                $.ajax({
+                                    url: $(e.currentTarget).attr('data-add-issue-uri'),
+                                    type: 'POST',
+                                    success: function () {
+                                        console.log('Create issue endpoint called successfully.');
+                                        bindReleases();
+                                    }
+                                });
                             }
-                        });
+                        }
+
+                        issuesList.find('#issues').append(Releases.getView({
+                            template: Releases.templates.addIssue,
+                            data: { uri: $(e.currentTarget).attr('data-add-issue-uri') }
+                        })).find('a[data-action]').on('click', onAddIssueAction);
                     }
 
                     function addDeployment(e) {
