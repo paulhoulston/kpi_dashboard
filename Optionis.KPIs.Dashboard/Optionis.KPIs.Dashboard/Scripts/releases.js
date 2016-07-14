@@ -159,8 +159,14 @@
                     }
 
                     function addIssue(e) {
-                        var uri = $(e.currentTarget).attr('data-add-issue-uri');
-                        console.log('add issue clicked with uri ' + uri);
+                        $.ajax({
+                            url: $(e.currentTarget).attr('data-add-issue-uri'),
+                            type: 'POST',
+                            success: function () {
+                                console.log('Create issue endpoint called successfully.');
+                                bindReleases();
+                            }
+                        });
                     }
 
                     function addDeployment(e) {
