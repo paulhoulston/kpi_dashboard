@@ -11,7 +11,7 @@
     templates: {
         addDeployment: '#add-deployment-template',
         addIssue: '#add-issue-template',
-        createRelease: '#create-release-template',
+        createRelease: '#add-release-template',
         createUser: '#create-user-template',
         deploymentDetails: '#deployment-template',
         errors: '#errors-template',
@@ -160,29 +160,35 @@
                     }
 
                     function addIssue(e) {
-                        var trg = $(e.currentTarget),
-                            issuesList = trg.parents('div[data-container-id="issuesList"]');
-
-                        function onAddIssueAction(ev) {
-                            var link = $(ev.currentTarget);
-                            if (link.attr('data-action') === 'cancel') {
-                                bindReleases();
-                            } else {
-                                $.ajax({
-                                    url: $(e.currentTarget).attr('data-add-issue-uri'),
-                                    type: 'POST',
-                                    success: function () {
-                                        console.log('Create issue endpoint called successfully.');
-                                        bindReleases();
-                                    }
-                                });
-                            }
+                        function createIssue() {
+                            $.ajax({
+                                url: $(e.currentTarget).attr('data-add-issue-uri'),
+                                type: 'POST',
+                                success: function () {
+                                    bindReleases();
+                                },
+                                error: function (jqXHR, _, __) {
+                                    Releases.handlePostError($('#popup').find('#errors'), jqXHR);
+                                }
+                            });
                         }
 
-                        issuesList.find('#issues').append(Releases.getView({
+                        $('#popup').empty().html(Releases.getView({
                             template: Releases.templates.addIssue,
-                            data: { uri: $(e.currentTarget).attr('data-add-issue-uri') }
-                        })).find('a[data-action]').on('click', onAddIssueAction);
+                            data: {
+                                uri: $(e.currentTarget).attr('data-add-issue-uri')
+                            }
+                        })).dialog({
+                            width: 500,
+                            height: 325,
+                            position: { my: 'center', at: 'center', of: window },
+                            title: 'Create Issue',
+                            closeOnEscape: true,
+                            buttons: [
+                                { text: 'Create', click: createIssue },
+                                { text: 'Cancel', click: Releases.closeDialog }
+                            ]
+                        });
                     }
 
                     function addDeployment(e) {

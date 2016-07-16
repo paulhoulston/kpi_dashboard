@@ -74,23 +74,32 @@
         </div>
     </script>
      <script id="add-issue-template" type="text/x-handlebars-template">
-         <div class="row">
-             <div class="column grid_2">
-                 Issue ID: <input type="text" class="short" name="issueId" placeholder="Issue ID..." />
+         <div id="errors" class="hidden"></div>
+         <div class="row noMinWidth padded">
+             <div class="column grid_3 strong">
+                 Issue ID
              </div>
-             <div class="column" grid_3">
-                 Title: <input type="text" class="medium" name="title" placeholder="Issue title..." />
+             <div class="column grid_9">
+                 <input type="text" id="issueId" placeholder="Issue ID..." />
              </div>
-             <div class="column grid_3">
-                 Link: <input type="text" class="medium" name="link" placeholder="Issue url..." />
+         </div>
+         <div class="row noMinWidth padded">
+             <div class="column grid_3 strong">
+                 Title
              </div>
-             <div class="column grid_2">
-                 <a href="#" data-action="save" title="Add issue">[save]</a>
-                 <a href="#" data-action="cancel" title="Cancel">[cancel]</a>
+             <div class="column grid_9">
+                 <input type="text" id="title" placeholder="Issue title..." />
+             </div>
+         </div>
+         <div class="row noMinWidth padded">
+             <div class="column grid_3 strong">
+                 Link
+             </div>
+             <div class="column grid_9">
+                 <input type="text" id="link" placeholder="Issue url..." />
              </div>
          </div>
      </script>
-
     <script id="deployment-template" type="text/x-handlebars-template">
         <div class="row">
             <div class="column grid_2">{{formatDate deploymentDate}}</div>
@@ -160,7 +169,7 @@
             </ul>
         </div>
     </script>
-    <script id="create-release-template" type="text/x-handlebars-template">
+    <script id="add-release-template" type="text/x-handlebars-template">
         <div id="divReleaseToCreate">
             <div id="errors" class="hidden"></div>
             <div class="row noMinWidth padded">
