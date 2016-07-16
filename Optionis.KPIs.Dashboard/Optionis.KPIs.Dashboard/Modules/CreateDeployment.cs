@@ -27,24 +27,12 @@ namespace Optionis.KPIs.Dashboard.Modules
         {
             Response response = null;
             new DeploymentCreationService(
-                validationError => response = OnValidationError(validationError),
+                validationError => response = new SerializedError(validationError, _errorMessageLookup[validationError], Response).ErrorResponse(),
                 releaseId => response = OnDeploymentCreated(releaseId),
                 new DeploymentCreator()
             ).CreateDeployment(deployment);
 
             return response;
-        }
-
-        Response OnValidationError(DeploymentCreationService.ValidationError validationError)
-        {
-            return Response.AsJson(new
-            {
-                Error = new
-                {
-                    Code = validationError.ToString(),
-                    Message = _errorMessageLookup[validationError]
-                }
-            }, HttpStatusCode.BadRequest);
         }
 
         Response OnDeploymentCreated(int releaseId)

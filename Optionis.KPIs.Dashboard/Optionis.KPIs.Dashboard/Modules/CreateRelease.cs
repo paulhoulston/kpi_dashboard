@@ -57,7 +57,7 @@ namespace Optionis.KPIs.Dashboard.Modules
             new ReleseCreationService (
                 new ReleaseCreator(),
                 new UserExistenceChecker(),
-                validationError => response = OnValidationError (validationError),
+                validationError => response = new SerializedError(validationError, _errorMessageLookup[validationError], Response).ErrorResponse(),
                 releaseId => response = OnReleaseCreated (releaseId)
             ).Create (ConvertRelease (release));
 
@@ -71,16 +71,6 @@ namespace Optionis.KPIs.Dashboard.Modules
                     self = Routing.Releases.Get(releaseId)
                 }
             }, HttpStatusCode.Created);
-        }
-
-        Response OnValidationError (ReleseCreationService.ValidationError validationError)
-        {
-            return Response.AsJson (new {
-                Error = new {
-                    Code = validationError.ToString (),
-                    Message = _errorMessageLookup [validationError]
-                }
-            }, HttpStatusCode.BadRequest);
         }
             
         static ReleseCreationService.ReleaseToCreate ConvertRelease (ReleaseToCreate releaseToCreate)

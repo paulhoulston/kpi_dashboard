@@ -9,7 +9,7 @@ namespace Optionis.KPIs.Dashboard.Modules
         {
             Post[Routing.Issues.ROUTE] = _ =>
             {
-                return HttpStatusCode.NoContent;
+                return new SerializedError(null, "Not impemented", Response).ErrorResponse();
             };
         }
     }

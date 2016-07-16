@@ -120,6 +120,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Modules\SerializedError.cs" />
     <Compile Include="Modules\CreateIssue.cs" />
     <Compile Include="Modules\CreateRelease.cs" />
     <Compile Include="Modules\GetRelease.cs" />
