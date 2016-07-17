@@ -67,6 +67,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
     {
         readonly Action _onIssueCreated;
         readonly Action<ValidationError> _onValidationError;
+        readonly ValidateObject<Issue, ValidationError> _validators;
 
         [DefaultValue(None)]
         public enum ValidationError
@@ -84,14 +85,34 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             _onIssueCreated = onIssueCreated;
             _onValidationError = onValidationError;
+                        _validators =
+                new ValidateObject<Issue, ValidationError> (
+                    _onValidationError,
+                    CreateIssue,
+                    new ValidateIssueIdIsNotEmpty());
         }
 
         public void Create(Issue issue)
+        {
+            _validators.IsValid(issue);
+        }
+
+        private void CreateIssue(Issue issue)
         {
             if (string.IsNullOrEmpty(issue.IssueId))
                 _onValidationError(ValidationError.EmptyIssueId);
             else
                 _onIssueCreated();
+        }
+
+        class ValidateIssueIdIsNotEmpty : IValidateObjects<Issue, ValidationError>
+        {
+            public ValidationError ValidationError { get { return IssueCreationService.ValidationError.EmptyIssueId; } }
+
+            public bool IsValid(Issue issue)
+            {
+                return !string.IsNullOrEmpty(issue.IssueId);
+            }
         }
     }
 }
