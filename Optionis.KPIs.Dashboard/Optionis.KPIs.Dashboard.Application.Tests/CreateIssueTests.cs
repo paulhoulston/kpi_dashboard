@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using NUnit.Framework;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
@@ -9,11 +10,15 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             bool _issueCreated;
             readonly IssueCreationService _service;
+            IssueCreationService.ValidationError? _validationError;
 
             public WHEN_I_supply_all_valid_properties()
             {
-                _service = new IssueCreationService(() => _issueCreated = true);
-                _service.Create();
+                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service.Create(new IssueCreationService.Issue
+                {
+                    IssueId = "CR_12345"
+                });
             }
 
             [Test]
@@ -21,21 +26,72 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 Assert.IsTrue(_issueCreated);
             }
+
+            [Test]
+            public void AND_there_is_no_validation_error()
+            {
+                Assert.IsNull(_validationError);
+            }
+        }
+
+        public class WHEN_the_issue_ID_is_empty
+        {
+            bool _issueCreated;
+            IssueCreationService.ValidationError? _validationError;
+            readonly IssueCreationService _service;
+
+            public WHEN_the_issue_ID_is_empty()
+            {
+                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service.Create(new IssueCreationService.Issue
+                {
+                });
+            }
+
+            [Test]
+            public void THEN_the_issue_is_created()
+            {
+                Assert.IsFalse(_issueCreated);
+                Assert.IsNotNull(_validationError);
+            }
+
+            [Test]
+            public void AND_a_issue_empty_validation_message_is_returned()
+            {
+                Assert.AreEqual(IssueCreationService.ValidationError.EmptyIssueId, _validationError);
+            }
         }
     }
 
     public class IssueCreationService
     {
-        private readonly Action _onIssueCreated;
+        readonly Action _onIssueCreated;
+        readonly Action<ValidationError> _onValidationError;
 
-        public IssueCreationService(Action onIssueCreated)
+        [DefaultValue(None)]
+        public enum ValidationError
         {
-            _onIssueCreated = onIssueCreated;
+            None = 0,
+            EmptyIssueId = 1
         }
 
-        public void Create()
+        public class Issue
         {
-            _onIssueCreated();
+            public string IssueId { get; set; }
+        }
+
+        public IssueCreationService(Action<ValidationError> onValidationError, Action onIssueCreated)
+        {
+            _onIssueCreated = onIssueCreated;
+            _onValidationError = onValidationError;
+        }
+
+        public void Create(Issue issue)
+        {
+            if (string.IsNullOrEmpty(issue.IssueId))
+                _onValidationError(ValidationError.EmptyIssueId);
+            else
+                _onIssueCreated();
         }
     }
 }
