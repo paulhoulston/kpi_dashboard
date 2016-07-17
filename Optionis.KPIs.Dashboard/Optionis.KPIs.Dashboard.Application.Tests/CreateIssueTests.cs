@@ -49,7 +49,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
 
             [Test]
-            public void THEN_the_issue_is_created()
+            public void THEN_the_issue_is_not_created()
             {
                 Assert.IsFalse(_issueCreated);
                 Assert.IsNotNull(_validationError);
