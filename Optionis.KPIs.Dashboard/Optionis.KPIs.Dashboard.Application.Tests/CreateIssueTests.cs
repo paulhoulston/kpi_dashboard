@@ -54,7 +54,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void THEN_the_issue_is_not_created()
             {
                 Assert.IsFalse(_issueCreated);
-                Assert.IsNotNull(_validationError);
             }
 
             [Test]
@@ -83,7 +82,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void THEN_the_issue_is_not_created()
             {
                 Assert.IsFalse(_issueCreated);
-                Assert.IsNotNull(_validationError);
             }
 
             [Test]
