@@ -382,7 +382,6 @@
         $('#btnCreateRelease').on('click', onCreateRelease);
         $('#btnCreateUser').on('click', onCreateUser);
 
-        // Format the date
         Handlebars.registerHelper("formatDate", function (datetime, format) {
             return $.datepicker.formatDate("dd MM yy", new Date(datetime));
         });
