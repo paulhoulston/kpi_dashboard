@@ -54,6 +54,11 @@ namespace Optionis.KPIs.Dashboard.Modules.Routes
             public const string ROUTE = "/deployments/statuses";
         }
 
+        public static class Applications
+        {
+            public const string ROUTE = "/releases/applications";
+        }
+
         public static class Users
         {
             public const string ROUTE = "/users";

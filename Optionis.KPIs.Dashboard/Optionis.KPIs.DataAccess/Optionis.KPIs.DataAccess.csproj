@@ -47,6 +47,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Database\CreateDatabaseScript.sql" />
     <EmbeddedResource Include="Database\InsertDeployment.sql" />
+    <Compile Include="ApplicationLister.cs" />
     <Compile Include="Database\SqlQueries.cs" />
     <Compile Include="DeploymentExistenceChecker.cs" />
     <Compile Include="DbWrapper.cs" />
@@ -118,6 +119,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Database\UpdateDeploymentStatus.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Database\GetApplications.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
