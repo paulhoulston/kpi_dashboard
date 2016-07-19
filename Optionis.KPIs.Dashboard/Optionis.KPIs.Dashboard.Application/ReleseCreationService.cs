@@ -57,7 +57,7 @@ namespace Optionis.KPIs.Dashboard.Application
             void UserExists (string userName, Action onUserNotExist, Action onUserExist);
         }
 
-        public ReleseCreationService (
+        public ReleseCreationService(
             ICreateReleases repository,
             ICheckUsersExist userRepository,
             Action<ValidationError> onValidationError,
@@ -68,17 +68,17 @@ namespace Optionis.KPIs.Dashboard.Application
             _repository = repository;
             _userRepository = userRepository;
             _validators =
-                new ValidateObject<ReleaseToCreate, ValidationError> (
+                new ValidateObject<ReleaseToCreate, ValidationError>(
                 _onValidationError,
                 CreateRelease,
-                new ValidateReleaseIsSet (),
-                new ValidateTitle (),
-                new ValidateApplication (),
-                new ValidateVersionNumber<ReleaseToCreate, ValidationError> (() => ValidationError.InvalidVersion),
-                new ValidateCreationUser (_userRepository),
-                new ValidateIssues (),
-                new ValidateComments (),
-                new ValidateDeploymentDate<ReleaseToCreate, ValidationError> (() => ValidationError.InvalidDeploymentDate));
+                new ValidateReleaseIsSet(),
+                new ValidateTitle(),
+                new ValidateApplication(),
+                new ValidateVersionNumber<ReleaseToCreate, ValidationError>(() => ValidationError.InvalidVersion),
+                new ValidateCreationUser(_userRepository),
+                new ValidateIssues(),
+                new ValidateLengthLessThan<ReleaseToCreate, ValidationError>(255, () => ValidationError.InvalidComments, release => release.Comments),
+                new ValidateDeploymentDate<ReleaseToCreate, ValidationError>(() => ValidationError.InvalidDeploymentDate));
         }
 
         public void Create (ReleaseToCreate release)
@@ -148,16 +148,6 @@ namespace Optionis.KPIs.Dashboard.Application
             {
                 return release.Issues == null ||
                     release.Issues.All (issue => !string.IsNullOrEmpty(issue.Id));
-            }
-        }
-
-        class ValidateComments : IValidateObjects<ReleaseToCreate, ValidationError>
-        {
-            public ValidationError ValidationError { get { return ValidationError.InvalidComments; } }
-
-            public bool IsValid (ReleaseToCreate release)
-            {
-                return string.IsNullOrEmpty(release.Comments) || release.Comments.Length <= 255;
             }
         }
     }

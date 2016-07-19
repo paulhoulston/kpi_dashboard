@@ -43,9 +43,10 @@
     <Compile Include="ReleaseListingService.cs" />
     <Compile Include="GetUserService.cs" />
     <Compile Include="UserCreationService.cs" />
-    <Compile Include="ValidateObject.cs" />
+    <Compile Include="Validators\ValidateObject.cs" />
     <Compile Include="DeploymentStatus.cs" />
     <Compile Include="DeploymentDeletionService.cs" />
+    <Compile Include="Validators\ValidateLengthLessThan.cs" />
     <Compile Include="Validators\ValidateVersionNumber.cs" />
     <Compile Include="Validators\ValidateDeploymentDate.cs" />
     <Compile Include="DeploymentCreationService.cs" />

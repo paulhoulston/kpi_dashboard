@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using Optionis.KPIs.Dashboard.Application.Validators;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
@@ -21,12 +22,12 @@ namespace Optionis.KPIs.Dashboard.Application
             _onUserCreated = onUserCreated;
             _onUserNotCreated = onUserNotCreated;
             _validators =
-                new ValidateObject<User, ValidationError> (
+                new ValidateObject<User, ValidationError>(
                     _onUserNotCreated,
                     DoCreateUser,
-                    new ValidateUserIsNotNull (),
-                    new ValidateUserNameIsNotNull (),
-                    new ValidateUserNameIsLessThan50Characters ());
+                    new ValidateUserIsNotNull(),
+                    new ValidateUserNameIsNotNull(),
+                    new ValidateLengthLessThan<User, ValidationError>(50, () => ValidationError.UserNameTooLong, user => user.UserName));
         }
 
         [DefaultValue(None)]
@@ -70,16 +71,6 @@ namespace Optionis.KPIs.Dashboard.Application
             public bool IsValid(User user)
             {
                 return !string.IsNullOrEmpty(user.UserName);
-            }
-        }
-
-        class ValidateUserNameIsLessThan50Characters : IValidateObjects<User, ValidationError>
-        {
-            public ValidationError ValidationError { get { return ValidationError.UserNameTooLong; } }
-
-            public bool IsValid(User user)
-            {
-                return user.UserName.Length <= 50;
             }
         }
     }

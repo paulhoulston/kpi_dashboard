@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using NUnit.Framework;
+using Optionis.KPIs.Dashboard.Application.Validators;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
 {
@@ -226,15 +227,15 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             _onIssueCreated = onIssueCreated;
             _onValidationError = onValidationError;
-                        _validators =
-                new ValidateObject<Issue, ValidationError> (
-                    _onValidationError,
-                    CreateIssue,
-                    new ValidateIssueIdIsNotEmpty(),
-                    new ValidateIssueIdLength(),
-                    new ValidateTitleNotEmpty(),
-                    new ValidateTitleLength(),
-                    new ValidateLinkLength());
+            _validators =
+            new ValidateObject<Issue, ValidationError>(
+                _onValidationError,
+                CreateIssue,
+                new ValidateIssueIdIsNotEmpty(),
+                new ValidateTitleNotEmpty(),
+                new ValidateLengthLessThan<Issue, ValidationError>(25, () => ValidationError.InvalidIssueId, issue => issue.IssueId),
+                new ValidateLengthLessThan<Issue, ValidationError>(255, () => ValidationError.InvalidTitle, issue => issue.Title),
+                new ValidateLengthLessThan<Issue, ValidationError>(255, () => ValidationError.InvalidLink, issue => issue.Link));
         }
 
         public void Create(Issue issue)
@@ -260,16 +261,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
         }
 
-        class ValidateIssueIdLength : IValidateObjects<Issue, ValidationError>
-        {
-            public ValidationError ValidationError { get { return ValidationError.InvalidIssueId; } }
-
-            public bool IsValid(Issue issue)
-            {
-                return issue.IssueId.Length <= 25;
-            }
-        }
-
         class ValidateTitleNotEmpty : IValidateObjects<Issue, ValidationError>
         {
             public ValidationError ValidationError { get { return ValidationError.EmptyTitle; } }
@@ -277,26 +268,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public bool IsValid(Issue issue)
             {
                 return !string.IsNullOrEmpty(issue.Title);
-            }
-        }
-
-        class ValidateTitleLength : IValidateObjects<Issue, ValidationError>
-        {
-            public ValidationError ValidationError { get { return ValidationError.InvalidTitle; } }
-
-            public bool IsValid(Issue issue)
-            {
-                return issue.Title.Length <= 255;
-            }
-        }
-
-        class ValidateLinkLength : IValidateObjects<Issue, ValidationError>
-        {
-            public ValidationError ValidationError { get { return ValidationError.InvalidLink; } }
-
-            public bool IsValid(Issue issue)
-            {
-                return (issue.Link ?? "").Length <= 255;
             }
         }
     }

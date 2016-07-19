@@ -1,4 +1,5 @@
 ﻿using System;
+using Optionis.KPIs.Dashboard.Application.Validators;
 
 namespace Optionis.KPIs.Dashboard.Application
 {
