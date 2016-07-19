@@ -24,19 +24,7 @@ namespace Optionis.KPIs.DataAccess
                 ReleaseId = releaseId,
                 Status = model.DeploymentStatus,
                 Version = model.Version
-            }, _ =>
-            {
-                model.Issues.ForEachNullSafe(issue =>
-                   dbWrapper.ExecuteScalar(SqlQueries.Queries[SqlQueries.Query.InsertIssue], new
-                   {
-                       releaseId,
-                       issueId = issue.Id,
-                       link = issue.Link,
-                       title = issue.Title
-                   }));
-            });
-
-            onReleaseCreated(releaseId);
+            }, _ => onReleaseCreated(releaseId));
         }
     }
 }

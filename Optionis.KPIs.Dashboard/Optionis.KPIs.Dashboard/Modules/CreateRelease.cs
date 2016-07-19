@@ -18,7 +18,6 @@ namespace Optionis.KPIs.Dashboard.Modules
             { ReleseCreationService.ValidationError.TitleNotSet,"A title for the release is required" },
             { ReleseCreationService.ValidationError.ApplicationNotSet,"An application name is required" },
             { ReleseCreationService.ValidationError.UserNotFound,"The created by user was not found" },
-            { ReleseCreationService.ValidationError.InvalidIssue ,"The issues are invalid" },
             { ReleseCreationService.ValidationError.InvalidComments,"The comments must be less than 255 characters" },
             { ReleseCreationService.ValidationError.InvalidDeploymentDate, "The deployment date cannot be more than 30 days in the past" }
         };
@@ -30,16 +29,8 @@ namespace Optionis.KPIs.Dashboard.Modules
             public string Comments{ get; set; }
             public string Application{ get; set; }
             public string Version{ get; set; }
-            public Issue[] Issues{get;set;}
             public string ChangeSets{ get; set; }
             public DateTime DeploymentDate{ get; set; }
-        }
-
-        class Issue
-        {
-            public string Id{ get; set; }
-            public string Link{ get; set; }
-            public string Title{ get; set; }
         }
 
         public CreateRelease ()
@@ -80,21 +71,11 @@ namespace Optionis.KPIs.Dashboard.Modules
                 Comments = releaseToCreate.Comments,
                 Created = DateTime.Now,
                 CreatedBy = releaseToCreate.CreatedBy,
-                Issues = ConvertIssues (releaseToCreate),
                 Title = releaseToCreate.Title,
                 Version = releaseToCreate.Version,
                 DeploymentDate = releaseToCreate.DeploymentDate,
                 DeploymentStatus = DeploymentStatus.Pending
             };
-        }
-
-        static ReleseCreationService.Issue[] ConvertIssues (ReleaseToCreate releaseToCreate)
-        {
-            return (releaseToCreate.Issues ?? new Issue[] { }).Select (issue => new ReleseCreationService.Issue {
-                Id = issue.Id,
-                Link = issue.Link,
-                Title = issue.Title
-            }).ToArray ();
         }
     }
 }

@@ -43,10 +43,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Title = "Test release",
                 Application = "Test application",
                 CreatedBy = "Paul Houlston",
-                Issues = new []
-                {
-                    new ReleseCreationService.Issue { Id = "1", Title = "An Issue", Link="http://test.com/" }
-                },
                 DeploymentDate = DateTime.Today.AddDays(-3)
             });
 
@@ -182,33 +178,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
         }
 
-        public class WHEN_the_creation_model_has_associated_issues_and_the_issues_do_not_have_ids
-        {
-            readonly TestRunner _testRunner = new TestRunner(new ReleseCreationService.ReleaseToCreate {
-                Version = "1.0.0.*",
-                Title = "Test release",
-                Application = "Test application",
-                CreatedBy = "Paul Houlston",
-                Issues = new []
-                {
-                    new ReleseCreationService.Issue()
-                },
-                DeploymentDate = DateTime.Today.AddDays(-3)
-            });
-
-            [Test]
-            public void THEN_the_release_is_not_created()
-            {
-                Assert.False (_testRunner.ReleaseCreated);
-            }
-
-            [Test]
-            public void AND_a_validation_message_is_returned()
-            {
-                Assert.AreEqual (ReleseCreationService.ValidationError.InvalidIssue, _testRunner.ValidationError);
-            }
-        }
-
         [TestFixture(true,  "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567891234")]
         [TestFixture(true,  "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678912345")]
         [TestFixture(false, "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789123456")]
@@ -225,10 +194,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     Title = "Test release",
                     Application = "Test application",
                     CreatedBy = "Paul Houlston",
-                    Issues = new []
-                    {
-                        new ReleseCreationService.Issue { Id = "1", Title = "An Issue", Link="http://test.com/" }
-                    },
                     Comments = comments,
                     DeploymentDate = DateTime.Today.AddDays(-3)
                 });
@@ -257,10 +222,6 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Title = "Test release",
                 Application = "Test application",
                 CreatedBy = "Paul Houlston",
-                Issues = new []
-                {
-                    new ReleseCreationService.Issue { Id = "1", Link = "http://test.com", Title = "Test Issue" }
-                },
                 DeploymentDate = DateTime.Today.AddDays(-30).AddMilliseconds(-1)
             });
 

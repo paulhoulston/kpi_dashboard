@@ -20,7 +20,7 @@ namespace Optionis.KPIs.Dashboard.Application.Validators
         public bool IsValid(T obj)
         {
             var property = _getProperty(obj);
-            return property == null || property.Length <= _maxStringLength;
+            return string.IsNullOrEmpty(property) || property.Length <= _maxStringLength;
         }
     }
 }

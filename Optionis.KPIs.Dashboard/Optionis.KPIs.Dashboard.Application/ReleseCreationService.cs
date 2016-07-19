@@ -22,9 +22,8 @@ namespace Optionis.KPIs.Dashboard.Application
             TitleNotSet = 3,
             ApplicationNotSet = 4,
             UserNotFound = 5,
-            InvalidIssue = 6,
-            InvalidComments = 7,
-            InvalidDeploymentDate = 8
+            InvalidComments = 6,
+            InvalidDeploymentDate = 7
         }
 
         public class ReleaseToCreate : IHaveAVersionNumber, IHaveADeploymentDate
@@ -34,17 +33,9 @@ namespace Optionis.KPIs.Dashboard.Application
             public string Version{ get; set; }
             public string Title{ get; set; }
             public string Application{ get; set; }
-            public Issue[] Issues{ get; set; }
             public string Comments{ get; set; }
             public DateTime DeploymentDate { get; set; }
             public DeploymentStatus DeploymentStatus { get; set; }
-        }
-
-        public class Issue
-        {
-            public string Id{ get; set; }
-            public string Link{ get; set; }
-            public string Title{ get; set; }
         }
 
         public interface ICreateReleases
@@ -76,7 +67,6 @@ namespace Optionis.KPIs.Dashboard.Application
                 new ValidateApplication(),
                 new ValidateVersionNumber<ReleaseToCreate, ValidationError>(() => ValidationError.InvalidVersion),
                 new ValidateCreationUser(_userRepository),
-                new ValidateIssues(),
                 new ValidateLengthLessThan<ReleaseToCreate, ValidationError>(255, () => ValidationError.InvalidComments, release => release.Comments),
                 new ValidateDeploymentDate<ReleaseToCreate, ValidationError>(() => ValidationError.InvalidDeploymentDate));
         }
@@ -137,17 +127,6 @@ namespace Optionis.KPIs.Dashboard.Application
                 var userExists = false;
                 _userRepository.UserExists (release.CreatedBy, () => userExists = false, () => userExists = true);
                 return userExists;
-            }
-        }
-
-        class ValidateIssues : IValidateObjects<ReleaseToCreate, ValidationError>
-        {
-            public ValidationError ValidationError { get { return ValidationError.InvalidIssue; } }
-
-            public bool IsValid (ReleaseToCreate release)
-            {
-                return release.Issues == null ||
-                    release.Issues.All (issue => !string.IsNullOrEmpty(issue.Id));
             }
         }
     }
