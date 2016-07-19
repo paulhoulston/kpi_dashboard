@@ -160,12 +160,20 @@
                     }
 
                     function addIssue(e) {
+                        var popup = $('#popup');
+
                         function createIssue() {
                             $.ajax({
                                 url: $(e.currentTarget).attr('data-add-issue-uri'),
                                 type: 'POST',
+                                data: {
+                                    issueId: popup.find('#issueId').val(),
+                                    title: popup.find('#title').val(),
+                                    link: popup.find('#link').val()
+                                },
                                 success: function () {
                                     bindReleases();
+                                    Releases.closeDialog();
                                 },
                                 error: function (jqXHR, _, __) {
                                     Releases.handlePostError($('#popup').find('#errors'), jqXHR);
@@ -173,7 +181,7 @@
                             });
                         }
 
-                        $('#popup').empty().html(Releases.getView({
+                        popup.empty().html(Releases.getView({
                             template: Releases.templates.addIssue,
                             data: {
                                 uri: $(e.currentTarget).attr('data-add-issue-uri')

@@ -20,12 +20,11 @@ namespace Optionis.KPIs.Dashboard.Modules
 
         public CreateIssue()
         {
-            Post[Routing.Issues.ROUTE] = _ =>
-                Post[Routing.Deployments.ROUTE] = parameters =>
-                {
-                    var request = this.Bind<IssueCreationService.Issue>();
-                    return PerformPost(request);
-                };
+            Post[Routing.Issues.ROUTE] = parameters =>
+            {
+                var request = this.Bind<IssueCreationService.Issue>();
+                return PerformPost(request);
+            };
         }
 
         Response PerformPost(IssueCreationService.Issue issue)
