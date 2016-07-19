@@ -93,7 +93,40 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
         }
 
+        [TestFixture(true, "CR-123456789012345678901")]
+        [TestFixture(true, "CR-1234567890123456789012")]
+        [TestFixture(false, "CR-12345678901234567890123")]
+        public class WHEN_the_issue_exceeds_25_characters
+        {
+            bool _issueCreated;
+            IssueCreationService.ValidationError? _validationError;
+            readonly IssueCreationService _service;
+            readonly bool _isValid;
 
+            public WHEN_the_issue_exceeds_25_characters(bool isValid, string issueId)
+            {
+                _isValid = isValid;
+                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service.Create(new IssueCreationService.Issue
+                {
+                    IssueId = issueId,
+                    Title = "Checking length of issue ID"
+                });
+            }
+
+            [Test]
+            public void THEN_the_issue_is_not_created()
+            {
+                Assert.AreEqual(_isValid, _issueCreated);
+            }
+
+            [Test]
+            public void AND_a_issue_too_long_validation_message_is_returned()
+            {
+                if (!_isValid)
+                    Assert.AreEqual(IssueCreationService.ValidationError.InvalidIssueId, _validationError);
+            }
+        }
     }
 
     public class IssueCreationService
@@ -107,7 +140,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             None = 0,
             EmptyIssueId = 1,
-            EmptyTitle = 2
+            EmptyTitle = 2,
+            InvalidIssueId = 3
         }
 
         public class Issue
@@ -125,6 +159,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     _onValidationError,
                     CreateIssue,
                     new ValidateIssueIdIsNotEmpty(),
+                    new ValidateIssueIdLength(),
                     new ValidateTitleNotEmpty());
         }
 
@@ -143,7 +178,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
         class ValidateIssueIdIsNotEmpty : IValidateObjects<Issue, ValidationError>
         {
-            public ValidationError ValidationError { get { return IssueCreationService.ValidationError.EmptyIssueId; } }
+            public ValidationError ValidationError { get { return ValidationError.EmptyIssueId; } }
 
             public bool IsValid(Issue issue)
             {
@@ -151,9 +186,19 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
         }
 
+        class ValidateIssueIdLength : IValidateObjects<Issue, ValidationError>
+        {
+            public ValidationError ValidationError { get { return ValidationError.InvalidIssueId; } }
+
+            public bool IsValid(Issue issue)
+            {
+                return issue.IssueId.Length <= 25;
+            }
+        }
+
         class ValidateTitleNotEmpty : IValidateObjects<Issue, ValidationError>
         {
-            public ValidationError ValidationError { get { return IssueCreationService.ValidationError.EmptyTitle; } }
+            public ValidationError ValidationError { get { return ValidationError.EmptyTitle; } }
 
             public bool IsValid(Issue issue)
             {
