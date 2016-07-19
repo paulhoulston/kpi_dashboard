@@ -2,6 +2,7 @@
     
     settings: {
         allReleasesUri: '/releases?top=10000',
+        applicationsUri: '/releases/applications',
         dateFormat: 'dd/mm/yy',
         deploymentStatuses: '/deployments/statuses',
         releasesUri: '/releases',
@@ -306,39 +307,42 @@
                     type: 'POST',
                     data: getData(),
                     success: onSuccess,
-                    error: function(jqXHR, _, __) { Releases.handlePostError(form.find('#errors'), jqXHR); }
+                    error: function (jqXHR, _, __) { Releases.handlePostError(form.find('#errors'), jqXHR); }
                 });
             }
 
             function bindUsers() {
-                $.getJSON(Releases.settings.usersUri, function(d) {
-                    if(d.users) {
-                        for(ind in d.users)
-                            $.getJSON(d.users[ind], function(usr) {
+                $.getJSON(Releases.settings.usersUri, function (d) {
+                    if (d.users) {
+                        for (ind in d.users)
+                            $.getJSON(d.users[ind], function (usr) {
                                 $('#createdBy').append($('<option/>', { 'value': usr.id, 'text': usr.userName }));
                             });
                     }
                 });
             }
 
-            $('#popup').empty().html(Releases.getView({
-                template: Releases.templates.createRelease
-            })).dialog({
-                width: 650,
-                height: 400,
-                position: { my: 'center', at: 'center', of: window },
-                title: 'Create Release',
-                closeOnEscape: true,
-                buttons: [
-                    { text: 'Create', click: createRelease },
-                    { text: 'Cancel', click: Releases.closeDialog }
-                ]
-            }).find('#deploymentDate').datepicker({
-                showOn: 'both',
-                dateFormat: Releases.settings.dateFormat
-            }).datepicker('setDate', Releases.tomorrow());
+            $.getJSON(Releases.settings.applicationsUri, function (applications) {
+                $('#popup').empty().html(Releases.getView({
+                    template: Releases.templates.createRelease,
+                    data: applications
+                })).dialog({
+                    width: 650,
+                    height: 400,
+                    position: { my: 'center', at: 'center', of: window },
+                    title: 'Create Release',
+                    closeOnEscape: true,
+                    buttons: [
+                        { text: 'Create', click: createRelease },
+                        { text: 'Cancel', click: Releases.closeDialog }
+                    ]
+                }).find('#deploymentDate').datepicker({
+                    showOn: 'both',
+                    dateFormat: Releases.settings.dateFormat
+                }).datepicker('setDate', Releases.tomorrow());
 
-            bindUsers();
+                bindUsers();
+            });
         }
 
         function onCreateUser() {

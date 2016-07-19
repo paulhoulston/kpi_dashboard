@@ -196,8 +196,9 @@
                 <div class="column grid_4 strong">Application</div>
                 <div class="column grid_8">
                     <select id="application">
-                        <option value="MyParasol">MyParasol</option>
-                        <option value="MyClearsky">MyClearsky</option>
+                        {{#applications}}
+                        <option value="{{name}}">{{name}}</option>
+                        {{/applications}}
                     </select>
                 </div>
             </div>
