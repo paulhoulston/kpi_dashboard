@@ -68,3 +68,20 @@ GO
 
 ALTER TABLE [dbo].[Issues] CHECK CONSTRAINT [FK_Issues_Releases]
 GO
+
+CREATE TABLE dbo.Applications
+(
+	Id INT PRIMARY KEY NOT NULL IDENTITY,
+	Name VARCHAR(255) NOT NULL
+)
+GO
+
+INSERT INTO [dbo].[Applications]([Name]) VALUES ('MyParasol')
+INSERT INTO [dbo].[Applications]([Name]) VALUES ('MyClearSky WFM')
+INSERT INTO [dbo].[Applications]([Name]) VALUES ('MyClearSky SME')
+INSERT INTO [dbo].[Applications]([Name]) VALUES ('Salesforce')
+INSERT INTO [dbo].[Applications]([Name]) VALUES ('Parasol Connect')
+INSERT INTO [dbo].[Applications]([Name]) VALUES ('Goldmine')
+INSERT INTO [dbo].[Applications]([Name]) VALUES ('SelectPay')
+INSERT INTO [dbo].[Applications]([Name]) VALUES ('Dimensions')
+GO
