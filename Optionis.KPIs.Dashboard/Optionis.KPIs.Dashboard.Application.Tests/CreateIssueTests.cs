@@ -1,13 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
 using NUnit.Framework;
-using Optionis.KPIs.Dashboard.Application.Validators;
 
 namespace Optionis.KPIs.Dashboard.Application.Tests
 {
     public class GIVEN_I_want_to_create_an_issue
     {
-        public class WHEN_I_supply_all_valid_properties
+        public class WHEN_I_supply_all_valid_properties : IssueCreationService.ICreateIssues
         {
             bool _issueCreated;
             readonly IssueCreationService _service;
@@ -15,7 +13,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             public WHEN_I_supply_all_valid_properties()
             {
-                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service = new IssueCreationService(error => _validationError = error, _ => _issueCreated = true, this);
                 _service.Create(new IssueCreationService.Issue
                 {
                     IssueId = "CR-12345",
@@ -34,9 +32,14 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 Assert.IsNull(_validationError);
             }
+
+            public void Create(IssueCreationService.Issue issue, Action<int> onIssueCreated)
+            {
+                onIssueCreated(1);
+            }
         }
 
-        public class WHEN_the_issue_ID_is_empty
+        public class WHEN_the_issue_ID_is_empty : IssueCreationService.ICreateIssues
         {
             bool _issueCreated;
             IssueCreationService.ValidationError? _validationError;
@@ -44,7 +47,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             public WHEN_the_issue_ID_is_empty()
             {
-                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service = new IssueCreationService(error => _validationError = error, _ => _issueCreated = true, this);
                 _service.Create(new IssueCreationService.Issue
                 {
                     Title = "No issue ID on this item"
@@ -62,9 +65,14 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 Assert.AreEqual(IssueCreationService.ValidationError.EmptyIssueId, _validationError);
             }
+
+            public void Create(IssueCreationService.Issue issue, Action<int> onIssueCreated)
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public class WHEN_the_issue_title_is_empty
+        public class WHEN_the_issue_title_is_empty : IssueCreationService.ICreateIssues
         {
             bool _issueCreated;
             IssueCreationService.ValidationError? _validationError;
@@ -72,7 +80,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             public WHEN_the_issue_title_is_empty()
             {
-                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service = new IssueCreationService(error => _validationError = error, _ => _issueCreated = true, this);
                 _service.Create(new IssueCreationService.Issue
                 {
                     IssueId = "CR-12345"
@@ -90,12 +98,17 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 Assert.AreEqual(IssueCreationService.ValidationError.EmptyTitle, _validationError);
             }
+
+            public void Create(IssueCreationService.Issue issue, Action<int> onIssueCreated)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [TestFixture(true, "CR-123456789012345678901")]
         [TestFixture(true, "CR-1234567890123456789012")]
         [TestFixture(false, "CR-12345678901234567890123")]
-        public class WHEN_the_issue_id_exceeds_25_characters
+        public class WHEN_the_issue_id_exceeds_25_characters : IssueCreationService.ICreateIssues
         {
             bool _issueCreated;
             IssueCreationService.ValidationError? _validationError;
@@ -105,7 +118,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public WHEN_the_issue_id_exceeds_25_characters(bool isValid, string issueId)
             {
                 _isValid = isValid;
-                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service = new IssueCreationService(error => _validationError = error, _ => _issueCreated = true, this);
                 _service.Create(new IssueCreationService.Issue
                 {
                     IssueId = issueId,
@@ -125,12 +138,17 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 if (!_isValid)
                     Assert.AreEqual(IssueCreationService.ValidationError.InvalidIssueId, _validationError);
             }
+
+            public void Create(IssueCreationService.Issue issue, Action<int> onIssueCreated)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [TestFixture(true, "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123")]
         [TestFixture(true, "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234")]
         [TestFixture(false, "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345")]
-        public class WHEN_the_issue_title_exceeds_255_characters
+        public class WHEN_the_issue_title_exceeds_255_characters : IssueCreationService.ICreateIssues
         {
             bool _issueCreated;
             IssueCreationService.ValidationError? _validationError;
@@ -140,7 +158,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public WHEN_the_issue_title_exceeds_255_characters(bool isValid, string title)
             {
                 _isValid = isValid;
-                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service = new IssueCreationService(error => _validationError = error, _ => _issueCreated = true, this);
                 _service.Create(new IssueCreationService.Issue
                 {
                     IssueId = "CR-56734",
@@ -160,12 +178,17 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 if (!_isValid)
                     Assert.AreEqual(IssueCreationService.ValidationError.InvalidTitle, _validationError);
             }
+
+            public void Create(IssueCreationService.Issue issue, Action<int> onIssueCreated)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [TestFixture(true, "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123")]
         [TestFixture(true, "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234")]
         [TestFixture(false, "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345")]
-        public class WHEN_the_issue_link_exceeds_255_characters
+        public class WHEN_the_issue_link_exceeds_255_characters : IssueCreationService.ICreateIssues
         {
             bool _issueCreated;
             IssueCreationService.ValidationError? _validationError;
@@ -175,7 +198,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public WHEN_the_issue_link_exceeds_255_characters(bool isValid, string link)
             {
                 _isValid = isValid;
-                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service = new IssueCreationService(error => _validationError = error, _ => _issueCreated = true, this);
                 _service.Create(new IssueCreationService.Issue
                 {
                     IssueId = "CR-56734",
@@ -195,6 +218,11 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             {
                 if (!_isValid)
                     Assert.AreEqual(IssueCreationService.ValidationError.InvalidLink, _validationError);
+            }
+
+            public void Create(IssueCreationService.Issue issue, Action<int> onIssueCreated)
+            {
+                throw new NotImplementedException();
             }
         }
     }

@@ -6,9 +6,15 @@ namespace Optionis.KPIs.Dashboard.Application
 {
     public class IssueCreationService
     {
-        readonly Action _onIssueCreated;
+        readonly Action<int> _onIssueCreated;
         readonly Action<ValidationError> _onValidationError;
         readonly ValidateObject<Issue, ValidationError> _validators;
+        readonly ICreateIssues _repository;
+
+        public interface ICreateIssues
+        {
+            void Create(Issue issue, Action<int> onIssueCreated);
+        }
 
         [DefaultValue(None)]
         public enum ValidationError
@@ -25,22 +31,24 @@ namespace Optionis.KPIs.Dashboard.Application
         {
             public string IssueId { get; set; }
             public string Link { get; set; }
+            public int ReleaseId { get; set; }
             public string Title { get; set; }
         }
 
-        public IssueCreationService(Action<ValidationError> onValidationError, Action onIssueCreated)
+        public IssueCreationService(Action<ValidationError> onValidationError, Action<int> onIssueCreated, ICreateIssues repository)
         {
             _onIssueCreated = onIssueCreated;
             _onValidationError = onValidationError;
+            _repository = repository;
             _validators =
-            new ValidateObject<Issue, ValidationError>(
-                _onValidationError,
-                CreateIssue,
-                new ValidateIssueIdIsNotEmpty(),
-                new ValidateTitleNotEmpty(),
-                new ValidateLengthLessThan<Issue, ValidationError>(25, () => ValidationError.InvalidIssueId, issue => issue.IssueId),
-                new ValidateLengthLessThan<Issue, ValidationError>(255, () => ValidationError.InvalidTitle, issue => issue.Title),
-                new ValidateLengthLessThan<Issue, ValidationError>(255, () => ValidationError.InvalidLink, issue => issue.Link));
+                new ValidateObject<Issue, ValidationError>(
+                    _onValidationError,
+                    CreateIssue,
+                    new ValidateIssueIdIsNotEmpty(),
+                    new ValidateTitleNotEmpty(),
+                    new ValidateLengthLessThan<Issue, ValidationError>(25, () => ValidationError.InvalidIssueId, issue => issue.IssueId),
+                    new ValidateLengthLessThan<Issue, ValidationError>(255, () => ValidationError.InvalidTitle, issue => issue.Title),
+                    new ValidateLengthLessThan<Issue, ValidationError>(255, () => ValidationError.InvalidLink, issue => issue.Link));
         }
 
         public void Create(Issue issue)
@@ -53,7 +61,7 @@ namespace Optionis.KPIs.Dashboard.Application
             if (string.IsNullOrEmpty(issue.IssueId))
                 _onValidationError(ValidationError.EmptyIssueId);
             else
-                _onIssueCreated();
+                _repository.Create(issue, _onIssueCreated);
         }
 
         class ValidateIssueIdIsNotEmpty : IValidateObjects<Issue, ValidationError>

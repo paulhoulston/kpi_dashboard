@@ -54,6 +54,7 @@
     <Compile Include="DeploymentRetriever.cs" />
     <Compile Include="DeploymentStatusUpdater.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="IssueCreator.cs" />
     <Compile Include="IssueRetriever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReleaseCreator.cs" />
