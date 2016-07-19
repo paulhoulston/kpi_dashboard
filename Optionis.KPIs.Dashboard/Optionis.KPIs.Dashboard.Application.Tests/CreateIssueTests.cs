@@ -160,6 +160,42 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     Assert.AreEqual(IssueCreationService.ValidationError.InvalidTitle, _validationError);
             }
         }
+
+        [TestFixture(true, "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123")]
+        [TestFixture(true, "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234")]
+        [TestFixture(false, "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345")]
+        public class WHEN_the_issue_link_exceeds_255_characters
+        {
+            bool _issueCreated;
+            IssueCreationService.ValidationError? _validationError;
+            readonly IssueCreationService _service;
+            readonly bool _isValid;
+
+            public WHEN_the_issue_link_exceeds_255_characters(bool isValid, string link)
+            {
+                _isValid = isValid;
+                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service.Create(new IssueCreationService.Issue
+                {
+                    IssueId = "CR-56734",
+                    Title = "Testing hyperlink length",
+                    Link = link
+                });
+            }
+
+            [Test]
+            public void THEN_the_issue_is_not_created()
+            {
+                Assert.AreEqual(_isValid, _issueCreated);
+            }
+
+            [Test]
+            public void AND_a_issue_too_long_validation_message_is_returned()
+            {
+                if (!_isValid)
+                    Assert.AreEqual(IssueCreationService.ValidationError.InvalidLink, _validationError);
+            }
+        }
     }
 
     public class IssueCreationService
@@ -175,12 +211,14 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             EmptyIssueId = 1,
             EmptyTitle = 2,
             InvalidIssueId = 3,
-            InvalidTitle = 4
+            InvalidTitle = 4,
+            InvalidLink = 5
         }
 
         public class Issue
         {
             public string IssueId { get; set; }
+            public string Link { get; internal set; }
             public string Title { get; set; }
         }
 
@@ -195,7 +233,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                     new ValidateIssueIdIsNotEmpty(),
                     new ValidateIssueIdLength(),
                     new ValidateTitleNotEmpty(),
-                    new ValidateTitleLength());
+                    new ValidateTitleLength(),
+                    new ValidateLinkLength());
         }
 
         public void Create(Issue issue)
@@ -248,6 +287,16 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public bool IsValid(Issue issue)
             {
                 return issue.Title.Length <= 255;
+            }
+        }
+
+        class ValidateLinkLength : IValidateObjects<Issue, ValidationError>
+        {
+            public ValidationError ValidationError { get { return ValidationError.InvalidLink; } }
+
+            public bool IsValid(Issue issue)
+            {
+                return (issue.Link ?? "").Length <= 255;
             }
         }
     }
