@@ -17,7 +17,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
                 _service.Create(new IssueCreationService.Issue
                 {
-                    IssueId = "CR_12345"
+                    IssueId = "CR-12345",
+                    Title = "Testing issue"
                 });
             }
 
@@ -45,6 +46,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
                 _service.Create(new IssueCreationService.Issue
                 {
+                    Title = "No issue ID on this item"
                 });
             }
 
@@ -61,6 +63,37 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Assert.AreEqual(IssueCreationService.ValidationError.EmptyIssueId, _validationError);
             }
         }
+
+        public class WHEN_the_issue_title_is_empty
+        {
+            bool _issueCreated;
+            IssueCreationService.ValidationError? _validationError;
+            readonly IssueCreationService _service;
+
+            public WHEN_the_issue_title_is_empty()
+            {
+                _service = new IssueCreationService(error => _validationError = error, () => _issueCreated = true);
+                _service.Create(new IssueCreationService.Issue
+                {
+                    IssueId = "CR-12345"
+                });
+            }
+
+            [Test]
+            public void THEN_the_issue_is_not_created()
+            {
+                Assert.IsFalse(_issueCreated);
+                Assert.IsNotNull(_validationError);
+            }
+
+            [Test]
+            public void AND_a_issue_empty_validation_message_is_returned()
+            {
+                Assert.AreEqual(IssueCreationService.ValidationError.EmptyTitle, _validationError);
+            }
+        }
+
+
     }
 
     public class IssueCreationService
@@ -73,12 +106,14 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         public enum ValidationError
         {
             None = 0,
-            EmptyIssueId = 1
+            EmptyIssueId = 1,
+            EmptyTitle = 2
         }
 
         public class Issue
         {
             public string IssueId { get; set; }
+            public string Title { get; set; }
         }
 
         public IssueCreationService(Action<ValidationError> onValidationError, Action onIssueCreated)
@@ -89,7 +124,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 new ValidateObject<Issue, ValidationError> (
                     _onValidationError,
                     CreateIssue,
-                    new ValidateIssueIdIsNotEmpty());
+                    new ValidateIssueIdIsNotEmpty(),
+                    new ValidateTitleNotEmpty());
         }
 
         public void Create(Issue issue)
@@ -112,6 +148,16 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public bool IsValid(Issue issue)
             {
                 return !string.IsNullOrEmpty(issue.IssueId);
+            }
+        }
+
+        class ValidateTitleNotEmpty : IValidateObjects<Issue, ValidationError>
+        {
+            public ValidationError ValidationError { get { return IssueCreationService.ValidationError.EmptyTitle; } }
+
+            public bool IsValid(Issue issue)
+            {
+                return !string.IsNullOrEmpty(issue.Title);
             }
         }
     }
