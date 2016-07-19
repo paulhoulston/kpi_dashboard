@@ -141,7 +141,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             public void Create(IssueCreationService.Issue issue, Action<int> onIssueCreated)
             {
-                throw new NotImplementedException();
+                onIssueCreated(1);
             }
         }
 
@@ -181,7 +181,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             public void Create(IssueCreationService.Issue issue, Action<int> onIssueCreated)
             {
-                throw new NotImplementedException();
+                onIssueCreated(1);
             }
         }
 
@@ -222,7 +222,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
 
             public void Create(IssueCreationService.Issue issue, Action<int> onIssueCreated)
             {
-                throw new NotImplementedException();
+                onIssueCreated(1);
             }
         }
     }
