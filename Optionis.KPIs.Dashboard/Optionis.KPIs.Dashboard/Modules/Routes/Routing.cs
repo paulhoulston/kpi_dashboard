@@ -57,6 +57,12 @@ namespace Optionis.KPIs.Dashboard.Modules.Routes
         public static class Applications
         {
             public const string ROUTE = "/releases/applications";
+            public const string GET = ROUTE + "/{applicationId}";
+
+            public static string Get(int applicationId)
+            {
+                return GET.Replace(@"{applicationId}", applicationId.ToString());
+            }
         }
 
         public static class Users

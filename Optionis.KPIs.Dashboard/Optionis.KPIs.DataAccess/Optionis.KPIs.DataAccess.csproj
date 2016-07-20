@@ -64,6 +64,7 @@
     <Compile Include="ReleaseRemover.cs" />
     <Compile Include="ReleaseRetriever.cs" />
     <Compile Include="DeploymentCreator.cs" />
+    <Compile Include="ApplicationCreator.cs" />
     <Compile Include="UserCreator.cs" />
     <Compile Include="UserLister.cs" />
     <Compile Include="UserExistenceChecker.cs" />
@@ -122,6 +123,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Database\GetApplications.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Database\InsertApplication.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

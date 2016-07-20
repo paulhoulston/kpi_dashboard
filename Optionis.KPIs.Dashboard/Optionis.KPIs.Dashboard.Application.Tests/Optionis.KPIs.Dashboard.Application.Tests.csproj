@@ -31,6 +31,7 @@
   <ItemGroup>
     <Compile Include="CreateIssueTests.cs" />
     <Compile Include="CreateReleaseTests.cs" />
+    <Compile Include="CreateApplicationTests.cs" />
     <Compile Include="GetReleaseTests.cs" />
     <Compile Include="GetIssueTests.cs" />
     <Compile Include="GetDeploymentTests.cs" />

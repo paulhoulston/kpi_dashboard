@@ -41,6 +41,7 @@
     <Compile Include="GetReleaseService.cs" />
     <Compile Include="GetIssueService.cs" />
     <Compile Include="GetDeploymentService.cs" />
+    <Compile Include="ApplicationCreationService.cs" />
     <Compile Include="UsersListingService.cs" />
     <Compile Include="ReleaseListingService.cs" />
     <Compile Include="GetUserService.cs" />
