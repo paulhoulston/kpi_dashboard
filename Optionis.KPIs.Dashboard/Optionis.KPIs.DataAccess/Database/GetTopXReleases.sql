@@ -1,1 +1,7 @@
-﻿SELECT TOP {=top} Id AS ReleaseId FROM Releases ORDER BY Created DESC
+﻿SELECT TOP {=top} ReleaseId
+FROM
+(
+    SELECT ReleaseId, MAX(DeploymentDate)
+    FROM Deployments
+    GROUP BY DeploymentDate
+)
