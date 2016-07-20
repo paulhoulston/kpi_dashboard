@@ -19,7 +19,7 @@ namespace Optionis.KPIs.Dashboard.Modules
             { ReleseCreationService.ValidationError.ApplicationNotSet,"An application name is required" },
             { ReleseCreationService.ValidationError.UserNotFound,"The created by user was not found" },
             { ReleseCreationService.ValidationError.InvalidComments,"The comments must be less than 255 characters" },
-            { ReleseCreationService.ValidationError.InvalidDeploymentDate, "The deployment date cannot be more than 30 days in the past" }
+            { ReleseCreationService.ValidationError.InvalidDeploymentDate, "The deployment date cannot be more than 90 days in the past" }
         };
 
         class ReleaseToCreate

@@ -12,7 +12,7 @@ namespace Optionis.KPIs.Dashboard.Modules
         static readonly IDictionary<DeploymentCreationService.ValidationError, string> _errorMessageLookup = new Dictionary<DeploymentCreationService.ValidationError, string> {
             { DeploymentCreationService.ValidationError.None,"No error" },
             { DeploymentCreationService.ValidationError.InvalidVersionNumber, "Version number is invalid. It must be in the format 1.0.0.0" },
-            { DeploymentCreationService.ValidationError.InvalidDeploymentDate, "The deployment date cannot be more than 30 days in the past" }
+            { DeploymentCreationService.ValidationError.InvalidDeploymentDate, "The deployment date cannot be more than 90 days in the past" }
         };
 
         public CreateDeployment ()

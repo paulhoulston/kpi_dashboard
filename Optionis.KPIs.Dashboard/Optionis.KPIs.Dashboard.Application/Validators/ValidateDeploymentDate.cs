@@ -22,7 +22,7 @@ namespace Optionis.KPIs.Dashboard.Application
 
         public bool IsValid (T validationObj)
         {
-            return validationObj.DeploymentDate > DateTime.Today.AddDays(-30);
+            return validationObj.DeploymentDate > DateTime.Today.AddDays(-90);
         }
     }
 }

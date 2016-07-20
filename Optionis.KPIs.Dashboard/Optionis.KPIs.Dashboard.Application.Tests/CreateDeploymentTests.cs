@@ -77,11 +77,11 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             }
         }
 
-        public class WHEN_the_deployment_date_is_more_than_30_days_old
+        public class WHEN_the_deployment_date_is_more_than_90_days_old
         {
             readonly TestRunner _testRunner = new TestRunner (new DeploymentCreationService.Deployment {
                 Version = "1.2.3.*",
-                DeploymentDate = DateTime.Today.AddDays (-30).AddMilliseconds (-1)
+                DeploymentDate = DateTime.Today.AddDays (-90).AddMilliseconds (-1)
             });
 
             [Test]

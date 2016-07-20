@@ -222,7 +222,7 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
                 Title = "Test release",
                 Application = "Test application",
                 CreatedBy = "Paul Houlston",
-                DeploymentDate = DateTime.Today.AddDays(-30).AddMilliseconds(-1)
+                DeploymentDate = DateTime.Today.AddDays(-90).AddMilliseconds(-1)
             });
 
             [Test]
