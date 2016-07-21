@@ -1,7 +1,7 @@
 ﻿SELECT TOP {=top} ReleaseId
 FROM
 (
-    SELECT ReleaseId, MAX(DeploymentDate)
+    SELECT ReleaseId, MAX(DeploymentDate) AS DeploymentDate
     FROM Deployments
-    GROUP BY DeploymentDate
-)
+    GROUP BY ReleaseId
+) t
