@@ -20,6 +20,7 @@ namespace Optionis.KPIs.Dashboard.Application
             public DateTime DeploymentDate { get; set; }
             public string Version { get; set; }
             public DeploymentStatus DeploymentStatus { get; set; }
+            public string Comments { get; set; }
         }
 
         public GetDeploymentService (IGetDeployments repository, Action onDeploymentNotFound, Action<Deployment> onDeploymentFound)

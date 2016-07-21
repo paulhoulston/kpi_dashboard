@@ -29,7 +29,8 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
         {
             readonly TestRunner _testRunner = new TestRunner(new DeploymentCreationService.Deployment{
                 Version = "1.2.3.4",
-                DeploymentDate = DateTime.Now
+                DeploymentDate = DateTime.Now,
+                Comments = "Some comments"
             });
 
             [Test]
@@ -94,6 +95,72 @@ namespace Optionis.KPIs.Dashboard.Application.Tests
             public void AND_the_deployent_date_too_old_error_code_is_returned()
             {
                 Assert.AreEqual (DeploymentCreationService.ValidationError.InvalidDeploymentDate, _testRunner.ValidationError);
+            }
+        }
+
+        public class WHEN_the_deployment_has_no_comments
+        {
+            readonly TestRunner _testRunner = new TestRunner(new DeploymentCreationService.Deployment
+            {
+                Version = "1.2.3.4",
+                DeploymentDate = DateTime.Now
+            });
+
+            [Test]
+            public void THEN_the_deployment_is_created()
+            {
+                Assert.IsTrue(_testRunner.DeploymentCreated);
+            }
+
+            [Test]
+            public void AND_no_error_code_is_returned()
+            {
+                Assert.AreEqual(DeploymentCreationService.ValidationError.None, _testRunner.ValidationError);
+            }
+        }
+
+        public class WHEN_the_deployment_has_comments_of_a_thousand_characters
+        {
+            readonly TestRunner _testRunner = new TestRunner(new DeploymentCreationService.Deployment
+            {
+                Version = "1.2.3.4",
+                DeploymentDate = DateTime.Now,
+                Comments = new string('*', 1000)
+            });
+
+            [Test]
+            public void THEN_the_deployment_is_created()
+            {
+                Assert.IsTrue(_testRunner.DeploymentCreated);
+            }
+
+            [Test]
+            public void AND_no_error_code_is_returned()
+            {
+                Assert.AreEqual(DeploymentCreationService.ValidationError.None, _testRunner.ValidationError);
+            }
+        }
+
+
+        public class WHEN_the_deployment_has_comments_of_more_than_a_thousand_characters
+        {
+            readonly TestRunner _testRunner = new TestRunner(new DeploymentCreationService.Deployment
+            {
+                Version = "1.2.3.4",
+                DeploymentDate = DateTime.Now,
+                Comments = new string('*', 1001)
+            });
+
+            [Test]
+            public void THEN_the_deployment_is_not_created()
+            {
+                Assert.IsFalse(_testRunner.DeploymentCreated);
+            }
+
+            [Test]
+            public void AND_a_comments_too_long_validation_error_is_returned()
+            {
+                Assert.AreEqual(DeploymentCreationService.ValidationError.InvalidComments, _testRunner.ValidationError);
             }
         }
     }

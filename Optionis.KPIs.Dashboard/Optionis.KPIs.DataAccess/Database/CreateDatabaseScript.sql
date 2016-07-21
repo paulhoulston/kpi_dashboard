@@ -85,3 +85,6 @@ INSERT INTO [dbo].[Applications]([Name]) VALUES ('Goldmine')
 INSERT INTO [dbo].[Applications]([Name]) VALUES ('SelectPay')
 INSERT INTO [dbo].[Applications]([Name]) VALUES ('Dimensions')
 GO
+
+ALTER TABLE Deployments ADD Comments NVARCHAR(1000) NULL
+GO

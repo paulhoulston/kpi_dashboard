@@ -13,7 +13,8 @@ namespace Optionis.KPIs.DataAccess
                 releaseId = deployment.ReleaseId,
                 deploymentDate = deployment.DeploymentDate,
                 deploymentStatus = deployment.Status,
-                version = deployment.Version
+                version = deployment.Version,
+                comments = deployment.Comments
             });
             onDeploymentCreated(deploymentId);
         }

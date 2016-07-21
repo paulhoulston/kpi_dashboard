@@ -17,6 +17,7 @@ namespace Optionis.KPIs.Dashboard.Application
             public string Version { get; set; }
             public DateTime DeploymentDate{ get; set; }
             public DeploymentStatus Status{ get; set; }
+            public string Comments { get; set; }
         }
 
         [DefaultValue(None)]
@@ -24,7 +25,8 @@ namespace Optionis.KPIs.Dashboard.Application
         {
             None = 0,
             InvalidVersionNumber = 1,
-            InvalidDeploymentDate = 2
+            InvalidDeploymentDate = 2,
+            InvalidComments = 3
         }
 
         public interface ICreateDeployments
@@ -32,18 +34,19 @@ namespace Optionis.KPIs.Dashboard.Application
             void CreateDeployment(Deployment deployment, Action<int> onDeploymentCreated);
         }
 
-        public DeploymentCreationService (Action<ValidationError> onValidationError, Action<int> onDeploymentCreated, ICreateDeployments repository)
+        public DeploymentCreationService(Action<ValidationError> onValidationError, Action<int> onDeploymentCreated, ICreateDeployments repository)
         {
             _onValidationError = onValidationError;
             _repository = repository;
             _onDeploymentCreated = onDeploymentCreated;
 
             _validators =
-                new ValidateObject<Deployment, ValidationError> (
+                new ValidateObject<Deployment, ValidationError>(
                     _onValidationError,
                     Create,
-                    new ValidateVersionNumber<Deployment, ValidationError> (() => ValidationError.InvalidVersionNumber),
-                    new ValidateDeploymentDate<Deployment, ValidationError> (() => ValidationError.InvalidDeploymentDate));
+                    new ValidateVersionNumber<Deployment, ValidationError>(() => ValidationError.InvalidVersionNumber),
+                    new ValidateDeploymentDate<Deployment, ValidationError>(() => ValidationError.InvalidDeploymentDate),
+                    new ValidateLengthLessThan<Deployment, ValidationError>(1000, () => ValidationError.InvalidComments, deployment => deployment.Comments));
         }
 
         public void CreateDeployment(Deployment deployment)
