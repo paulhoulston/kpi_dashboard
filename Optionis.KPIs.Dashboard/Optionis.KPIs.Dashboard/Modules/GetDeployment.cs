@@ -32,7 +32,8 @@ namespace Optionis.KPIs.Dashboard.Modules
                 },
                 deployment.DeploymentDate,
                 deployment.Version,
-                status = deployment.DeploymentStatus.ToString()
+                status = deployment.DeploymentStatus.ToString(),
+                deployment.Comments
             };
         }
     }

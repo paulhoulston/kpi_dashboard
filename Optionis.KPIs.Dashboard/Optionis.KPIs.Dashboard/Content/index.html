@@ -73,39 +73,36 @@
             <div class="column grid_10">{{title}}</div>
         </div>
     </script>
-     <script id="add-issue-template" type="text/x-handlebars-template">
-         <div id="errors" class="hidden"></div>
-         <div class="row noMinWidth padded">
-             <div class="column grid_3 strong">
-                 Issue ID
-             </div>
-             <div class="column grid_9">
-                 <input type="text" id="issueId" placeholder="Issue ID..." />
-             </div>
-         </div>
-         <div class="row noMinWidth padded">
-             <div class="column grid_3 strong">
-                 Title
-             </div>
-             <div class="column grid_9">
-                 <input type="text" id="title" placeholder="Issue title..." />
-             </div>
-         </div>
-         <div class="row noMinWidth padded">
-             <div class="column grid_3 strong">
-                 Link
-             </div>
-             <div class="column grid_9">
-                 <input type="text" id="link" placeholder="Issue url..." />
-             </div>
-         </div>
-     </script>
+    <script id="add-issue-template" type="text/x-handlebars-template">
+        <div id="errors" class="hidden"></div>
+        <div class="row noMinWidth padded">
+            <div class="column grid_3 strong">Issue ID</div>
+            <div class="column grid_9">
+                <input type="text" id="issueId" placeholder="Issue ID..." />
+            </div>
+        </div>
+        <div class="row noMinWidth padded">
+            <div class="column grid_3 strong">Title</div>
+            <div class="column grid_9">
+                <input type="text" id="title" placeholder="Issue title..." />
+            </div>
+        </div>
+        <div class="row noMinWidth padded">
+            <div class="column grid_3 strong">Link</div>
+            <div class="column grid_9">
+                <input type="text" id="link" placeholder="Issue url..." />
+            </div>
+        </div>
+    </script>
     <script id="deployment-template" type="text/x-handlebars-template">
         <div class="row">
             <div class="column grid_2">{{formatDate deploymentDate}}</div>
-            <div class="column grid_3">Version: {{version}}</div>
-            <div class="column grid_3">
+            <div class="column grid_2">Version: {{version}}</div>
+            <div class="column grid_2">
                 Status: <span class="status">{{status}}</span>
+            </div>
+            <div class="column grid_2">
+                {{comments}}&nbsp;
             </div>
             <div class="column grid_2">
                 <a href="javascript:void(0);" title="Change deployment status" data-deployment-status-uri="{{links.self}}">[change status]</a>
@@ -114,30 +111,33 @@
         </div>
     </script>
     <script id="add-deployment-template" type="text/x-handlebars-template">
-        <div>
-            <div class="row padded" name="addDeploymentRow">
-                <div class="column grid_2">
-                    <input type="text" class="short" id="deploymentDate" />
-                </div>
-                <div class="column grid_3">
-                    <input type="text" id="version" class="medium" placeholder="Deployment version..." />
-                </div>
-                <div class="column grid_3" name="statusDiv">
-                    <select id="status" class="short">
-                        {{#statuses}}
-                        <option>{{status}}</option>
-                        {{/statuses}}
-                    </select>
-                </div>
-                <div class="column grid_3">
-                    <a href="#" data-action="save" data-save-uri="{{saveUri}}" title="Add deployment">[save]</a>
-                    <a href="#" data-action="cancel" title="Cancel">[cancel]</a>
-                </div>
+        <div id="errors" class="hidden"></div>
+        <div class="row noMinWidth padded">
+            <div class="column grid_3 strong">Issue ID</div>
+            <div class="column grid_9">
+                <input type="text" id="deploymentDate" placeholder="Deployment date..." />
             </div>
-            <div class="row">
-                <div class="column" grid_12>
-                    <span class="error"></span>
-                </div>
+        </div>
+        <div class="row noMinWidth padded">
+            <div class="column grid_3 strong">Version</div>
+            <div class="column grid_9">
+                <input type="text" id="version" placeholder="Deployment version..." />
+            </div>
+        </div>
+        <div class="row noMinWidth padded">
+            <div class="column grid_3 strong">Status</div>
+            <div class="column grid_9">
+                <select id="status">
+                    {{#statuses}}
+                    <option>{{status}}</option>
+                    {{/statuses}}
+                </select>
+            </div>
+        </div>
+        <div class="row noMinWidth padded">
+            <div class="column grid_3 strong">Comments</div>
+            <div class="column grid_9">
+                <input type="text" id="comments" placeholder="Comments..." />
             </div>
         </div>
     </script>

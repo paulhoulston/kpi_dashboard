@@ -1,4 +1,4 @@
-﻿INSERT INTO Deployments(ReleaseId, DeploymentDate, DeploymentStatus, Version)
-VALUES (@releaseId, @deploymentDate, @deploymentStatus, @version);
+﻿INSERT INTO Deployments(ReleaseId, DeploymentDate, DeploymentStatus, Version, Comments)
+VALUES (@releaseId, @deploymentDate, @deploymentStatus, @version, @comments);
 
 SELECT SCOPE_IDENTITY();

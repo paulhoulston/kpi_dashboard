@@ -177,7 +177,7 @@
                                     Releases.closeDialog();
                                 },
                                 error: function (jqXHR, _, __) {
-                                    Releases.handlePostError($('#popup').find('#errors'), jqXHR);
+                                    Releases.handlePostError(popup.find('#errors'), jqXHR);
                                 }
                             });
                         }
@@ -201,57 +201,47 @@
                     }
 
                     function addDeployment(e) {
-                        var addDeploymentUri = $(e.currentTarget).attr('data-add-deployment-uri');
+                        var popup = $('#popup');
 
-                        $.getJSON(Releases.settings.deploymentStatuses, function(d) {
-                            releaseDiv.append(Releases.getView({
+                        function createDeployment() {
+                            $.ajax({
+                                url: $(e.currentTarget).attr('data-add-deployment-uri'),
+                                type: 'POST',
+                                data: {
+                                    deploymentDate: popup.find('#deploymentDate').val(),
+                                    version: popup.find('#version').val(),
+                                    status: popup.find('#status').val(),
+                                    comments: popup.find('#comments').val()
+                                },
+                                success: function () {
+                                    bindReleases();
+                                    Releases.closeDialog();
+                                },
+                                error: function (jqXHR, _, __) {
+                                    Releases.handlePostError(popup.find('#errors'), jqXHR);
+                                }
+                            });
+                        }
+
+                        $.getJSON(Releases.settings.deploymentStatuses, function (statuses) {
+                            popup.empty().html(
+                            Releases.getView({
                                 template: Releases.templates.addDeployment,
-                                data: { 
-                                    statuses: d.statuses,
-                                    saveUri: addDeploymentUri
-                                 }
-                            }));
-
-                            var deploymentRow = releaseDiv.children('div:last');
-                            deploymentRow.find('input[type=text][id="deploymentDate"]').datepicker({
+                                data: statuses
+                            })).dialog({
+                                width: 500,
+                                height: 375,
+                                position: { my: 'center', at: 'center', of: window },
+                                title: 'Create Issue',
+                                closeOnEscape: true,
+                                buttons: [
+                                    { text: 'Create', click: createDeployment },
+                                    { text: 'Cancel', click: Releases.closeDialog }
+                                ]
+                            }).find('#deploymentDate').datepicker({
                                 showOn: 'both',
                                 dateFormat: Releases.settings.dateFormat
-                            }).datepicker('setDate', Releases.tomorrow());;
-                            deploymentRow.find('a[data-action="cancel"]').on('click', function() {
-                                deploymentRow.remove();
-                            });
-                            deploymentRow.find('a[data-action="save"]').on('click', function(evt) {
-                                var trg = $(evt.currentTarget);
-
-                                function onError(jqXhr) {
-                                    if (jqXhr && jqXhr.responseJSON && jqXhr.responseJSON.error && jqXhr.responseJSON.error.message) {
-
-                                        function clearErrors() {
-                                            deploymentRow.find('input[type=text].error').removeClass('error');
-                                        }
-
-                                        function addErrorTo(selector) {
-                                            deploymentRow.find(selector).addClass('error');
-                                        }
-
-                                        clearErrors();
-                                        addErrorTo(jqXhr.responseJSON.error.code === 'InvalidVersionNumber' ? '#version' : '#deploymentDate');
-                                        deploymentRow.find('span.error').empty().html(jqXhr.responseJSON.error.message);
-                                    }
-                                }
-
-                                $.ajax({
-                                    url: trg.attr('data-save-uri'),
-                                    type: 'POST',
-                                    success: function () { bindReleases(); },
-                                    error: onError,
-                                    data: {
-                                        status: deploymentRow.find('#status').val(),
-                                        version: deploymentRow.find('#version').val(),
-                                        deploymentDate: Releases.datePickerSubmitDate(deploymentRow.find('#deploymentDate'))
-                                    }
-                                });
-                            });
+                            }).datepicker('setDate', Releases.tomorrow());
                         });
                     }
 
