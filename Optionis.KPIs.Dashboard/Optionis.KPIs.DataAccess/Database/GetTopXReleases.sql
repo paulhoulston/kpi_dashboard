@@ -5,3 +5,4 @@ FROM
     FROM Deployments
     GROUP BY ReleaseId
 ) t
+ORDER BY t.DeploymentDate DESC
