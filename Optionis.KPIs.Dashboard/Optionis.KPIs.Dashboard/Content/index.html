@@ -28,7 +28,7 @@
             {{#releases}}
             <div data-uri="{{.}}"></div>
             {{/releases}}
-            <a class="showAll" href="#" title="Show all releases">Show all releases</a>
+            <a class="showAll" href="javascript:void(0);" title="Show all releases">Show all releases</a>
         {{else}}
             <p class="alignCenter">No releases found</p>
         {{/if}}
@@ -52,12 +52,12 @@
             </div>
             <div class="row padded">
                 <div class="column grid_12">
-                    Click <a data-add-issue-uri="{{links.issues.add}}" href="#" title="Add issue">here</a> to add an issue.
+                    Click <a data-add-issue-uri="{{links.issues.add}}" href="javascript:void(0);" title="Add issue">here</a> to add an issue.
                 </div>
             </div>
         </div>
         {{#if links.deployments.list}}
-            <h4>Deployments <a href="#" title="Add deployment" data-add-deployment-uri="{{links.deployments.add}}"">[add deployment]</a></h4>
+            <h4>Deployments <a href="javascript:void(0);" title="Add deployment" data-add-deployment-uri="{{links.deployments.add}}"">[add deployment]</a></h4>
             {{#links.deployments.list}}
             <div class="row">
                 <div data-deployment-uri="{{.}}"></div>
@@ -154,8 +154,8 @@
                 </select>
             </div>
             <div class="column grid_3">
-                <a href="#" data-action="save" title="Update deployment status">[save]</a>&nbsp;
-                <a href="#" data-action="cancel" title="Cancel">[cancel]</a>&nbsp;
+                <a href="javascript:void(0);" data-action="save" title="Update deployment status">[save]</a>&nbsp;
+                <a href="javascript:void(0);" data-action="cancel" title="Cancel">[cancel]</a>&nbsp;
             </div>
         </div>
     </script>
