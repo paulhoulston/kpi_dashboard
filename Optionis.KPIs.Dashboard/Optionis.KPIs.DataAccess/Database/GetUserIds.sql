@@ -1,1 +1,3 @@
-﻿SELECT Id FROM Users
+﻿SELECT Id
+FROM Users
+ORDER BY UserName
