@@ -3,6 +3,7 @@
     settings: {
         allReleasesUri: '/releases?top=10000',
         applicationsUri: '/releases/applications',
+        baseUrl: '',
         dateFormat: 'dd/mm/yy',
         deploymentStatuses: '/deployments/statuses',
         releasesUri: '/releases',
@@ -77,7 +78,7 @@
                     var releaseDiv = $('div[data-uri="' + uri + '"]').empty().html(Releases.getView({ template: Releases.templates.releaseDetails, data: d }));
 
                     function getIssue(uri) {
-                        $.getJSON(uri, function(d) {
+                        $.getJSON(Releases.settings.baseUrl + uri, function (d) {
                             $('div[data-issue-uri="' + uri + '"]').empty().html(
                                 Releases.getView({ template: Releases.templates.issueDetails, data: d })
                             );
@@ -89,7 +90,7 @@
                             function deleteDeployment() {
                                 Releases.closeDialog();
                                 $.ajax({ 
-                                    url: $(e.currentTarget).attr('data-delete-deployment-uri'),
+                                    url: Releases.settings.baseUrl + $(e.currentTarget).attr('data-delete-deployment-uri'),
                                     type: 'DELETE',
                                     success: function () { bindReleases(); }
                                 });
@@ -118,7 +119,7 @@
 
                                 function updateStatus() {
                                     $.ajax({
-                                        url: deploymentUri,
+                                        url: Releases.settings.baseUrl + deploymentUri,
                                         type: 'PATCH',
                                         data: {
                                             propertyName: 'status',
@@ -135,8 +136,8 @@
                                 }
                             }
 
-                            $.getJSON(deploymentUri, function (deployment) {
-                                $.getJSON(Releases.settings.deploymentStatuses, function (statuses) {
+                            $.getJSON(Releases.settings.baseUrl + deploymentUri, function (deployment) {
+                                $.getJSON(Releases.settings.baseUrl + Releases.settings.deploymentStatuses, function (statuses) {
                                     row.empty().html(
                                         Releases.getView({
                                             template: Releases.templates.statuses,
@@ -151,7 +152,7 @@
                             });
                         }
 
-                        $.getJSON(uri, function(d) {
+                        $.getJSON(Releases.settings.baseUrl + uri, function (d) {
                             var deployment = $('div[data-deployment-uri="' + uri + '"]').empty().html(
                                 Releases.getView({ template: Releases.templates.deploymentDetails, data: d })
                             );
@@ -165,7 +166,7 @@
 
                         function createIssue() {
                             $.ajax({
-                                url: $(e.currentTarget).attr('data-add-issue-uri'),
+                                url: Releases.settings.baseUrl + $(e.currentTarget).attr('data-add-issue-uri'),
                                 type: 'POST',
                                 data: {
                                     issueId: popup.find('#issueId').val(),
@@ -205,7 +206,7 @@
 
                         function createDeployment() {
                             $.ajax({
-                                url: $(e.currentTarget).attr('data-add-deployment-uri'),
+                                url: Releases.settings.baseUrl + $(e.currentTarget).attr('data-add-deployment-uri'),
                                 type: 'POST',
                                 data: {
                                     deploymentDate: popup.find('#deploymentDate').val(),
@@ -223,7 +224,7 @@
                             });
                         }
 
-                        $.getJSON(Releases.settings.deploymentStatuses, function (statuses) {
+                        $.getJSON(Releases.settings.baseUrl + Releases.settings.deploymentStatuses, function (statuses) {
                             popup.empty().html(
                             Releases.getView({
                                 template: Releases.templates.addDeployment,
@@ -255,10 +256,10 @@
                     releaseDiv.find('a[data-add-issue-uri]').on('click', addIssue);
                 }
 
-                $.getJSON(uri, onGetReleaseDetails);
+                $.getJSON(Releases.settings.baseUrl + uri, onGetReleaseDetails);
             }
 
-            $.getJSON(releasesUri || Releases.settings.releasesUri, function(d){
+            $.getJSON(Releases.settings.baseUrl + (releasesUri || Releases.settings.releasesUri), function (d) {
                 var releasesDiv = $('#releases').empty().html(
                     Releases.getView({ template: Releases.templates.releases, data: d })
                 ).children('div[data-uri]').each(function(_, o) {
@@ -293,7 +294,7 @@
                 }
 
                 $.ajax({
-                    url: Releases.settings.releasesUri,
+                    url: Releases.settings.baseUrl + Releases.settings.releasesUri,
                     type: 'POST',
                     data: getData(),
                     success: onSuccess,
@@ -302,17 +303,17 @@
             }
 
             function bindUsers() {
-                $.getJSON(Releases.settings.usersUri, function (d) {
+                $.getJSON(Releases.settings.baseUrl + Releases.settings.usersUri, function (d) {
                     if (d.users) {
                         for (ind in d.users)
-                            $.getJSON(d.users[ind], function (usr) {
+                            $.getJSON(Releases.settings.baseUrl + d.users[ind], function (usr) {
                                 $('#createdBy').append($('<option/>', { 'value': usr.id, 'text': usr.userName }));
                             });
                     }
                 });
             }
 
-            $.getJSON(Releases.settings.applicationsUri, function (applications) {
+            $.getJSON(Releases.settings.baseUrl + Releases.settings.applicationsUri, function (applications) {
                 $('#popup').empty().html(Releases.getView({
                     template: Releases.templates.createRelease,
                     data: applications
@@ -346,7 +347,7 @@
 
             function createUser() {
                 $.ajax({
-                    url: Releases.settings.usersUri,
+                    url: Releases.settings.baseUrl + Releases.settings.usersUri,
                     type: 'POST',
                     data: { username: $('#username').val() },
                     success: onSuccess,
@@ -371,6 +372,14 @@
             });
         }
 
+        function getPath() {
+            var index = window.location.pathname.lastIndexOf('/');
+            return index >= 0 ?
+                window.location.pathname.substring(0, index) :
+                window.location.pathname;
+        }
+
+        Releases.settings.baseUrl = getPath();
         bindReleases();
 
         $('#btnCreateRelease').on('click', onCreateRelease);
